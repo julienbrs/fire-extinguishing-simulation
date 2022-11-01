@@ -25,11 +25,11 @@ public abstract class Robot
         this.position = positionCase.copyCase();
     }
     // Crée le robot du bon type et le renvoie
-    public Robot newRobot(TypeRobot type, Case position, int volum)
+    public static Robot newRobot(TypeRobot type, Case position)
     {
-        newRobot(type, position, volum, Double.NaN);
+        return newRobot(type, position, Double.NaN);
     }
-    public Robot newRobot(TypeRobot type, Case position, int volum, double vitesse) throws NoSuchElementException
+    public static Robot newRobot(TypeRobot type, Case position, double vitesse) throws NoSuchElementException
     {
         switch(type)
         {

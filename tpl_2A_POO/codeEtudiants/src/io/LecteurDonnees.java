@@ -2,11 +2,12 @@ package io;
 import Carte.*;
 import Robot.Robot;
 import Robot.TypeRobot;
+import Simulation.DonneesSimulation;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-import org.jcp.xml.dsig.internal.dom.DOMReference;
+// import org.jcp.xml.dsig.internal.dom.DOMReference;
 
 
 
@@ -53,6 +54,11 @@ public class LecteurDonnees {
         // System.out.println("\n == Lecture terminee");
     }
 
+    public static void lire(String fichierDonnes)
+    {
+        // DonneesSimulation donnees = creeDonneesSimulation(fichierDonnes);
+        // Print donnees eventually (this is so that testlecteurdonnees can compile)
+    }
     // public static DonneesSimulation creeDonnees(String fichierDonnes);
 
 
@@ -89,7 +95,7 @@ public class LecteurDonnees {
                     cases[lig][col] = creeCase(lig, col);
                 }
             }
-            return new Carte(nbLignes, nbColonnes, cases);
+            return new Carte(tailleCases, nbLignes, nbColonnes, cases);
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -187,7 +193,7 @@ public class LecteurDonnees {
             Robot[] robots = new Robot[nbRobots];
             // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots[i] = lireRobot();
+                robots[i] = creeRobot();
             }
             return robots;
         } catch (NoSuchElementException e) {
