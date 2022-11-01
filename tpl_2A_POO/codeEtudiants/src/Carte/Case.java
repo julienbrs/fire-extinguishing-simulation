@@ -4,6 +4,11 @@ public class Case
     private int ligne, colonne;
     private NatureTerrain nature;
 
+    // Si aucune nature n'est specifié
+    public Case(int ligne, int colonne)
+    {
+        Case(ligne, colonne, null);
+    }
     public Case(int ligne, int colonne, NatureTerrain nature)
     {
         this.ligne = ligne;
@@ -21,5 +26,10 @@ public class Case
     public NatureTerrain getNature()
     {
         return this.nature;
+    }
+
+    public Case copyCase()
+    {
+        return new Case(this.ligne, this.colonne, this.nature);
     }
 }
