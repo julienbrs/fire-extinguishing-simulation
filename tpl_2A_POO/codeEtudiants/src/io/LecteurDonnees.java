@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
+import org.jcp.xml.dsig.internal.dom.DOMReference;
+
 
 
 /**
@@ -37,17 +39,17 @@ public class LecteurDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * @param fichierDonnees nom du fichier à lire
      */
-    public static void lire(String fichierDonnees)
+    public static DonneesSimulation creeDonneesSimulation(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
-        System.out.println("\n == Lecture du fichier" + fichierDonnees);
+
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.creeCarte();
-        System.out.println();
-        System.out.println(carte);
         Incendie[] incendies = lecteur.creeIncendies();
-        lecteur.lireRobots();
+        Robot[] robots = lecteur.creeRobots();
         scanner.close();
-        System.out.println("\n == Lecture terminee");
+
+        return new DonneesSimulation(carte, incendies, robots);
+        // System.out.println("\n == Lecture terminee");
     }
 
     // public static DonneesSimulation creeDonnees(String fichierDonnes);
@@ -177,15 +179,16 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private void lireRobots() throws DataFormatException {
+    private Robot[] creeRobots() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
-            System.out.println("Nb de robots = " + nbRobots);
+            Robot[] robots = new Robot[nbRobots];
+            // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                lireRobot(i);
+                robots[i] = lireRobot();
             }
-
+            return robots;
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbRobots");
@@ -197,18 +200,12 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private void creeRobot(int i) throws DataFormatException {
-        //TODO
-        //Pour faire creeRobot je pense à un switch
-        // Sur le type de robot, on ferait ce switch dans une methode
-        // de classe de robot, ou on renvoit un robot.
-        // On mettera un constructeur specifique de chaque robot qui prend la vitesse, 
-        //et un autre qui ne prend pas la vitesse, qui appellera celui qui prend la vitesse, avecla
-        // vitesse de défaut.b
+    private Robot creeRobot() throws DataFormatException {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
         try {
+            Robot robot;
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
             // System.out.print("position = (" + lig + "," + col + ");");
@@ -223,22 +220,23 @@ public class LecteurDonnees {
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
 
             if (s == null) {
-                robot = newRobot(type, )
                 // System.out.print("valeur par defaut");
+                robot = Robot.newRobot(type.valueOf(),new Case(lig, col));
             } else {
                 int vitesse = Integer.parseInt(s);
-                System.out.print(vitesse);
+                robot = Robot.newRobot(type.valueOf(), new Case(lig, col), vitesse);
+                // System.out.print(vitesse);
             }
             verifieLigneTerminee();
 
-            System.out.println();
+            // System.out.println();
+            return robot;
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
     }
-
 
 
 
