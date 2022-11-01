@@ -7,7 +7,7 @@ public class Case
     // Si aucune nature n'est specifié
     public Case(int ligne, int colonne)
     {
-        Case(ligne, colonne, null);
+        this(ligne, colonne, null);
     }
     public Case(int ligne, int colonne, NatureTerrain nature)
     {
