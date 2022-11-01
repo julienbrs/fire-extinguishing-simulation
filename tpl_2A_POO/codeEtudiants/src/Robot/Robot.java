@@ -31,13 +31,13 @@ public abstract class Robot
         {
             case DRONE:
             //appeller le constructeur du robot drone
-                break;
+                return null;
             case ROUES:
             //appeller le constructeur du robot roues
-                break;
+                return null;
             case PATTES:
             //appeller le constructeur du robot pattes ( pas un copié-collé)
-                break;
+                return null;
             default:
                 throw new NoSuchElementException("Le robot " + type.toString() + " n'existe pas!");
         }
