@@ -1,6 +1,7 @@
 package io;
 import Carte.*;
 import Robot.Robot;
+import Robot.TypeRobot;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
@@ -221,10 +222,10 @@ public class LecteurDonnees {
 
             if (s == null) {
                 // System.out.print("valeur par defaut");
-                robot = Robot.newRobot(type.valueOf(),new Case(lig, col));
+                robot = Robot.newRobot(TypeRobot.valueOf(type),new Case(lig, col));
             } else {
                 int vitesse = Integer.parseInt(s);
-                robot = Robot.newRobot(type.valueOf(), new Case(lig, col), vitesse);
+                robot = Robot.newRobot(TypeRobot.valueOf(type), new Case(lig, col), vitesse);
                 // System.out.print(vitesse);
             }
             verifieLigneTerminee();
