@@ -1,12 +1,14 @@
 package Robot;
 
+import java.util.NoSuchElementException;
+
 import Carte.*;
 
 public abstract class Robot
 {
     private Case position;
     private int volumeEau;
-    protected double vitesse;
+    private double vitesse;
 
     public Robot(Case position, int volumeEau, double vitesse)
     {
@@ -14,15 +16,16 @@ public abstract class Robot
         this.volumeEau = volumeEau;
         this.vitesse = vitesse;
     }
+    // Will i be able to modify a private attribute with this implementation?
     public Case getPosition() {
-        return position;
+        return this.position.copyCase();
     }
     public void setPosition(Case positionCase)
     {
-        this.position = positionCase;
+        this.position = positionCase.copyCase();
     }
     // Crée le robot du bon type et le renvoie
-    public Robot newRobot(TypeRobot type)
+    public Robot newRobot(TypeRobot type) throws NoSuchElementException
     {
         switch(type)
         {
@@ -36,7 +39,7 @@ public abstract class Robot
             //appeller le constructeur du robot pattes ( pas un copié-collé)
                 break;
             default:
-                throw new Exception("Le robot n'existe pas!");
+                throw new NoSuchElementException("Le robot " + type.toString() + " n'existe pas!");
         }
     }
     public abstract double getVitesse(NatureTerrain nature);
