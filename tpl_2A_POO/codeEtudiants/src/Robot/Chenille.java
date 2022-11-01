@@ -25,7 +25,7 @@ class TerrainIncorrectException extends Exception {
     }
 }
 
-public abstract class Chenilles
+public class Chenilles
 {   
     public Chenilles(Case position, int volumeEau, double vitesse)
     {
@@ -87,6 +87,13 @@ public abstract class Chenilles
 
     public void remplirReservoir()
     {
+        /* vérifie si une des cases alentours est de type eau */
+        for (int i = 0; i < 4; i++) {
+            if (this.position.getVoisin(i).getNature() == NatureTerrain.EAU) {
+                this.volumeEau = 1000;
+                return;
+            }
+        }
         this.volumeEau = 2000;
     }
 }
