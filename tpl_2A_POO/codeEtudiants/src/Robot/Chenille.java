@@ -85,13 +85,16 @@ public class Chenilles
             }
             boolean peuxDeverser = false;
             /* on regarde si la case est un incendie */
-            for (Incendie incendie : this.position.getIncendies()) {
-                if (incendie != null) {
-                    peuxDeverser = true;
-                }
-            }
+            /* need hashmap of incendies */
             if (peuxDeverser) {
                 this.volumeEau -= vol;
+
+                /* on déverse l'eau sur la position du robot */
+                Incendie incendie = this.position.getIncendie();
+                incendie.decreaseIntensity(vol);
+                /* need hashmap of incendies */
+                }
+                
             }
         } catch (VolumeEauIncorrectException e) {
             System.out.println(e.getMessage());

@@ -24,6 +24,11 @@ public class Incendie
     {
         this.intensite = intensite;
     }
+
+    public void decreaseIntensite(double vol)
+    {
+        this.intensite -= vol;
+    }
     // Pour debug
     @Override
     public String toString()
