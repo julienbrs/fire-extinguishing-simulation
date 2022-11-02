@@ -1,3 +1,7 @@
+package Simulation;
+import gui.GUISimulator;
+import gui.Simulable;
+
 class Simulateur implements Simulable
 {
     private GUISimulator gui;
