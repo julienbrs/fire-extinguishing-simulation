@@ -48,8 +48,8 @@ public class LecteurDonnees {
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.creeCarte();
         /* crée les incendies */
-        HashMap<Carte, Incendie> incendies = lecteur.creeIncendies();
-        Robot[] robots = lecteur.creeRobots();
+        HashMap<Case, Incendie> incendies = lecteur.creeIncendies(carte);
+        Robot[] robots = lecteur.creeRobots(carte);
         scanner.close();
 
         return new DonneesSimulation(carte, incendies, robots);
@@ -141,7 +141,7 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private Incendie[] creeIncendies() throws DataFormatException {
+    private HashMap<Case, Incendie> creeIncendies(Carte carte) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
@@ -151,7 +151,7 @@ public class LecteurDonnees {
             // System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
                 /* on crée un nouvel incendie qu'on ajoute à la hashmap */
-                Incendie incendie = creeIncendie();
+                Incendie incendie = creeIncendie(carte);
                 incendies.put(incendie.getCase(), incendie);
             }
 
@@ -163,11 +163,10 @@ public class LecteurDonnees {
     }
 
 
-    /**
+    /*
      * Lit et affiche les donnees de l'incendie.
      */
-     */
-    private Incendie creeIncendie() throws DataFormatException {
+    private Incendie creeIncendie(Carte carte) throws DataFormatException {
         ignorerCommentaires();
 
         try {
@@ -180,7 +179,7 @@ public class LecteurDonnees {
             }
             verifieLigneTerminee();
             
-            return new Incendie(new Case(lig, col), intensite);
+            return new Incendie(carte.getCase(lig, col), intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -192,14 +191,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private Robot[] creeRobots() throws DataFormatException {
+    private Robot[] creeRobots(Carte carte) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
             Robot[] robots = new Robot[nbRobots];
             // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots[i] = creeRobot();
+                robots[i] = creeRobot(carte);
             }
             return robots;
         } catch (NoSuchElementException e) {
@@ -213,7 +212,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private Robot creeRobot() throws DataFormatException {
+    private Robot creeRobot(Carte carte) throws DataFormatException {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
@@ -234,10 +233,10 @@ public class LecteurDonnees {
 
             if (s == null) {
                 // System.out.print("valeur par defaut");
-                robot = Robot.newRobot(TypeRobot.valueOf(type),new Case(lig, col));
+                robot = Robot.newRobot(TypeRobot.valueOf(type), carte.getCase(lig, col));
             } else {
                 int vitesse = Integer.parseInt(s);
-                robot = Robot.newRobot(TypeRobot.valueOf(type), new Case(lig, col), vitesse);
+                robot = Robot.newRobot(TypeRobot.valueOf(type), carte.getCase(lig, col), vitesse);
                 // System.out.print(vitesse);
             }
             verifieLigneTerminee();
