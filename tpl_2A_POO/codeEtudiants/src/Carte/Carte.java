@@ -1,6 +1,9 @@
 package Carte;
 
 import java.util.NoSuchElementException;
+
+import Simulation.DonneesSimulation;
+
 import java.lang.IllegalArgumentException;
 import java.lang.NullPointerException;
 public class Carte
@@ -8,11 +11,13 @@ public class Carte
     private int tailleCases;
     private int nbLignes, nbColonnes;
     private Case[][] carte;
-    public Carte(int tailleCases, int nbLignes, int nbColonnes, Case[][] carte)
+    private DonneesSimulation donnees;
+    public Carte(int tailleCases, int nbLignes, int nbColonnes, Case[][] carte, DonneesSimulation donnees)
     {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
         this.carte = carte;
+        this.donnees = donnees;
     }
 
     public int getNbLignes()
