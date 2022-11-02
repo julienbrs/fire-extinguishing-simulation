@@ -23,6 +23,7 @@ public class TestCarte
             assert(!carte.voisinExiste(carte.getCase(carte.getNbLignes(), 0), Direction.SUD));
             //Voisin OUEST
             assert(!carte.voisinExiste(carte.getCase(0, 0), Direction.OUEST));
+
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

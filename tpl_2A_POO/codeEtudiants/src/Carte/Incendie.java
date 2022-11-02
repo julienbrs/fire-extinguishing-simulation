@@ -1,18 +1,22 @@
 package Carte;
+import Simulation.DonneesSimulation;
+
 public class Incendie
 {
     private Case position;
     private double intensite;
 
-    public Incendie(Case position, double intensite)
+    private DonneesSimulation donnees;
+    public Incendie(Case position, double intensite, DonneesSimulation donnees)
     {
         this.position = position;
         this.intensite = intensite;
+        this.donnees = donnees;
     }
 
     public Case getPosition()
     {
-        return this.position.copyCase();
+        return this.position;
     }
     public double getIntensite()
     {
@@ -25,9 +29,10 @@ public class Incendie
         this.intensite = intensite;
     }
 
-    public void decreaseIntensite(double vol)
+    public int decreaseIntensite(double vol)
     {
         this.intensite -= vol;
+        if (this.intensite <= 0) this.donnees.removeIncendie(this.position);
     }
     // Pour debug
     @Override
