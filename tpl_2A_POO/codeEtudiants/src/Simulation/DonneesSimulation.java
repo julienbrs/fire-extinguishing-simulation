@@ -40,7 +40,7 @@ public class DonneesSimulation
 
 
     /* check if there is an incendie on the case */
-    public boolean isThereFire(int lig, int col)
+    private boolean isThereFire(int lig, int col)
     {
         if (this.incendies.containsKey(this.carte.getCase(lig, col)))
         {
@@ -49,20 +49,21 @@ public class DonneesSimulation
         return false;
     }
 
-    public boolean getIncendie()
+    // Renvoie l'incendie à la position position, sinon renvoie null
+    public Incendie getIncendie(Case position)
     {
-        if (this.incendies.containsKey(this))
-        {
-            return this.incendies.get(this);
-        }
-        return false;
+        int lig = position.getLigne();
+        int col = position.getColonne();
+        if (this.isThereFire(lig, col)) return this.incendies.get(this);
+        else return null;
     }
 
-    public void removeIncendie()
+    public void removeIncendie(Case position)
     {
-        if (this.incendies.containsKey(this))
+
+        if (this.incendies.containsKey(position))
         {
-            this.incendies.remove(this);
+            this.incendies.remove(position);
         }
     }
 

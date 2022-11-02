@@ -27,23 +27,26 @@ class TerrainIncorrectException extends Exception {
 
 public class Chenilles extends Robot
 {   
+    static double vitesseDefaut =  60;
+    static double vitesseMax = 60;
+    static double volumeEauMax = 2000;
     public Chenilles(Case position, int volumeEau, double vitesse)
     {
         try {
             if (vitesse < 0) {
                 throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
             }
-            if (vitesse > 80) {
+            if (vitesse > vitesseMax) {
                 throw new VitesseIncorrectException("La vitesse ne peut pas être supérieure à 80km/h");
             }
             /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
             if (Double.isNaN(vitesse)) {
-                vitesse = 60;
+                vitesse = vitesseDefaut;
             }
         } catch (VitesseIncorrectException e) {
             System.out.println(e.getMessage());
         }
-        
+        //MARCHE PO
         super(position, volumeEau, vitesse);
     }
 
@@ -84,16 +87,13 @@ public class Chenilles extends Robot
                 vol = this.volumeEau;
             }
             /* on regarde si la case est un incendie */
-            boolean peuxDeverser = this.donnees.isThereFire(this.position);
+            // boolean peuxDeverser = this.donnees.isThereFire(this.position);
+            Incendie incendie = this.donnees.getIncendie(this.position);
             
-            if (peuxDeverser) {
+            if (incendie != null) {
                 this.volumeEau -= vol;
                 /* on déverse l'eau sur la position du robot */
-                Incendie incendie = this.donnees.incendies(this.position);
-                incendie.decreaseIntensity(vol);
-                if (incendie.getIntensity() == 0) {
-                    this.donnees.removeIncendie(carte);
-                }                
+                incendie.decreaseIntensity(vol);             
             }
         } catch (VolumeEauIncorrectException e) {
             System.out.println(e.getMessage());
@@ -118,6 +118,6 @@ public class Chenilles extends Robot
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
         }
-        this.volumeEau = 2000;
+        this.volumeEau = volumeEauMax;
     }
 }

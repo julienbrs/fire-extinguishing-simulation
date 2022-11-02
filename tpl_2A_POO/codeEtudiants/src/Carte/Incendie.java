@@ -29,9 +29,10 @@ public class Incendie
         this.intensite = intensite;
     }
 
-    public void decreaseIntensite(double vol)
+    public int decreaseIntensite(double vol)
     {
         this.intensite -= vol;
+        if (this.intensite <= 0) this.donnees.removeIncendie(this.position);
     }
     // Pour debug
     @Override
