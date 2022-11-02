@@ -45,18 +45,19 @@ public class LecteurDonnees {
     public static DonneesSimulation creeDonneesSimulation(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
 
+        DonneesSimulation donnees = new DonneesSimulation();
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        Carte carte = lecteur.creeCarte();
-        /* crée les incendies */
-        HashMap<Case, Incendie> incendies = lecteur.creeIncendies(carte);
-        Robot[] robots = lecteur.creeRobots(carte);
+        Carte carte = lecteur.creeCarte(donnees);
+        donnees.setCarte(carte);
+        lecteur.creeIncendies(donnees);
+        lecteur.creeRobots(donnees);
         scanner.close();
 
-        return new DonneesSimulation(carte, incendies, robots);
+        return donnees;
         // System.out.println("\n == Lecture terminee");
     }
 
-    public static void lire(String fichierDonnes)
+    public static void lire(String fichierDonnes) throws DataFormatException, FileNotFoundException
     {
         // DonneesSimulation donnees = creeDonneesSimulation(fichierDonnes);
         // Print donnees eventually (this is so that testlecteurdonnees can compile)
@@ -82,7 +83,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private Carte creeCarte() throws DataFormatException {
+    private Carte creeCarte(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
@@ -97,7 +98,7 @@ public class LecteurDonnees {
                     cases[lig][col] = creeCase(lig, col);
                 }
             }
-            return new Carte(tailleCases, nbLignes, nbColonnes, cases);
+            return new Carte(tailleCases, nbLignes, nbColonnes, cases, donnees);
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -141,18 +142,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private HashMap<Case, Incendie> creeIncendies(Carte carte) throws DataFormatException {
+    private HashMap<Case, Incendie> creeIncendies(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
-            /* hashmap pour stocker les incendies */
             HashMap<Case, Incendie> incendies = new HashMap<Case, Incendie>();
-            
             // System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                /* on crée un nouvel incendie qu'on ajoute à la hashmap */
-                Incendie incendie = creeIncendie(carte);
-                incendies.put(incendie.getCase(), incendie);
+                creeIncendie(donnees);
             }
 
             return incendies;
@@ -166,20 +163,20 @@ public class LecteurDonnees {
     /*
      * Lit et affiche les donnees de l'incendie.
      */
-    private Incendie creeIncendie(Carte carte) throws DataFormatException {
+    private void creeIncendie(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
 
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
             int intensite = scanner.nextInt();
-            if (intensite <= 0) {
-                throw new DataFormatException("incendie à la case " + lig + " " + col
-                        + "nb litres pour eteindre doit etre > 0");
-            }
+            // if (intensite <= 0) {
+            //     throw new DataFormatException("incendie " + i
+            //             + "nb litres pour eteindre doit etre > 0");
+            // }
             verifieLigneTerminee();
             
-            return new Incendie(carte.getPosition(lig, col), intensite);
+            donnees.addIncendie(donnees.getCarte().getCase(lig, col), intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -191,16 +188,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private Robot[] creeRobots(Carte carte) throws DataFormatException {
+    private void creeRobots(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
-            Robot[] robots = new Robot[nbRobots];
             // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots[i] = creeRobot(carte);
+                creeRobot(donnees);
             }
-            return robots;
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbRobots");
@@ -212,7 +207,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private Robot creeRobot(Carte carte) throws DataFormatException {
+    private void creeRobot(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
@@ -231,19 +226,19 @@ public class LecteurDonnees {
             String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
 
+            double vitesse;
             if (s == null) {
                 // System.out.print("valeur par defaut");
-                robot = Robot.newRobot(TypeRobot.valueOf(type), carte.getCase(lig, col));
+                vitesse = Double.NaN;
             } else {
-                int vitesse = Integer.parseInt(s);
-                robot = Robot.newRobot(TypeRobot.valueOf(type), carte.getCase(lig, col), vitesse);
+                vitesse = Integer.parseInt(s);
                 // System.out.print(vitesse);
             }
+            donnees.addRobot(TypeRobot.valueOf(type), donnees.getCarte().getCase(lig, col), vitesse);
+
             verifieLigneTerminee();
 
             // System.out.println();
-            return robot;
-
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
