@@ -18,11 +18,11 @@ public abstract class Robot
     }
     // Will i be able to modify a private attribute with this implementation?
     public Case getPosition() {
-        return this.position.copyCase();
+        return this.position;
     }
     public void setPosition(Case positionCase)
     {
-        this.position = positionCase.copyCase();
+        this.position = positionCase;
     }
     // Crée le robot du bon type et le renvoie
     public static Robot newRobot(TypeRobot type, Case position)

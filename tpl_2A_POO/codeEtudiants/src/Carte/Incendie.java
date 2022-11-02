@@ -12,7 +12,7 @@ public class Incendie
 
     public Case getPosition()
     {
-        return this.position.copyCase();
+        return this.position;
     }
     public double getIntensite()
     {
