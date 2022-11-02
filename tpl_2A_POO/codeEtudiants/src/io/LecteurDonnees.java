@@ -179,7 +179,7 @@ public class LecteurDonnees {
             }
             verifieLigneTerminee();
             
-            return new Incendie(carte.getCase(lig, col), intensite);
+            return new Incendie(carte.getPosition(lig, col), intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
