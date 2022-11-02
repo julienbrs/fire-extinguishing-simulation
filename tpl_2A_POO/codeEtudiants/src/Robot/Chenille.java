@@ -25,7 +25,7 @@ class TerrainIncorrectException extends Exception {
     }
 }
 
-public class Chenilles
+public class Chenilles extends Robot
 {   
     public Chenilles(Case position, int volumeEau, double vitesse)
     {
@@ -38,7 +38,7 @@ public class Chenilles
             }
             /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
             if (Double.isNaN(vitesse)) {
-                vitesse = 80;
+                vitesse = 60;
             }
         } catch (VitesseIncorrectException e) {
             System.out.println(e.getMessage());
