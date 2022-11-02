@@ -44,17 +44,19 @@ public class LecteurDonnees {
     public static DonneesSimulation creeDonneesSimulation(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
 
+        DonneesSimulation donnees = new DonneesSimulation();
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        Carte carte = lecteur.creeCarte();
-        Incendie[] incendies = lecteur.creeIncendies();
-        Robot[] robots = lecteur.creeRobots();
+        Carte carte = lecteur.creeCarte(donnees);
+        donnees.setCarte(carte);
+        lecteur.creeIncendies(donnees);
+        lecteur.creeRobots(donnees);
         scanner.close();
 
-        return new DonneesSimulation(carte, incendies, robots);
+        return donnees;
         // System.out.println("\n == Lecture terminee");
     }
 
-    public static void lire(String fichierDonnes)
+    public static void lire(String fichierDonnes) throws DataFormatException, FileNotFoundException
     {
         // DonneesSimulation donnees = creeDonneesSimulation(fichierDonnes);
         // Print donnees eventually (this is so that testlecteurdonnees can compile)
@@ -80,7 +82,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private Carte creeCarte() throws DataFormatException {
+    private Carte creeCarte(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
@@ -95,7 +97,7 @@ public class LecteurDonnees {
                     cases[lig][col] = creeCase(lig, col);
                 }
             }
-            return new Carte(tailleCases, nbLignes, nbColonnes, cases);
+            return new Carte(tailleCases, nbLignes, nbColonnes, cases, donnees);
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -139,14 +141,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private Incendie[] creeIncendies() throws DataFormatException {
+    private HashMap<Case, Incendie> creeIncendies(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
-            Incendie incendies[] = new Incendie[nbIncendies];
+            HashMap<Case, Incendie> incendies = new HashMap<Case, Incendie>();
             // System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                incendies[i] = creeIncendie(i);
+                creeIncendie(donnees);
             }
 
             return incendies;
@@ -161,20 +163,20 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme incendie.
      * @param i
      */
-    private Incendie creeIncendie(int i) throws DataFormatException {
+    private void creeIncendie(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
 
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
             int intensite = scanner.nextInt();
-            if (intensite <= 0) {
-                throw new DataFormatException("incendie " + i
-                        + "nb litres pour eteindre doit etre > 0");
-            }
+            // if (intensite <= 0) {
+            //     throw new DataFormatException("incendie " + i
+            //             + "nb litres pour eteindre doit etre > 0");
+            // }
             verifieLigneTerminee();
             
-            return new Incendie(new Case(lig, col), intensite);
+            donnees.addIncendie(donnees.getCarte().getCase(lig, col), intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -186,16 +188,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private Robot[] creeRobots() throws DataFormatException {
+    private void creeRobots(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
-            Robot[] robots = new Robot[nbRobots];
             // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots[i] = creeRobot();
+                creeRobot(donnees);
             }
-            return robots;
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbRobots");
@@ -207,7 +207,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private Robot creeRobot() throws DataFormatException {
+    private void creeRobot(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
@@ -226,19 +226,19 @@ public class LecteurDonnees {
             String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
 
+            double vitesse;
             if (s == null) {
                 // System.out.print("valeur par defaut");
-                robot = Robot.newRobot(TypeRobot.valueOf(type),new Case(lig, col));
+                vitesse = Double.NaN;
             } else {
-                int vitesse = Integer.parseInt(s);
-                robot = Robot.newRobot(TypeRobot.valueOf(type), new Case(lig, col), vitesse);
+                vitesse = Integer.parseInt(s);
                 // System.out.print(vitesse);
             }
+            donnees.addRobot(TypeRobot.valueOf(type), donnees.getCarte().getCase(lig, col), vitesse);
+
             verifieLigneTerminee();
 
             // System.out.println();
-            return robot;
-
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");

@@ -28,8 +28,8 @@ public class Case
         return this.nature;
     }
 
-    // public Case copyCase()
-    // {
-    //     return new Case(this.ligne, this.colonne, this.nature);
-    // }
+    public Case copyCase()
+    {
+        return new Case(this.ligne, this.colonne, this.nature);
+    }
 }
