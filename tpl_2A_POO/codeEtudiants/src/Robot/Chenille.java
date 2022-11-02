@@ -28,7 +28,7 @@ class TerrainIncorrectException extends Exception {
 public class Chenilles extends Robot
 {   
     static double vitesseDefaut =  60;
-    static double vitesseMax = 60;
+    static double vitesseMax = 80;
     static double volumeEauMax = 2000;
     public Chenilles(Case position, int volumeEau, double vitesse)
     {
