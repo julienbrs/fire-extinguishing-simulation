@@ -15,11 +15,12 @@ public class TestLecteurDonnees {
         }
 
         try {
+            System.out.println("Lecture des donnees...");
             DonneesSimulation donnees = LecteurDonnees.creeDonneesSimulation(args[0]);
-            System.out.println("Lecture des donnees termineee");
+            System.out.println("Lecture des donnees terminee");
             Carte carte = donnees.getCarte();
+            System.out.println("Affichage de la carte...");
             System.out.println(carte);
-            System.out.println("Print de la carte terminee");
 
 
         } catch (FileNotFoundException e) {
