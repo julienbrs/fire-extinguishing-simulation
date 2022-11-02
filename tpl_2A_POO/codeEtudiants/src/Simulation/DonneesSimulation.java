@@ -23,4 +23,33 @@ public class DonneesSimulation
     {
         return this.carte;
     }
+
+
+    /* check if there is an incendie on the case */
+    public boolean isThereFire(int lig, int col)
+    {
+        if (this.incendies.containsKey(this.carte.getCase(lig, col)))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getIncendie()
+    {
+        if (this.incendies.containsKey(this))
+        {
+            return this.incendies.get(this);
+        }
+        return false;
+    }
+
+    public void removeIncendie()
+    {
+        if (this.incendies.containsKey(this))
+        {
+            this.incendies.remove(this);
+        }
+    }
+
 }

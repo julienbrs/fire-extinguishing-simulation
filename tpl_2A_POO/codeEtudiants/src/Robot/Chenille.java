@@ -81,18 +81,18 @@ public class Chenilles extends Robot
                 throw new VolumeEauIncorrectException("Le volume d'eau ne peut pas être négatif");
             }
             if (vol > this.volumeEau) {
-                throw new VolumeEauIncorrectException("Le volume d'eau ne peut pas être supérieur au volume d'eau restant");
+                vol = this.volumeEau;
             }
             /* on regarde si la case est un incendie */
-            boolean peuxDeverser = this.position.isThereFire(carte);
+            boolean peuxDeverser = this.donnees.isThereFire(this.position);
             
             if (peuxDeverser) {
                 this.volumeEau -= vol;
                 /* on déverse l'eau sur la position du robot */
-                Incendie incendie = this.position.getIncendie(carte);
+                Incendie incendie = this.donnees.incendies(this.position);
                 incendie.decreaseIntensity(vol);
                 if (incendie.getIntensity() == 0) {
-                    this.position.removeIncendie(carte);
+                    this.donnees.removeIncendie(carte);
                 }                
             }
         } catch (VolumeEauIncorrectException e) {
