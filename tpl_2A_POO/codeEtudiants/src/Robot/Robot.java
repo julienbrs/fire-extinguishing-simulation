@@ -1,7 +1,7 @@
 package Robot;
 
 import java.util.NoSuchElementException;
-
+import Simulation.DonneesSimulation;
 import Carte.*;
 
 public abstract class Robot
@@ -10,11 +10,13 @@ public abstract class Robot
     private int volumeEau;
     private double vitesse;
 
-    public Robot(Case position, int volumeEau, double vitesse)
+    private DonneesSimulation donnees;
+    public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
     {
         this.position = position;
         this.volumeEau = volumeEau;
         this.vitesse = vitesse;
+        this.donnees = donnees;
     }
     // Will i be able to modify a private attribute with this implementation?
     public Case getPosition() {

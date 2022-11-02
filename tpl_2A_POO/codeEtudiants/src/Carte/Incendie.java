@@ -1,13 +1,17 @@
 package Carte;
+import Simulation.DonneesSimulation;
+
 public class Incendie
 {
     private Case position;
     private double intensite;
 
-    public Incendie(Case position, double intensite)
+    private DonneesSimulation donnees;
+    public Incendie(Case position, double intensite, DonneesSimulation donnees)
     {
         this.position = position;
         this.intensite = intensite;
+        this.donnees = donnees;
     }
 
     public Case getPosition()
