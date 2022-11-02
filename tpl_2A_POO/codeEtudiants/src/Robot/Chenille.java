@@ -83,18 +83,17 @@ public class Chenilles
             if (vol > this.volumeEau) {
                 throw new VolumeEauIncorrectException("Le volume d'eau ne peut pas être supérieur au volume d'eau restant");
             }
-            boolean peuxDeverser = false;
             /* on regarde si la case est un incendie */
-            /* need hashmap of incendies */
+            boolean peuxDeverser = this.position.isThereFire(carte);
+            
             if (peuxDeverser) {
                 this.volumeEau -= vol;
-
                 /* on déverse l'eau sur la position du robot */
-                Incendie incendie = this.position.getIncendie();
+                Incendie incendie = this.position.getIncendie(carte);
                 incendie.decreaseIntensity(vol);
-                /* need hashmap of incendies */
-                }
-                
+                if (incendie.getIntensity() == 0) {
+                    this.position.removeIncendie(carte);
+                }                
             }
         } catch (VolumeEauIncorrectException e) {
             System.out.println(e.getMessage());
@@ -105,14 +104,14 @@ public class Chenilles
     {
         try {
             /* variable si condition respectée ou non */
-            boolean peuRemplir = false;
+            boolean peuxRemplir = false;
             /* vérifie si une des cases alentours est de type eau */
             for (Direction dir : Direction.values()) {
                 if (getVoisin(this.position, dir).getNature() == NatureTerrain.EAU) {
                     boolean condition = true;
                 }
             }
-            if (!peuRemplir) 
+            if (!peuxRemplir) 
             {
                 throw new NoSuchElementException("Il n'y a pas d'eau autour du robot");
             }

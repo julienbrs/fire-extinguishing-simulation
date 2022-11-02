@@ -6,6 +6,7 @@ import Simulation.DonneesSimulation;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
+import java.util.HashMap; // import the HashMap class
 
 // import org.jcp.xml.dsig.internal.dom.DOMReference;
 
@@ -46,7 +47,8 @@ public class LecteurDonnees {
 
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.creeCarte();
-        Incendie[] incendies = lecteur.creeIncendies();
+        /* crée les incendies */
+        HashMap<Carte, Incendie> incendies = lecteur.creeIncendies();
         Robot[] robots = lecteur.creeRobots();
         scanner.close();
 
@@ -143,10 +145,14 @@ public class LecteurDonnees {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
-            Incendie incendies[] = new Incendie[nbIncendies];
+            /* hashmap pour stocker les incendies */
+            HashMap<Case, Incendie> incendies = new HashMap<Case, Incendie>();
+            
             // System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                incendies[i] = creeIncendie(i);
+                /* on crée un nouvel incendie qu'on ajoute à la hashmap */
+                Incendie incendie = creeIncendie();
+                incendies.put(incendie.getCase(), incendie);
             }
 
             return incendies;
@@ -158,10 +164,10 @@ public class LecteurDonnees {
 
 
     /**
-     * Lit et affiche les donnees du i-eme incendie.
-     * @param i
+     * Lit et affiche les donnees de l'incendie.
      */
-    private Incendie creeIncendie(int i) throws DataFormatException {
+     */
+    private Incendie creeIncendie() throws DataFormatException {
         ignorerCommentaires();
 
         try {
@@ -169,7 +175,7 @@ public class LecteurDonnees {
             int col = scanner.nextInt();
             int intensite = scanner.nextInt();
             if (intensite <= 0) {
-                throw new DataFormatException("incendie " + i
+                throw new DataFormatException("incendie à la case " + lig + " " + col
                         + "nb litres pour eteindre doit etre > 0");
             }
             verifieLigneTerminee();

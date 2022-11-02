@@ -32,4 +32,31 @@ public class Case
     {
         return new Case(this.ligne, this.colonne, this.nature);
     }
+
+    /* check if there is an incendie on the case */
+    public boolean isThereFire(Carte carte)
+    {
+        if (carte.incendies.containsKey(this))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getIncendie(Carte carte)
+    {
+        if (carte.incendies.containsKey(this))
+        {
+            return carte.incendies.get(this);
+        }
+        return false;
+    }
+
+    public void removeIncendie(carte carte)
+    {
+        if (carte.incendies.containsKey(this))
+        {
+            carte.incendies.remove(this);
+        }
+    }
 }
