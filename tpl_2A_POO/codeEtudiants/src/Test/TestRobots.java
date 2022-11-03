@@ -44,6 +44,7 @@ public class TestRobots {
             Direction dir = null;
             while(!chaine.equals("STOP"))
             {
+                System.out.println("Peut remplir? " + (robot.peutRemplir()?"oui":"non"));
                 System.out.print("EST/OUEST/NORD/SUD: ");
                 chaine = scanner.nextLine();
                 try {
@@ -61,6 +62,8 @@ public class TestRobots {
                 }
                 System.out.println(carte);
             }
+
+            scanner.close();
             /* On test la méthode getVoisin() */
 /*             
             System.out.println("Le robot est dans le coin en bas à droite de la carte");

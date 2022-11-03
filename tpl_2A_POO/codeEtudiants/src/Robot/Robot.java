@@ -11,7 +11,7 @@ public abstract class Robot
     private int volumeEau;
     private double vitesse;
 
-    private DonneesSimulation donnees;
+    protected DonneesSimulation donnees;
 
     public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
     {

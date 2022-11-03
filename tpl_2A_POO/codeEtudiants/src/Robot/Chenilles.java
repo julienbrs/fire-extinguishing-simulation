@@ -60,7 +60,7 @@ public class Chenilles extends Robot
             vol = this.getVolumeEau();
         }
         /* on regarde si la case est un incendie */
-        Incendie incendie = this.getDonnees().getIncendie(this.getPosition());
+        Incendie incendie = this.donnees.getIncendie(this.getPosition());
         if (incendie != null) {
             this.setVolumeEau(this.getVolumeEau() - vol);
             /* on déverse l'eau sur la position du robot */
@@ -69,14 +69,15 @@ public class Chenilles extends Robot
         }
     }
 
-    public void remplirReservoir() throws TerrainIncorrectException
+    @Override
+    public boolean peutRemplir()
     {
         /* variable si condition respectée ou non */
         boolean peuxRemplir = false;
         /* vérifie si une des cases alentours est de type eau */
         for (Direction dir : Direction.values()) {
             try {
-                Carte carte = this.getDonnees().getCarte();
+                Carte carte = this.donnees.getCarte();
                 Case caseVoisine = carte.getVoisin(this.getPosition(), dir);
 
                 if (caseVoisine.getNature() == NatureTerrain.EAU) {
@@ -85,9 +86,12 @@ public class Chenilles extends Robot
             } catch (IllegalArgumentException e) {
                 /* on ne fait rien, on continue la boucle, pour éviter de raise une erreur si on est sur un bord */
             }
-            
         }
-        if (!peuxRemplir) 
+        return peuxRemplir;
+    }
+    public void remplirReservoir() throws TerrainIncorrectException
+    {
+        if (!this.peutRemplir()) 
         {
             throw new TerrainIncorrectException("Il n'y a pas d'eau autour du robot");
         }
