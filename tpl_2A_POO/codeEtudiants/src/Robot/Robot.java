@@ -54,6 +54,7 @@ public abstract class Robot
         }
         else
         {
+            //A changer pue le seum cette partie du code
             this.donnees.getRobots().remove(this.position);
             this.position = positionCase;
             this.donnees.getRobots().put(this.position, this);
