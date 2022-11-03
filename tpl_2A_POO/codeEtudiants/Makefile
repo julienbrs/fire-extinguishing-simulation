@@ -21,16 +21,24 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture
+all: testInvader testLecture io Simulation Robot Carte
 
+io:
+	javac -d bin -classpath bin -sourcepath src src/io/*.java
+Simulation:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Simulation/*.java
+Robot:
+	javac -d bin -classpath bin -sourcepath src src/Robot/*.java
+Carte:
+	javac -d bin -classpath bin -sourcepath src src/Carte/*.java
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
 testLecture:
-	javac -d bin -classpath src -sourcepath src src/Test/TestLecteurDonnees.java
+	javac -d bin -classpath bin -sourcepath src src/Test/TestLecteurDonnees.java
 
 testRobots:
-	javac -d bin -classpath src -sourcepath src src/Test/TestRobots.java
+	javac -d bin -classpath bin -sourcepath src src/Test/TestRobots.java
 
 # Execution:
 # on peut taper directement la ligne de commande :
@@ -47,4 +55,4 @@ exeRobots:
 	java -classpath src:bin Test/TestRobots cartes/carteTestRobots.map
 
 clean:
-	rm -rf bin/*.class
+	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete
