@@ -2,6 +2,8 @@ package Carte;
 
 import java.util.NoSuchElementException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import Simulation.DonneesSimulation;
@@ -104,7 +106,7 @@ public class Carte
     {
         /* on recupere les incendies et les robots */
         HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
-        HashMap<Case, Robot> robots = this.donnees.getRobots();
+        // Iterator<Robot> robots = this.donnees.getRobots();
 
         String chaine = "";
         /* on fait d'abord la map vierge */
@@ -117,7 +119,7 @@ public class Carte
                 {
                     chaine += "🔥";
                 }
-                else if (robots.containsKey(this.carte[lig][col]))
+                else if (donnees.getRobot(this.carte[lig][col]) != null)
                 {
                     chaine += "🤖";
                 }

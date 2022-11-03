@@ -213,7 +213,6 @@ public class LecteurDonnees {
         // System.out.print("Robot " + i + ": ");
 
         try {
-            Robot robot;
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
             // System.out.print("position = (" + lig + "," + col + ");");

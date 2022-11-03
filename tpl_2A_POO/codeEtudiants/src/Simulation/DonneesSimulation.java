@@ -6,6 +6,8 @@ import Exception.*;
 import Robot.Robot;
 import Robot.TypeRobot;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 // For now we don't need anything
 // Will have to check how to display 
@@ -14,25 +16,42 @@ public class DonneesSimulation
 {
     private Carte carte;
     private HashMap<Case, Incendie> incendies;
-    private HashMap<Case, Robot> robots;
+    private LinkedList<Robot> robots;
 
     public DonneesSimulation()
     {
         this.incendies = new HashMap<Case, Incendie>();
-        this.robots = new HashMap<Case, Robot>();
+        this.robots = new LinkedList<Robot>();
     }
+    
+    /** 
+     * Renvoie la carte associé à cette simulation.
+     * @return Carte
+     */
     // Possibly temporary method for testing
     public Carte getCarte()
     {
         return this.carte;
     }
 
+    
+    /** 
+     * Associe la {@link Carte} carte aux {@link DonneesSimulation}
+     * sur laquelle la methode est appellé.
+     * @param carte
+     */
     public void setCarte(Carte carte)
     {
         this.carte = carte;
         this.incendies = new HashMap<Case, Incendie>();
-        this.robots = new HashMap<Case, Robot>();
+        this.robots = new LinkedList<Robot>();
     }
+    
+    /** 
+     * Rajoute un incendie à la {@link Case} position, d'une intensité donnée.
+     * @param position
+     * @param intensite
+     */
     public void addIncendie(Case position, int intensite)
     {
         Incendie incendie = new Incendie(position, intensite, this);
@@ -40,45 +59,67 @@ public class DonneesSimulation
     }
 
 
+    
+    /** 
+     * Renvoie le HashMap containant tous les incendies sur la carte.
+     * @return HashMap<Case, Incendie>
+     */
     public HashMap<Case, Incendie> getIncendies()
     {
         return this.incendies;
     }
 
-    public HashMap<Case, Robot> getRobots()
+    
+    /** 
+     * Renvoie un {@link Iterator} sur les robots de la carte.
+     * On pourra y iterer dans une boucle for, ou avancer avec la 
+     * méthode next.
+     * @return Iterator<Robot>
+     */
+    public Iterator<Robot> getRobots()
     {
-        return this.robots;
+        return this.robots.iterator();
     }
 
-    /* check if there is an incendie on the case */
-    private boolean isThereFire(int lig, int col)
-    {
-        if (this.incendies.containsKey(this.carte.getCase(lig, col)))
-        {
-            return true;
-        }
-        return false;
-    }
     
-    // Renvoie l'incendie à la position position, sinon renvoie null
+    /** 
+     * Renvoie l' {@link Incendie} à la {@link Case} position, 
+     * renvoie null si il n'y a pas d'incendie.
+     * @return Incendie
+     */    
     public Incendie getIncendie(Case position)
     {
-        int lig = position.getLigne();
-        int col = position.getColonne();
-        if (this.isThereFire(lig, col)) {
-            return this.incendies.get(this.carte.getCase(lig, col));
-        }
-        else return null;
+        /*Returns the fire at the position case, else null*/
+        return this.incendies.get(position);
     }
 
+    
+    /** 
+     * Renvoie le premier {@link Robot} à la {@link Case} position.
+     * Si il n'y a pas de Robot à cette case, la fonction renvoie null.
+     * @param position
+     * @return Robot
+     */
+    ///NE MARCHE PAS NE MARCHE PAS 
+    //todo
+    // si il y a plusieurs robot, on ne renvoie que le premier, un peu cringe
     public Robot getRobot(Case position)
     {
-        int lig = position.getLigne();
-        int col = position.getColonne();
-        if (this.robots.containsKey(this.carte.getCase(lig, col))) return this.robots.get(this.carte.getCase(lig, col));
-        else return null;
+        for(Robot robot : this.robots)
+        {
+            //We suppose all cases are unique, so position would also be
+            //this.carte.getCase(position.getLigne(), position.getColonne())
+            if(robot.getPosition() == position) return robot;
+        }
+        // if (this.robots.containsKey(this.carte.getCase(lig, col))) return this.robots.get(this.carte.getCase(lig, col));
+        return null;
     }
 
+    
+    /** 
+     * Supprime l'{@link Incendie} à la {@link Case} position;
+     * @param position
+     */
     public void removeIncendie(Case position)
     {
 
@@ -88,9 +129,23 @@ public class DonneesSimulation
         }
     }
 
-    public void addRobot(TypeRobot type, Case position, double vitesse) throws VitesseIncorrectException
+    
+    /** 
+     * Ajoute un robot du {@link TypeRobot} donnée, à la {@link Case} position, 
+     * et avec la vitesse donnée. <p>
+     * Throws: <p>
+     * {@link VitesseIncorrectException} si,
+     * pour un type donnée, la vitesse est incorrecte. <p>
+     * {@link NoSuchElementException} si le type du robot est incorrect.
+     * @param type
+     * @param position
+     * @param vitesse
+     * @throws VitesseIncorrectException
+     * @throws NoSuchElementException
+     */
+    public void addRobot(TypeRobot type, Case position, double vitesse) throws VitesseIncorrectException, NoSuchElementException
     {
         Robot robot = Robot.newRobot(type, position, vitesse, this);
-        this.robots.put(position, robot);
+        this.robots.add(robot);
     }
 }
