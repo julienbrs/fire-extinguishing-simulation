@@ -4,7 +4,7 @@ import Simulation.DonneesSimulation;
 import Carte.*;
 import Robot.*;
 import java.util.HashMap;
-
+import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 
@@ -34,6 +34,34 @@ public class TestRobots {
             Robot robot = robots.values().iterator().next();
             Case caseRobot = robot.getPosition();
 
+            System.out.println(robot.toString() + robots.get(caseRobot).toString());
+
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("STOP to stop");
+            // System.out.print("EST/OUEST/NORD/SUD: ");
+            String chaine = "";
+            Direction dir = null;
+            while(!chaine.equals("STOP"))
+            {
+                System.out.print("EST/OUEST/NORD/SUD: ");
+                chaine = scanner.nextLine();
+                try {
+                    dir = Direction.valueOf(chaine);
+                    if(carte.voisinExiste(caseRobot, dir))
+                    {
+                        donnees.getRobots().remove(caseRobot);
+                        caseRobot = carte.getVoisin(caseRobot, dir);
+                        robot.setPosition(caseRobot);
+                        donnees.getRobots().put(caseRobot, robot);
+                        System.out.println("Case robot: "+ caseRobot);
+                    }
+                    else System.out.println("Le voisin n'existe pas!");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(chaine + " n'est pas un input valide! STOP pour arreter.");
+                }
+                System.out.println(carte);
+            }
             /* On test la méthode getVoisin() */
 /*             
             System.out.println("Le robot est dans le coin en bas à droite de la carte");

@@ -54,7 +54,7 @@ public abstract class Robot
         }
         else
         {
-            this.position = positionCase;
+            this.position = positionCase.copyCase();
         }
     }
     
