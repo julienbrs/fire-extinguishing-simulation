@@ -49,7 +49,7 @@ public abstract class Robot
     }
     public void setPosition(Case positionCase) throws TerrainIncorrectException
     {
-        if (this.getVitesseOnTerrain((positionCase).getNature()) == 0)
+        if (this.getVitesse((positionCase).getNature()) == 0)
         {
             System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
         }
