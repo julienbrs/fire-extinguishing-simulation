@@ -32,4 +32,10 @@ public class Case
     {
         return new Case(this.ligne, this.colonne, this.nature);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Case [ligne=" + ligne + " colonne=" + colonne + ", nature=" + nature + "]";
+    }
 }

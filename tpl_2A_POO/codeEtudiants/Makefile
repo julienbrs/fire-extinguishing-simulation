@@ -35,18 +35,24 @@ testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
 testLecture:
-	javac -d bin -sourcepath src src/Test/TestLecteurDonnees.java
+	javac -d bin -classpath bin -sourcepath src src/Test/TestLecteurDonnees.java
+
+testRobots:
+	javac -d bin -classpath bin -sourcepath src src/Test/TestRobots.java
 
 # Execution:
 # on peut taper directement la ligne de commande :
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
-exeInvader: 
+exeInvader:
 	java -classpath bin:bin/gui.jar TestInvader
 
-exeLecture: 
-	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
+exeLecture:
+	java -classpath src:bin Test/TestLecteurDonnees cartes/carteSujet.map
+
+exeRobots: testRobots
+	java -classpath src:bin Test/TestRobots cartes/carteTestRobots.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete

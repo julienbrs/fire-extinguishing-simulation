@@ -1,13 +1,31 @@
 package Carte;
 
 import java.util.NoSuchElementException;
+import java.util.HashMap;
+import java.util.Map;
 
 import Simulation.DonneesSimulation;
 
 import java.lang.IllegalArgumentException;
 import java.lang.NullPointerException;
+
+/* pour le tostring, on import Robot */
+import Robot.*;
+
+
 public class Carte
 {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+    
+
     private int tailleCases;
     private int nbLignes, nbColonnes;
     private Case[][] carte;
@@ -48,13 +66,13 @@ public class Carte
         switch(dir)
         {
             case NORD:
-                return (lig > 0) ? true : false;
+                return (lig > 0);
             case EST:
-                return (col < nbColonnes) ? true : false;
+                return (col < nbColonnes - 1);
             case SUD:
-                return (lig < nbLignes) ? true : false;
+                return (lig < nbLignes - 1);
             case OUEST:
-                return (col > 0) ? true : false;
+                return (col > 0);
             default:
                 throw new NullPointerException("La direction ne devrait pas être null!");
         }
@@ -79,37 +97,58 @@ public class Carte
                 throw new NullPointerException("La direction ne devrait pas être null!");
         }
     }
+
     @Override
+    /* before the graphic interface, we use shell to display donnees */
     public String toString()
     {
+        /* on recupere les incendies et les robots */
+        HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
+        HashMap<Case, Robot> robots = this.donnees.getRobots();
+
         String chaine = "";
+        /* on fait d'abord la map vierge */
         for(int lig = 0; lig < nbLignes; lig++)
         {
             for(int col = 0; col < nbColonnes; col++)
             {
-                switch(carte[lig][col].getNature())
+                /* On check s'il y a un incendie ici */
+                if (incendies.containsKey(this.carte[lig][col]))
                 {
-                    case EAU:
-                        chaine += "~";
-                        break;
-                    case FORET:
-                        chaine += "ϔ";
-                        break;
-                    case ROCHE:
-                        chaine+= "@";
-                        break;
-                    case TERRAIN_LIBRE:
-                        chaine += ".";
-                        break;     
-                    case HABITAT:
-                        chaine+="#";
-                        break;      
-                    default:
-                        break;
+                    chaine += "🔥";
+                }
+                else if (robots.containsKey(this.carte[lig][col]))
+                {
+                    chaine += "🤖";
+                }
+                else
+                {
+                    switch(carte[lig][col].getNature())
+                    {
+                        case EAU:
+                            //💧
+                            chaine += "💧";
+                            break;
+                        case FORET:
+                            chaine += "🌲";
+                            break;
+                        case ROCHE:
+                            chaine+= "⛰️ ";
+                            break;
+                        case TERRAIN_LIBRE:
+                            chaine += "⬜";
+                            break;     
+                        case HABITAT:
+                            chaine+= "🏠";
+                            break;      
+                        default:
+                            break;
+                    }
                 }
             }
             chaine += '\n';
         }
+        System.out.println("Map générée");
         return chaine;
     }
 }
