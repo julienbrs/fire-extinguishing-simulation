@@ -99,13 +99,9 @@ public abstract class Robot
     {
         this.vitesse = vitesse;
     }
-
-    public DonneesSimulation getDonnees()
-    {
-        return this.donnees;
-    }
     
     public abstract double getVitesseOnTerrain(NatureTerrain nature) throws TerrainIncorrectException;
+    public abstract boolean peutRemplir();
     public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
     public abstract void remplirReservoir() throws TerrainIncorrectException;
 }
