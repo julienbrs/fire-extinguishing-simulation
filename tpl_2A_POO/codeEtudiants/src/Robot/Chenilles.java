@@ -22,12 +22,11 @@ public class Chenilles extends Robot
         }
         /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
         if (Double.isNaN(vitesse)) {
-            vitesse = vitesseDefaut;
+            this.vitesse = vitesseDefaut;
         }
-        this.setVitesse(vitesse);
-        }
+    }
 
-    public double getVitesseOnTerrain(NatureTerrain nature) throws TerrainIncorrectException
+    public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException
     {
         switch(nature)
         {
@@ -36,14 +35,14 @@ public class Chenilles extends Robot
                 return 0;
             case FORET:
             /* vitesse diminuée de 50% en forêt */
-                return this.getVitesse() * 0.5;
+                return this.vitesse * 0.5;
             case ROCHE:
             /* ne peut pas se déplacer sur la roche */
                 return 0;
             case TERRAIN_LIBRE:
-                return this.getVitesse() ;
+                return this.vitesse;
             case HABITAT:
-                return this.getVitesse() ;
+                return this.vitesse;
             default:
                 /* on throw une exception */
                 throw new TerrainIncorrectException("Le terrain n'est pas correct");
@@ -56,15 +55,15 @@ public class Chenilles extends Robot
             throw new VolumeEauIncorrectException("Le volume d'eau ne peut pas être négatif");
         }
         /* Si le volume d'eau est supérieur à la capacité du robot, on le met à la capacité max */
-        if (vol > this.getVolumeEau()) {
-            vol = this.getVolumeEau();
+        if (vol > this.volumeEau) {
+            vol = this.volumeEau;
         }
         /* on regarde si la case est un incendie */
-        Incendie incendie = this.donnees.getIncendie(this.getPosition());
+        Incendie incendie = this.donnees.getIncendie(this.position);
         if (incendie != null) {
-            this.setVolumeEau(this.getVolumeEau() - vol);
+            this.volumeEau -= vol;
             /* on déverse l'eau sur la position du robot */
-            System.out.println("Déversement d'eau sur l'incendie en " + this.getPosition());
+            System.out.println("Déversement d'eau sur l'incendie en " + this.position);
             incendie.decreaseIntensite(vol);             
         }
     }
@@ -78,7 +77,7 @@ public class Chenilles extends Robot
         for (Direction dir : Direction.values()) {
             try {
                 Carte carte = this.donnees.getCarte();
-                Case caseVoisine = carte.getVoisin(this.getPosition(), dir);
+                Case caseVoisine = carte.getVoisin(this.position, dir);
 
                 if (caseVoisine.getNature() == NatureTerrain.EAU) {
                     peuxRemplir = true;
@@ -96,7 +95,7 @@ public class Chenilles extends Robot
             throw new TerrainIncorrectException("Il n'y a pas d'eau autour du robot");
         }
         else {
-            this.setVolumeEau(volumeEauMax);
+            this.volumeEau = volumeEauMax;
         }
 
     }

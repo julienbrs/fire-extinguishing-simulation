@@ -7,9 +7,9 @@ import Exception.*;
 
 public abstract class Robot
 {
-    private Case position;
-    private int volumeEau;
-    private double vitesse;
+    protected Case position;
+    protected int volumeEau;
+    protected double vitesse;
 
     protected DonneesSimulation donnees;
 
