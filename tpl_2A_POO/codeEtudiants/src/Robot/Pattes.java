@@ -5,13 +5,13 @@ import java.util.NoSuchElementException;
 import Carte.*;
 
 public class Pattes extends Robot {
+    static double vitesseDefaut = 30;
 
     public Pattes(Case position){
-        static double vitesseDefaut = 30;
         super(position, null, vitesseDefaut);
     }
 
-    public double getVitesse(NatureTerrain nature){
+    public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException {
         switch(nature)
         {
             case EAU:
@@ -27,23 +27,24 @@ public class Pattes extends Robot {
                 break;
             default:
                 //sinon on throw une exception
-                try {
-                    throw new TerrainIncorrectException("Le terrain n'est pas correct");
-                } catch (TerrainIncorrectException e) {
-                    System.out.println(e.getMessage());
-                }
+                // try {
+                throw new TerrainIncorrectException("Le terrain n'est pas correct");
+                break;
+                // } catch (TerrainIncorrectException e) {
+                //     System.out.println(e.getMessage());
+                // }
         }
 
     }
 
-    public void deverserPoudre(int vol){
-        try {
-            if (vol < 0) throw new VolumeEauIncorrectException("Le volume est incorrect")
-            Incendie incendie = this.donnees.getIncendie(this.position);
-            if (incendie != null) incendie.decreaseIntensity(vol);
-        } catch (VolumeEauIncorrectException e){
-            System.out.println(e.getMessage());
-        }
+    public void deverserPoudre(int vol) throws VolumePoudreIncorrectException {
+        // try {
+        if (vol < 0) throw new VolumePoudreIncorrectException("Le volume est incorrect")
+        Incendie incendie = this.donnees.getIncendie(this.position);
+        if (incendie != null) incendie.decreaseIntensity(vol);
+        // } catch (VolumeEauIncorrectException e){
+        //     System.out.println(e.getMessage());
+        // }
     }    
 
 }
