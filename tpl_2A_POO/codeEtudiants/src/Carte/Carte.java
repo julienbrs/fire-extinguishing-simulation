@@ -34,6 +34,7 @@ public class Carte
     private DonneesSimulation donnees;
     public Carte(int tailleCases, int nbLignes, int nbColonnes, Case[][] carte, DonneesSimulation donnees)
     {
+        this.tailleCases = tailleCases;
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
         this.carte = carte;
