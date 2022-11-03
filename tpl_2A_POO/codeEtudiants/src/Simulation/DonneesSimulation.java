@@ -2,6 +2,7 @@ package Simulation;
 import Carte.Carte;
 import Carte.Case;
 import Carte.Incendie;
+import Exception.*;
 import Robot.Robot;
 import Robot.TypeRobot;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class DonneesSimulation
     {
         int lig = position.getLigne();
         int col = position.getColonne();
-        if (this.robots.containsKey(this.carte.getCase(lig, col))) return this.robots.get(this);
+        if (this.robots.containsKey(this.carte.getCase(lig, col))) return this.robots.get(this.carte.getCase(lig, col));
         else return null;
     }
 
@@ -87,7 +88,7 @@ public class DonneesSimulation
         }
     }
 
-    public void addRobot(TypeRobot type, Case position, double vitesse) throws NoSuchElementException
+    public void addRobot(TypeRobot type, Case position, double vitesse) throws VitesseIncorrectException
     {
         Robot robot = Robot.newRobot(type, position, vitesse, this);
         this.robots.put(position, robot);

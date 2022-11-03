@@ -1,5 +1,6 @@
 package io;
 import Carte.*;
+import Exception.VitesseIncorrectException;
 import Robot.Robot;
 import Robot.TypeRobot;
 import Simulation.DonneesSimulation;
@@ -211,7 +212,7 @@ public class LecteurDonnees {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
-        // try {
+        try {
             Robot robot;
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
@@ -236,14 +237,17 @@ public class LecteurDonnees {
             }
             
             donnees.addRobot(TypeRobot.valueOf(type), donnees.getCarte().getCase(lig, col), vitesse);
-
+            
             verifieLigneTerminee();
 
             // System.out.println();
-        // } catch (NoSuchElementException e) {
-        //     throw new DataFormatException("format de robot invalide. "
-        //             + "Attendu: ligne colonne type [valeur_specifique]");
-        // }
+        } catch (NoSuchElementException e) {
+            throw new DataFormatException("format de robot invalide. "
+                    + "Attendu: ligne colonne type [valeur_specifique]");
+        } catch (VitesseIncorrectException e)
+        {
+            throw new DataFormatException(e.getMessage());
+        }
     }
 
 

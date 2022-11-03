@@ -23,6 +23,8 @@
 
 all: testInvader testLecture io Simulation Robot Carte
 
+Exception:
+	javac -d bin -classpath bin -sourcepath src src/Exception/*.java
 io:
 	javac -d bin -classpath bin -sourcepath src src/io/*.java
 Simulation:

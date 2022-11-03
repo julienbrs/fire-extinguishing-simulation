@@ -3,6 +3,7 @@ package Robot;
 import java.util.NoSuchElementException;
 import Simulation.DonneesSimulation;
 import Carte.*;
+import Exception.*;
 
 public abstract class Robot
 {
@@ -21,7 +22,8 @@ public abstract class Robot
     }
 
     // Crée le robot du bon type et le renvoie
-    public static Robot newRobot(TypeRobot type, Case position, double vitesse, DonneesSimulation donnees) throws NoSuchElementException
+    public static Robot newRobot(TypeRobot type, Case position, double vitesse, DonneesSimulation donnees) 
+        throws NoSuchElementException, VitesseIncorrectException
     {
         switch(type)
         {
@@ -45,9 +47,8 @@ public abstract class Robot
     public Case getPosition() {
         return this.position;
     }
-    public void setPosition(Case positionCase)
+    public void setPosition(Case positionCase) throws TerrainIncorrectException
     {
-        Carte carte = this.donnees.getCarte();
         if (this.getVitesseOnTerrain((positionCase).getNature()) == 0)
         {
             System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
@@ -61,15 +62,22 @@ public abstract class Robot
         }
     }
     
-    public void moveRobot(Case destination)
+    public boolean moveRobot(Case destination)
     {
-        this.setPosition(destination);
+        try
+        {
+            this.setPosition(destination);
+            return true;
+        } catch (TerrainIncorrectException e)
+        {
+            return false;
+        }
     }
-
-    public void moveRobotDirection(Direction direction)
+    public boolean moveRobotDirection(Direction direction)
     {
         Carte carte = this.donnees.getCarte();
-        if (carte.voisinExiste(this.position, direction)) moveRobot(carte.getVoisin(this.position, direction));
+        if (carte.voisinExiste(this.position, direction)) return moveRobot(carte.getVoisin(this.position, direction));
+        else return false;
     }
 
     public int getVolumeEau()
@@ -97,7 +105,7 @@ public abstract class Robot
         return this.donnees;
     }
     
-    public abstract double getVitesseOnTerrain(NatureTerrain nature);
-    public abstract void deverserEau(int vol);
-    public abstract void remplirReservoir();
+    public abstract double getVitesseOnTerrain(NatureTerrain nature) throws TerrainIncorrectException;
+    public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
+    public abstract void remplirReservoir() throws TerrainIncorrectException;
 }
