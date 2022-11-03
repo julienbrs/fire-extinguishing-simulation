@@ -8,7 +8,6 @@ public class Roues extends Robot {
 
     public Roues(Case position, int volumeEau, double vitesse){
         static double vitesseDefaut = 80;
-        static double vitesseMax = 80;
         static double volumeEauMax = 5000;
         try {
             if (vitesse < 0){
