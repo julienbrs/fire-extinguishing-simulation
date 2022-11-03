@@ -54,7 +54,7 @@ exeLecture:
 	java -classpath src:bin Test/TestLecteurDonnees cartes/carteSujet.map
 
 exeRobots: testRobots
-	java -classpath src:bin Test/TestRobots cartes/carteTestRobots.map
+	java -classpath src:bin Test/TestRobots cartes/carteChenilles.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete

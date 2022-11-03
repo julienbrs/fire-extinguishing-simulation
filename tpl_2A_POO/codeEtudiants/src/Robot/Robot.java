@@ -7,11 +7,11 @@ import Exception.*;
 
 public abstract class Robot
 {
-    private Case position;
-    private int volumeEau;
-    private double vitesse;
+    protected Case position;
+    protected int volumeEau;
+    protected double vitesse;
 
-    private DonneesSimulation donnees;
+    protected DonneesSimulation donnees;
 
     public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
     {
@@ -49,7 +49,7 @@ public abstract class Robot
     }
     public void setPosition(Case positionCase) throws TerrainIncorrectException
     {
-        if (this.getVitesseOnTerrain((positionCase).getNature()) == 0)
+        if (this.getVitesse((positionCase).getNature()) == 0)
         {
             System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
         }
@@ -99,13 +99,9 @@ public abstract class Robot
     {
         this.vitesse = vitesse;
     }
-
-    public DonneesSimulation getDonnees()
-    {
-        return this.donnees;
-    }
     
-    public abstract double getVitesseOnTerrain(NatureTerrain nature) throws TerrainIncorrectException;
+    public abstract double getVitesse(NatureTerrain nature) throws TerrainIncorrectException;
+    public abstract boolean peutRemplir();
     public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
     public abstract void remplirReservoir() throws TerrainIncorrectException;
 }
