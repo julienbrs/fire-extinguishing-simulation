@@ -66,13 +66,13 @@ public class Carte
         switch(dir)
         {
             case NORD:
-                return (lig > 0) ? true : false;
+                return (lig > 0);
             case EST:
-                return (col < nbColonnes - 1) ? true : false;
+                return (col < nbColonnes - 1);
             case SUD:
-                return (lig < nbLignes - 1) ? true : false;
+                return (lig < nbLignes - 1);
             case OUEST:
-                return (col > 0) ? true : false;
+                return (col > 0);
             default:
                 throw new NullPointerException("La direction ne devrait pas être null!");
         }
@@ -98,18 +98,13 @@ public class Carte
         }
     }
 
-    public DonneesSimulation getDonnees()
-    {
-        return this.donnees;
-    }
-
     @Override
     /* before the graphic interface, we use shell to display donnees */
     public String toString()
     {
         /* on recupere les incendies et les robots */
-        HashMap<Case, Incendie> incendies = this.getDonnees().getIncendies();
-        HashMap<Case, Robot> robots = this.getDonnees().getRobots();
+        HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
+        HashMap<Case, Robot> robots = this.donnees.getRobots();
 
         String chaine = "";
         /* on fait d'abord la map vierge */
