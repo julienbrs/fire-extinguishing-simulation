@@ -39,6 +39,16 @@ public class DonneesSimulation
     }
 
 
+    public HashMap<Case, Incendie> getIncendies()
+    {
+        return this.incendies;
+    }
+
+    public HashMap<Case, Robot> getRobots()
+    {
+        return this.robots;
+    }
+
     /* check if there is an incendie on the case */
     private boolean isThereFire(int lig, int col)
     {
@@ -48,13 +58,23 @@ public class DonneesSimulation
         }
         return false;
     }
-
+    
     // Renvoie l'incendie à la position position, sinon renvoie null
     public Incendie getIncendie(Case position)
     {
         int lig = position.getLigne();
         int col = position.getColonne();
-        if (this.isThereFire(lig, col)) return this.incendies.get(this);
+        if (this.isThereFire(lig, col)) {
+            return this.incendies.get(this.carte.getCase(lig, col));
+        }
+        else return null;
+    }
+
+    public Robot getRobot(Case position)
+    {
+        int lig = position.getLigne();
+        int col = position.getColonne();
+        if (this.robots.containsKey(this.carte.getCase(lig, col))) return this.robots.get(this);
         else return null;
     }
 

@@ -190,16 +190,16 @@ public class LecteurDonnees {
      */
     private void creeRobots(DonneesSimulation donnees) throws DataFormatException {
         ignorerCommentaires();
-        try {
+        // try {
             int nbRobots = scanner.nextInt();
             // System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
                 creeRobot(donnees);
             }
-        } catch (NoSuchElementException e) {
-            throw new DataFormatException("Format invalide. "
-                    + "Attendu: nbRobots");
-        }
+        // } catch (NoSuchElementException e) {
+        //     throw new DataFormatException("Format invalide. "
+        //             + "Attendu: nbRobots");
+        // }
     }
 
 
@@ -211,7 +211,7 @@ public class LecteurDonnees {
         ignorerCommentaires();
         // System.out.print("Robot " + i + ": ");
 
-        try {
+        // try {
             Robot robot;
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
@@ -234,15 +234,16 @@ public class LecteurDonnees {
                 vitesse = Integer.parseInt(s);
                 // System.out.print(vitesse);
             }
+            
             donnees.addRobot(TypeRobot.valueOf(type), donnees.getCarte().getCase(lig, col), vitesse);
 
             verifieLigneTerminee();
 
             // System.out.println();
-        } catch (NoSuchElementException e) {
-            throw new DataFormatException("format de robot invalide. "
-                    + "Attendu: ligne colonne type [valeur_specifique]");
-        }
+        // } catch (NoSuchElementException e) {
+        //     throw new DataFormatException("format de robot invalide. "
+        //             + "Attendu: ligne colonne type [valeur_specifique]");
+        // }
     }
 
 
