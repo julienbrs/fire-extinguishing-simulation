@@ -54,34 +54,21 @@ public abstract class Robot
         }
         else
         {
-            this.position = positionCase.copyCase();
+            this.donnees.getRobots().remove(this.position);
+            this.position = positionCase;
+            this.donnees.getRobots().put(this.position, this);
         }
     }
     
     public void moveRobot(Case destination)
     {
-        Carte carte = this.donnees.getCarte();
-        if (this.getVitesseOnTerrain((destination).getNature()) == 0)
-        {
-            System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
-        }
-        else
-        {
-            this.position = destination.copyCase();
-        }
+        this.setPosition(destination);
     }
 
     public void moveRobotDirection(Direction direction)
     {
         Carte carte = this.donnees.getCarte();
-        if (this.getVitesseOnTerrain(carte.getVoisin(this.getPosition(), direction).getNature()) == 0)
-        {
-            System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
-        }
-        else
-        {
-            this.position = carte.getVoisin(this.getPosition(), direction);
-        }
+        if (carte.voisinExiste(this.position, direction)) moveRobot(carte.getVoisin(this.position, direction));
     }
 
     public int getVolumeEau()

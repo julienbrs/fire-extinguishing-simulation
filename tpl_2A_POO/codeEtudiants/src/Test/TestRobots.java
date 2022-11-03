@@ -48,15 +48,14 @@ public class TestRobots {
                 chaine = scanner.nextLine();
                 try {
                     dir = Direction.valueOf(chaine);
-                    if(carte.voisinExiste(caseRobot, dir))
-                    {
-                        donnees.getRobots().remove(caseRobot);
-                        caseRobot = carte.getVoisin(caseRobot, dir);
-                        robot.setPosition(caseRobot);
-                        donnees.getRobots().put(caseRobot, robot);
-                        System.out.println("Case robot: "+ caseRobot);
-                    }
-                    else System.out.println("Le voisin n'existe pas!");
+                    // if(carte.voisinExiste(caseRobot, dir))
+                    // {
+                    //     caseRobot = carte.getVoisin(caseRobot, dir);
+                    //     robot.setPosition(caseRobot);
+                    //     System.out.println("Case robot: "+ caseRobot);
+                    // }
+
+                    robot.moveRobotDirection(dir);
                 } catch (IllegalArgumentException e) {
                     System.out.println(chaine + " n'est pas un input valide! STOP pour arreter.");
                 }

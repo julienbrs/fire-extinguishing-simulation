@@ -51,7 +51,7 @@ exeInvader:
 exeLecture: 
 	java -classpath src:bin Test/TestLecteurDonnees cartes/carteSujet.map
 
-exeRobots:
+exeRobots: testRobots
 	java -classpath src:bin Test/TestRobots cartes/carteTestRobots.map
 
 clean:
