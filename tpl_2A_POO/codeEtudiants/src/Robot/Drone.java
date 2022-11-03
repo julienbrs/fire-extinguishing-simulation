@@ -4,14 +4,18 @@ import java.util.NoSuchElementException;
 
 import Carte.*;
 
-public class Roues extends Robot {
+public class Drone extends Robot {
 
-    public Roues(Case position, int volumeEau, double vitesse){
-        static double vitesseDefaut = 80;
-        static double volumeEauMax = 5000;
+    public Drone(Case position, int volumeEau, double vitesse){
+        static double vitesseDefaut = 100;
+        static double vitesseMax = 150;
+        static double volumeEauMax = 10000;
         try {
             if (vitesse < 0){
                 throw new VitesseIncorrectExcpetion("La vitesse ne peut pas être négative");
+            }
+            if (vitesse > vitesseMax){
+                throw new VitesseIncorrectException("La vitesse du drone ne peut exceder les 150 km/h");
             }
             if (Double.isNaN(vitesse)){
                 vitesse = vitesseDefaut;
@@ -28,13 +32,9 @@ public class Roues extends Robot {
             case EAU:
             case FORET:
             case ROCHE:
-                // Ne peut pas se déplacer sur la roche, l'eau ou dans la foret
-                return 0;
-                break;
             case TERRAIN_LIBRE:
             case HABITAT:
                 return this.vitesse;
-                break;
             default:
                 //sinon on throw une exception
                 try {
@@ -49,6 +49,7 @@ public class Roues extends Robot {
     public void deverserEau(int vol){
         try {
             // boolean deverse;
+            //gestion des interventions unitaires?
             if (vol < 0) {
                 throw new VolumeEauIncorrectException("Le volume d'eau est incorrect")
             }
@@ -66,18 +67,15 @@ public class Roues extends Robot {
     }
 
     public void remplirReservoir(){
-        //Où gerer le temps de remplissage?
         try {
             boolean remplir = false;
-            for (Direction d : Direction.values()){
-                if (getVoisin(this.position, d).getNature == NatureTerrain.EAU){
-                    remplir = true;
-                }
+            if(this.case.getNature == NatureTerrain.EAU){
+                remplir = true;
             }
             if (remplir){
-                this.volumeEau = 5000;
+                this.volumeEau = 10000;
             } else {
-                throw new NoSuchElementException("Impossible de remplir le réservoir : il n'y a pas d'eau aux alentours !")
+                throw new NoSuchElementException("Impossible de remplir le réservoir : il n'y a pas d'eau sur cette case !")
             }
         } catch (NoSuchElementException e){
             System.out.println(e.getMessage())
