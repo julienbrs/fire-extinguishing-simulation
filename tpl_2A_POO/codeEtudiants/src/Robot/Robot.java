@@ -32,13 +32,13 @@ public abstract class Robot
                 return new Chenilles(position, 0, vitesse, donnees);
             case DRONE:
             //appeller le constructeur du robot drone
-                return null;
+                return new Drone(position, 0, vitesse, donnees);
             case ROUES:
             //appeller le constructeur du robot roues
-                return null;
+                return new Roues(position, 0, vitesse, donnees);
             case PATTES:
             //appeller le constructeur du robot pattes ( pas un copié-collé)
-                return null;                
+                return new Pattes(position, donnees);                
             default:
                 throw new NoSuchElementException("Le  type robot " + type.toString() + " n'existe pas!");
         }
@@ -98,6 +98,11 @@ public abstract class Robot
     public void setVitesse(double vitesse)
     {
         this.vitesse = vitesse;
+    }
+
+    //ME TAPEZ PAS 
+    public DonneesSimulation getDonnees(){
+        return this.donnees;
     }
     
     public abstract double getVitesse(NatureTerrain nature) throws TerrainIncorrectException;

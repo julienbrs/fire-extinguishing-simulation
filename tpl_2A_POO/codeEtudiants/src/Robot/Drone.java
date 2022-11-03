@@ -1,23 +1,19 @@
 package Robot; 
 
-import java.util.NoSuchElementException;
-
 import Carte.*;
+import Simulation.DonneesSimulation;
+import Exception.*;
 
 public class Drone extends Robot {
         static double vitesseDefaut = 100;
         static double vitesseMax = 150;
-        static double volumeEauMax = 10000;
+        static int volumeEauMax = 10000;
 
-    public Drone(Case position, int volumeEau, double vitesse) throws VitesseIncorrectException {
-        // try {
-        if (vitesse < 0) {throw new VitesseIncorrectExcpetion("La vitesse ne peut pas être négative")};
+    public Drone(Case position, int volumeEau, double vitesse, DonneesSimulation donnees) throws VitesseIncorrectException {
+        super(position, volumeEau, vitesse, donnees);
+        if (vitesse < 0) throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (vitesse > vitesseMax) throw new VitesseIncorrectException("La vitesse du drone ne peut exceder les 150 km/h");
-        if (Double.isNaN(vitesse)) vitesse = vitesseDefaut; 
-        // } catch (VitesseIncorrectExcpetion e) {
-        //     System.out.println(e.getMessage());
-        // }
-        super(position, volumeEau, vitesse);
+        if (Double.isNaN(vitesse)) this.vitesse = vitesseDefaut; 
     }
 
     public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException {
@@ -29,47 +25,35 @@ public class Drone extends Robot {
             case TERRAIN_LIBRE:
             case HABITAT:
                 return this.vitesse;
-                break;
             default:
                 //sinon on throw une exception
-                // try {
                 throw new TerrainIncorrectException("Le terrain n'est pas correct");
-                break;
-                // } catch (TerrainIncorrectException e) {
-                //     System.out.println(e.getMessage());
-                // }
         }
-
     }
 
     public void deverserEau(int vol) throws VolumeEauIncorrectException {
-        // try {
-            // boolean deverse;
-            // gestion des interventions unitaires?
-        if (vol < 0) throw new VolumeEauIncorrectException("Le volume d'eau est incorrect");
-        if (vol > this.volumeEau) vol = this.volumeEau;
-        Incendie incendie = this.donnees.getIncendie(this.position);
-        if (incendie != null) {
-            this.volumeEau -= volume;
-            incendie.decreaseIntensity(vol);
-        }
-        // } catch (VolumeEauIncorrectException e){
-        //     System.out.println(e.getMessage());
-        // }
+            if (vol < 0) throw new VolumeEauIncorrectException("Le volume d'eau est incorrect");
+            // Si volume d'eau indiqué supérieur au volume total, on déverse tout ce qu'il reste
+            if (vol > this.volumeEau) vol = this.volumeEau;
+            // Check si incendie sur la case courante
+            Incendie incendie = this.donnees.getIncendie(this.position);
+            if (incendie != null) {
+                this.volumeEau -= vol;
+                System.out.println("Déversement d'eau sur l'incendie en " + this.position);
+                incendie.decreaseIntensite(vol);
+            }
+    }
+
+    @Override
+    public boolean peutRemplir() {
+        return (this.position.getNature() == NatureTerrain.EAU);
     }
 
     public void remplirReservoir() throws TerrainIncorrectException {
-        // try {
-        boolean remplir = false;
-        if(this.case.getNature == NatureTerrain.EAU) remplir = true;
-        if (remplir){
-            this.volumeEau = 10000;
+        if (peutRemplir()){
+            this.volumeEau = volumeEauMax;
         } else {
-            throw new TerrainIncorrectException("Impossible de remplir le réservoir : il n'y a pas d'eau sur cette case !")
+            throw new TerrainIncorrectException("Impossible de remplir le réservoir : il n'y a pas d'eau sur cette case !");
         }
-        // } catch (NoSuchElementException e){
-        //     System.out.println(e.getMessage())
-        // }
     }
-
 }

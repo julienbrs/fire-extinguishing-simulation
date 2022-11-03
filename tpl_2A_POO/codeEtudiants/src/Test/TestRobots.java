@@ -3,6 +3,7 @@ import io.LecteurDonnees;
 import Simulation.DonneesSimulation;
 import Carte.*;
 import Robot.*;
+import Exception.*;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
@@ -40,11 +41,44 @@ public class TestRobots {
 
             System.out.println("STOP to stop");
             // System.out.print("EST/OUEST/NORD/SUD: ");
+            boolean condition = false;
             String chaine = "";
             Direction dir = null;
             while(!chaine.equals("STOP"))
             {
+                //TEST REMPLISSAGE
                 System.out.println("Peut remplir? " + (robot.peutRemplir()?"oui":"non"));
+                if(robot.peutRemplir()){
+                    System.out.println("Volume actuel : " + robot.getVolumeEau() + " Remplir? OUI/NON");
+                    chaine = scanner.nextLine();
+                    if (chaine.equals("OUI")){
+                        try{
+                            robot.remplirReservoir();
+                            System.out.println("Réservoir rempli! Volume d'eau actuel :" + robot.getVolumeEau());
+                        } catch (TerrainIncorrectException e){
+
+                        }
+                    }   
+                }
+                // TEST DÉVERSAGE
+                Incendie incendie = robot.getDonnees().getIncendie(robot.getPosition());
+                System.out.println("Incendie? " + (incendie != null?"oui":"non"));
+                if (incendie != null) {
+                    System.out.println("INCENDIE !");
+                    System.out.println("Éteindre? OUI/NON");
+                    chaine = scanner.nextLine();
+                    if (chaine.equals("OUI")){
+                        System.out.println("Volume à déverser ? :");
+                        chaine = scanner.nextLine();
+                        try{
+                            robot.deverserEau(Integer.valueOf(chaine));
+                            System.out.println("Volume déversé! L'intensité de l'incendie est maintenant de " + incendie.getIntensite());
+                        } catch (VolumeEauIncorrectException e){
+
+                        }
+                    }   
+                }
+                // TEST DÉPLACEMENT
                 System.out.print("EST/OUEST/NORD/SUD: ");
                 chaine = scanner.nextLine();
                 try {

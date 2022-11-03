@@ -1,14 +1,14 @@
 package Robot;
 
-import java.util.NoSuchElementException;
-
 import Carte.*;
+import Simulation.DonneesSimulation;
+import Exception.*;
 
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
 
-    public Pattes(Case position){
-        super(position, null, vitesseDefaut);
+    public Pattes(Case position, DonneesSimulation donnees){
+        super(position, 0, vitesseDefaut, donnees);
     }
 
     public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException {
@@ -24,27 +24,27 @@ public class Pattes extends Robot {
             case TERRAIN_LIBRE:
             case HABITAT:
                 return this.vitesse;
-                break;
             default:
                 //sinon on throw une exception
-                // try {
                 throw new TerrainIncorrectException("Le terrain n'est pas correct");
-                break;
-                // } catch (TerrainIncorrectException e) {
-                //     System.out.println(e.getMessage());
-                // }
         }
 
     }
 
-    public void deverserPoudre(int vol) throws VolumePoudreIncorrectException {
-        // try {
-        if (vol < 0) throw new VolumePoudreIncorrectException("Le volume est incorrect")
+
+    public boolean peutRemplir(){
+        return false;
+    }
+
+    public void remplirReservoir() {
+        return;
+        }
+
+
+    public void deverserEau(int vol) throws VolumeEauIncorrectException {
+        if (vol < 0) throw new VolumeEauIncorrectException("Le volume est incorrect");
         Incendie incendie = this.donnees.getIncendie(this.position);
-        if (incendie != null) incendie.decreaseIntensity(vol);
-        // } catch (VolumeEauIncorrectException e){
-        //     System.out.println(e.getMessage());
-        // }
+        if (incendie != null) incendie.decreaseIntensite(vol);
     }    
 
 }
