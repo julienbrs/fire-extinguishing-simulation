@@ -5,6 +5,7 @@ import Carte.*;
 import Robot.*;
 import Exception.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
@@ -26,16 +27,14 @@ public class TestRobots {
             System.out.println(carte);
 
             /* on récupere les incendies */
-            HashMap<Case, Incendie> incendies = donnees.getIncendies();
+            // HashMap<Case, Incendie> incendies = donnees.getIncendies();
 
             /* On récupère les robots de la simulation */
-            HashMap<Case, Robot> robots = donnees.getRobots();
+            Iterator<Robot> robots = donnees.getRobots();
 
             /* On récupère le premier robot de la liste */
-            Robot robot = robots.values().iterator().next();
+            Robot robot = robots.next();
             Case caseRobot = robot.getPosition();
-
-            System.out.println(robot.toString() + robots.get(caseRobot).toString());
 
             Scanner scanner = new Scanner(System.in);
 
@@ -46,38 +45,9 @@ public class TestRobots {
             Direction dir = null;
             while(!chaine.equals("STOP"))
             {
-                //TEST REMPLISSAGE
-                System.out.println("Peut remplir? " + (robot.peutRemplir()?"oui":"non"));
-                if(robot.peutRemplir()){
-                    System.out.println("Volume actuel : " + robot.getVolumeEau() + " Remplir? OUI/NON");
-                    chaine = scanner.nextLine();
-                    if (chaine.equals("OUI")){
-                        try{
-                            robot.remplirReservoir();
-                            System.out.println("Réservoir rempli! Volume d'eau actuel :" + robot.getVolumeEau());
-                        } catch (TerrainIncorrectException e){
 
-                        }
-                    }   
-                }
-                // TEST DÉVERSAGE
-                Incendie incendie = robot.getDonnees().getIncendie(robot.getPosition());
-                System.out.println("Incendie? " + (incendie != null?"oui":"non"));
-                if (incendie != null) {
-                    System.out.println("INCENDIE !");
-                    System.out.println("Éteindre? OUI/NON");
-                    chaine = scanner.nextLine();
-                    if (chaine.equals("OUI")){
-                        System.out.println("Volume à déverser ? :");
-                        chaine = scanner.nextLine();
-                        try{
-                            robot.deverserEau(Integer.valueOf(chaine));
-                            System.out.println("Volume déversé! L'intensité de l'incendie est maintenant de " + incendie.getIntensite());
-                        } catch (VolumeEauIncorrectException e){
-
-                        }
-                    }   
-                }
+                ///on mets ce test en premier pour update la carte si on eteint un incendie
+                System.out.println(carte);
                 // TEST DÉPLACEMENT
                 System.out.print("EST/OUEST/NORD/SUD: ");
                 chaine = scanner.nextLine();
@@ -94,7 +64,46 @@ public class TestRobots {
                 } catch (IllegalArgumentException e) {
                     System.out.println(chaine + " n'est pas un input valide! STOP pour arreter.");
                 }
-                System.out.println(carte);
+                //TEST REMPLISSAGE
+                System.out.println("Peut remplir? " + (robot.peutRemplir()?"oui":"non"));
+                if(robot.peutRemplir()){
+                    System.out.println("Volume actuel : " + robot.getVolumeEau() + " Remplir? OUI/NON");
+                    chaine = scanner.nextLine();
+                    if (chaine.equals("OUI")){
+                        try{
+                            robot.remplirReservoir();
+                            System.out.println("Réservoir rempli! Volume d'eau actuel :" + robot.getVolumeEau());
+                        } catch (TerrainIncorrectException e){
+                            //ne devrait pas arriver
+                            System.out.println(e.getMessage());
+                        }
+                    }   
+                }
+                // TEST DÉVERSAGE
+                //On a déjà les donnees, et les incendies, on pourrait
+                //remplacer ça par incendies.get(caseRobot), mais pour
+                //rester dans le theme, on fera donnees.getIncendie(caseRobot)
+                //Incendie incendie = robot.getDonnees().getIncendie(robot.getPosition());
+                Incendie incendie = donnees.getIncendie(robot.getPosition());
+                System.out.println("Incendie? " + (incendie != null?"oui":"non"));
+                if (incendie != null) {
+                    System.out.println("INCENDIE !");
+                    System.out.println("Éteindre? OUI/NON");
+                    chaine = scanner.nextLine();
+                    if (chaine.equals("OUI")){
+                        System.out.println("Volume à déverser ? :");
+                        chaine = scanner.nextLine();
+                        try{
+                            robot.deverserEau(Integer.valueOf(chaine));
+                            System.out.println("Volume déversé! L'intensité de l'incendie est maintenant de " + incendie.getIntensite());
+                        } catch (NumberFormatException e){
+                            System.out.println(chaine + " n'est pas un entier valide!");
+                        } catch (VolumeEauIncorrectException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
+                    }   
+                }
             }
 
             scanner.close();
