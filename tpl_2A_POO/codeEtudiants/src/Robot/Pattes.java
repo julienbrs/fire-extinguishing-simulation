@@ -8,16 +8,6 @@ public class Pattes extends Robot {
 
     public Pattes(Case position){
         static double vitesseDefaut = 30;
-        // try {
-        //     if (vitesse < 0){
-        //         throw new VitesseIncorrectExcpetion("La vitesse ne peut pas être négative");
-        //     }
-        //     if (Double.isNaN(vitesse)){
-        //         vitesse = vitesseDefaut;
-        //     } 
-        // } catch (VitesseIncorrectExcpetion e) {
-        //     System.out.println(e.getMessage());
-        // }
         super(position, null, vitesseDefaut);
     }
 
@@ -48,13 +38,9 @@ public class Pattes extends Robot {
 
     public void deverserPoudre(int vol){
         try {
-            if (vol < 0) {
-                throw new VolumeEauIncorrectException("Le volume est incorrect")
-            }
+            if (vol < 0) throw new VolumeEauIncorrectException("Le volume est incorrect")
             Incendie incendie = this.donnees.getIncendie(this.position);
-            if (incendie != null) {
-                incendie.decreaseIntensity(vol);
-            }
+            if (incendie != null) incendie.decreaseIntensity(vol);
         } catch (VolumeEauIncorrectException e){
             System.out.println(e.getMessage());
         }

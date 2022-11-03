@@ -10,12 +10,8 @@ public class Roues extends Robot {
         static double vitesseDefaut = 80;
         static double volumeEauMax = 5000;
         try {
-            if (vitesse < 0){
-                throw new VitesseIncorrectExcpetion("La vitesse ne peut pas être négative");
-            }
-            if (Double.isNaN(vitesse)){
-                vitesse = vitesseDefaut;
-            } 
+            if (vitesse < 0) throw new VitesseIncorrectExcpetion("La vitesse ne peut pas être négative");
+            if (Double.isNaN(vitesse)) vitesse = vitesseDefaut; 
         } catch (VitesseIncorrectExcpetion e) {
             System.out.println(e.getMessage());
         }
@@ -49,12 +45,8 @@ public class Roues extends Robot {
     public void deverserEau(int vol){
         try {
             // boolean deverse;
-            if (vol < 0) {
-                throw new VolumeEauIncorrectException("Le volume d'eau est incorrect")
-            }
-            if (vol > this.volumeEau) {
-                vol = this.volumeEau;
-            }
+            if (vol < 0) throw new VolumeEauIncorrectException("Le volume d'eau est incorrect");
+            if (vol > this.volumeEau) vol = this.volumeEau;
             Incendie incendie = this.donnees.getIncendie(this.position);
             if (incendie != null) {
                 this.volumeEau -= volume;
@@ -65,14 +57,13 @@ public class Roues extends Robot {
         }
     }
 
-    public void remplirReservoir(){
+    public void remplirReservoir() throws NoSuchElementException
+    {
         //Où gerer le temps de remplissage?
         try {
             boolean remplir = false;
             for (Direction d : Direction.values()){
-                if (getVoisin(this.position, d).getNature == NatureTerrain.EAU){
-                    remplir = true;
-                }
+                if (getVoisin(this.position, d).getNature == NatureTerrain.EAU) remplir = true;
             }
             if (remplir){
                 this.volumeEau = 5000;
