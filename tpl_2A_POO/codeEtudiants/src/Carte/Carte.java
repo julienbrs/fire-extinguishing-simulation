@@ -41,26 +41,58 @@ public class Carte
         this.donnees = donnees;
     }
 
+    
+    /** 
+     * Renvoie le nombre de lignes totales dans une {@link Carte}.
+     * @return int
+     */
     public int getNbLignes()
     {
         return this.nbLignes;
     }
 
+    
+    /** 
+     * Renvoie le nombre de colonnes totales dans une {@link Carte}.
+     * @return int
+     */
     public int getNbColonnes()
     {
         return this.nbColonnes;
     }
 
+    
+    /** 
+     * Renvoie la taille des cases d'une {@link Carte}.
+     * @return int
+     */
     public int getTailleCases()
     {
         return this.tailleCases;
     }
 
+    
+    /** 
+     * Renvoie la {@link Case} de la {@link Carte} à la position (lig, col). 
+     * @param lig
+     * @param col
+     * @return Case
+     */
     //dont even check for errors smh
     public Case getCase(int lig, int col)
     {
         return this.carte[lig][col];
     }
+    
+    /** 
+     * Renvoie true si un voisin existe (on sort pas de la {@link Carte}) à la {@link Direction} dir de la {@link Case} donnée.
+     * <p>
+     * Jete {@link NullPointerException} si dir est null.
+     * @param src
+     * @param dir
+     * @return boolean
+     * @throws NullPointerException
+     */
     public boolean voisinExiste(Case src, Direction dir) throws NullPointerException
     {
         int lig = src.getLigne();
@@ -80,6 +112,23 @@ public class Carte
                 throw new NullPointerException("La direction ne devrait pas être null!");
         }
     }
+    
+    //todo
+    //ICI ON POURRAIT RENVOIER NULL A LA CASE PLUTOT
+    //QUE THROW UNE EXCEPTION, UN PEU COMME AVEC getIncendie
+    //ET getRobot
+    /** 
+     * Renvoie le voisin de la {@link Case} src, à la {@link Direction} dir.
+     * <p>
+     * Si inexistant, jete {@link IllegalArgumentException}.
+     * <p>
+     * Si dir est null, jete {@link NullPointerException}.
+     * @param src
+     * @param dir
+     * @return Case
+     * @throws IllegalArgumentException
+     * @throws NullPointerException
+     */
     public Case getVoisin(Case src, Direction dir) throws IllegalArgumentException, NullPointerException
     {
         if (!this.voisinExiste(src, dir)) throw new IllegalArgumentException("Il n'existe pas un voisin à la direction demandé.");
