@@ -14,6 +14,7 @@ public class Chenilles extends Robot
 
     {
         super(position, volumeEau, vitesse, donnees);
+        this.type = TypeRobot.CHENILLES;
         if (vitesse < 0) {
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         }

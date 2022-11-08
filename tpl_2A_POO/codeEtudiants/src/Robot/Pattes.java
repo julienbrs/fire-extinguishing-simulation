@@ -9,6 +9,8 @@ public class Pattes extends Robot {
 
     public Pattes(Case position, DonneesSimulation donnees){
         super(position, 0, vitesseDefaut, donnees);
+        this.type = TypeRobot.PATTES;
+
     }
 
     public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException {
