@@ -11,6 +11,7 @@ public class Drone extends Robot {
 
     public Drone(Case position, int volumeEau, double vitesse, DonneesSimulation donnees) throws VitesseIncorrectException {
         super(position, volumeEau, vitesse, donnees);
+        this.type = TypeRobot.DRONE;
         if (vitesse < 0) throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (vitesse > vitesseMax) throw new VitesseIncorrectException("La vitesse du drone ne peut exceder les 150 km/h");
         if (Double.isNaN(vitesse)) this.vitesse = vitesseDefaut; 

@@ -10,7 +10,7 @@ public abstract class Robot
     protected Case position;
     protected int volumeEau;
     protected double vitesse;
-
+    protected TypeRobot type;
     protected DonneesSimulation donnees;
 
     public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
@@ -70,6 +70,10 @@ public abstract class Robot
         return this.position;
     }
     
+    public TypeRobot getType()
+    {
+        return this.type;
+    }
     /** 
      * Change la position du Robot.
      * @param positionCase

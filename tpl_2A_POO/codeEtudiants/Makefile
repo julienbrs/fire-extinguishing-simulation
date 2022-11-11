@@ -47,8 +47,10 @@ testRobots:
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
+exeSimulateur:
+	java -classpath bin:bin/gui.jar Simulation/TestSimulateur cartes/carteSimulation.map
 exeInvader:
-	java -classpath bin:bin/gui.jar TestInvader
+	java -classpath bin:bin/gui.jar Test/TestInvader
 
 exeLecture:
 	java -classpath src:bin Test/TestLecteurDonnees cartes/carteSujet.map
