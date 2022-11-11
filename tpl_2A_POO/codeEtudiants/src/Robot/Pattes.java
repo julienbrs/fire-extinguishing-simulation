@@ -7,15 +7,21 @@ import Exception.*;
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
 
-    public Pattes(Case position, DonneesSimulation donnees){
+    public Pattes(Case position, DonneesSimulation donnees) {
         super(position, 0, vitesseDefaut, donnees);
         this.type = TypeRobot.PATTES;
 
     }
 
-    public double getVitesse(NatureTerrain nature) throws TerrainIncorrectException {
-        switch(nature)
-        {
+    /**
+     * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
+     * Le parametre nature doit être non null.
+     * 
+     * @param nature
+     * @return double
+     */
+    public double getVitesse(NatureTerrain nature) {
+        switch (nature) {
             case EAU:
                 // Ne peut pas se déplacer sur l'eau
                 return 0;
@@ -27,26 +33,26 @@ public class Pattes extends Robot {
             case HABITAT:
                 return this.vitesse;
             default:
-                //sinon on throw une exception
-                throw new TerrainIncorrectException("Le terrain n'est pas correct");
+                // this should not happen
+                return Double.NaN;
         }
 
     }
 
-
-    public boolean peutRemplir(){
+    public boolean peutRemplir() {
         return false;
     }
 
     public void remplirReservoir() {
         return;
-        }
-
+    }
 
     public void deverserEau(int vol) throws VolumeEauIncorrectException {
-        if (vol < 0) throw new VolumeEauIncorrectException("Le volume est incorrect");
+        if (vol < 0)
+            throw new VolumeEauIncorrectException("Le volume est incorrect");
         Incendie incendie = this.donnees.getIncendie(this.position);
-        if (incendie != null) incendie.decreaseIntensite(vol);
-    }    
+        if (incendie != null)
+            incendie.decreaseIntensite(vol);
+    }
 
 }
