@@ -2,6 +2,7 @@ package Simulation;
 
 import java.awt.Color;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 import Robot.*;
 import Carte.*;
@@ -9,18 +10,42 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
+import Events.Evenement;
 
 public class Simulateur implements Simulable {
+    private long dateSimulation;
+    private PriorityQueue<Evenement> scenario;
     private GUISimulator gui;
     private DonneesSimulation donnees;
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees) {
+    public Simulateur(GUISimulator gui, DonneesSimulation donnees, PriorityQueue<Evenement> scenario, long dateSimulation) {
         this.gui = gui;
         gui.setSimulable(this);
         this.donnees = donnees;
+        this.dateSimulation = dateSimulation;
 
         // Initialisation des couleurs
         this.draw();
+    }
+
+    void ajouteEvenement(Evenement e) {
+        scenario.add(e);
+    }
+
+    void incrementeDate() {
+        while (dateSimulation == scenario.peek().getDate()) {
+            // poll : récupère et supprime la tete de la queue
+            scenario.poll().execute();
+        }
+        dateSimulation++;
+
+    }
+
+    boolean simulationTerminee() {
+        if (scenario.peek() == null) {
+            return true;
+        }
+        return false;
     }
 
     private Color NatureTerrainToColor(NatureTerrain nature) {
@@ -121,6 +146,10 @@ public class Simulateur implements Simulable {
             Robot robot = robots.next();
             drawRobot(robot, tailleCases, gui);
         }
+    }
+
+    public DonneesSimulation getDonnees() {
+        return this.donnees;
     }
 
     @Override

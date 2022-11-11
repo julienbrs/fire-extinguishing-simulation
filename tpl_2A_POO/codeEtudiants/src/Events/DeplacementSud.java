@@ -8,8 +8,8 @@ import java.util.Iterator;
 
 // Classe d'évènement qui permet de faire déplacer un robot donné vers le sud
 public class DeplacementSud extends Evenement {
-    public DeplacementSud(long date) {
-        super(date);
+    public DeplacementSud(long date, Robot robot) {
+        super(date, robot);
     }
 
     public void execute() {

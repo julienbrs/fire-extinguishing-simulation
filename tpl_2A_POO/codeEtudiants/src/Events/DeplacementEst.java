@@ -1,8 +1,12 @@
 package Events;
 
+import Robot.*;
+import Carte.*;
+
 public class DeplacementEst {
-    public DeplacementEst(long date) {
-        super(date);
+
+    public DeplacementEst(long date, Robot robot) {
+        super(date, robot);
     }
 
     public void execute() {
