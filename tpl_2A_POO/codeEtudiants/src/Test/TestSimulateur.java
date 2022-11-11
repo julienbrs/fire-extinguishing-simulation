@@ -35,18 +35,23 @@ public class TestSimulateur {
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
             PriorityQueue<Evenement> scenario = new PriorityQueue();
-            Simulable simulateur = new Simulateur(gui, donnees, scenario, time);
+            Simulateur simulateur = new Simulateur(gui, donnees, scenario, time);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
+
             long un = 1;
             long deux = 2;
             long trois = 3;
-            DeplacementSud sud1 = new DeplacementSud(un, robot);
-            DeplacementSud sud2 = new DeplacementSud(deux, robot);
-            DeplacementEst est1 = new DeplacementEst(trois, robot);
-            sud1.execute();
-            sud2.execute();
-            est1.execute();
+            long quatre = 4;
+
+            DeplacementNord nord1 = new DeplacementNord(un, robot);
+            DeplacementNord nord2 = new DeplacementNord(deux, robot);
+            DeplacementNord nord3 = new DeplacementNord(trois, robot);
+            DeplacementNord nord4 = new DeplacementNord(quatre, robot);
+            simulateur.ajouteEvenement(nord1);
+            simulateur.ajouteEvenement(nord2);
+            simulateur.ajouteEvenement(nord3);
+            simulateur.ajouteEvenement(nord4);
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");

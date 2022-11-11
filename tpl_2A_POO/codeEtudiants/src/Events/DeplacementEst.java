@@ -1,7 +1,7 @@
 package Events;
 
 import Robot.*;
-import Carte.*;
+import Carte.Direction;
 
 public class DeplacementEst extends Evenement {
 
@@ -11,10 +11,5 @@ public class DeplacementEst extends Evenement {
 
     public void execute() {
         this.robot.moveRobotDirection(Direction.EST);
-        // DonneesSimulation donnees = this.simulateur.getDonnees();
-        // Iterator<Robot> robots = donnees.getRobots();
-        // Robot robot = robots.next();
-        // // faut verifier que c pas nul!
-        // // Robot robot = donnees.getRobot();
     }
 }

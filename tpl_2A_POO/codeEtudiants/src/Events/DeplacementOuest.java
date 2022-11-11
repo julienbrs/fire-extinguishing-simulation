@@ -1,17 +1,15 @@
 package Events;
 
-public class DeplacementOuest {
-    public DeplacementOuest(long date) {
-        super(date);
+import Robot.Robot;
+import Carte.Direction;
+
+public class DeplacementOuest extends Evenement {
+    public DeplacementOuest(long date, Robot robot) {
+        super(date, robot);
     }
 
     public void execute() {
         this.robot.moveRobotDirection(Direction.OUEST);
-        // DonneesSimulation donnees = this.simulateur.getDonnees();
-        // Iterator<Robot> robots = donnees.getRobots();
-        // Robot robot = robots.next();
-        // // faut verifier que c pas nul!
-        // // Robot robot = donnees.getRobot();
     }
 
 }
