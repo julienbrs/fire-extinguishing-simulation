@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture io Simulation Robot Carte
+all: testInvader testLecture io Simulation Robot Carte Strategie 
 
 Exception:
 	javac -d bin -classpath bin -sourcepath src src/Exception/*.java
@@ -33,6 +33,8 @@ Robot:
 	javac -d bin -classpath bin -sourcepath src src/Robot/*.java
 Carte:
 	javac -d bin -classpath bin -sourcepath src src/Carte/*.java
+Strategie:
+	javac -d bin -classpath bin -sourcepath src src/Strategie/*.java
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
@@ -44,11 +46,18 @@ testRobots:
 testSimulateur:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateur.java
 
+testDjikstra:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
+
+
 # Execution:
 # on peut taper directement la ligne de commande :
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
+exeDjikstra: testDjikstra
+	java -classpath bin:bin/gui.jar Test/TestDjikstra cartes/mushroomOfHell-20x20.map
+
 exeSimulateur: testSimulateur
 	java -classpath bin:bin/gui.jar Test/TestSimulateur cartes/carteSimulation.map
 exeInvader:
