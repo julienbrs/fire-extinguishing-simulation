@@ -41,9 +41,9 @@ public class TestSimulateur {
             long un = 1;
             long deux = 2;
             long trois = 3;
-            DeplacementSud sud1 = new DeplacementSud(un,robot);
-            DeplacementSud sud2 = new DeplacementSud(deux,robot);
-            DeplacementEst est1 = new DeplacementEst(trois,robot);
+            DeplacementSud sud1 = new DeplacementSud(un, robot);
+            DeplacementSud sud2 = new DeplacementSud(deux, robot);
+            DeplacementEst est1 = new DeplacementEst(trois, robot);
             sud1.execute();
             sud2.execute();
             est1.execute();

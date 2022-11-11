@@ -3,7 +3,7 @@ package Events;
 import Robot.*;
 import Carte.*;
 
-public class DeplacementEst {
+public class DeplacementEst extends Evenement {
 
     public DeplacementEst(long date, Robot robot) {
         super(date, robot);
@@ -17,5 +17,4 @@ public class DeplacementEst {
         // // faut verifier que c pas nul!
         // // Robot robot = donnees.getRobot();
     }
-
 }

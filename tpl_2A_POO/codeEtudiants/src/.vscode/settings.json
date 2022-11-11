@@ -1,6 +1,6 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "/home/taibi/Documents/Scuola/2A/POO/vrai_truc/tp_poo/tpl_2A_POO/codeEtudiants/bin/gui.jar"
-    ]
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "/home/julien/ensimag/java/tp_poo/tpl_2A_POO/codeEtudiants/bin/gui.jar"
+  ]
 }
