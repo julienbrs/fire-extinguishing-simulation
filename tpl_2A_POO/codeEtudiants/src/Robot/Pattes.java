@@ -7,10 +7,18 @@ import Exception.*;
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
 
-    public Pattes(Case position, DonneesSimulation donnees) {
-        super(position, 0, vitesseDefaut, donnees);
+    public Pattes(Case position, double vitesse, DonneesSimulation donnees)
+            throws VitesseIncorrectException
+    {
+        super(position, 0, vitesse, donnees);
         this.type = TypeRobot.PATTES;
-
+        if (vitesse < 0) {
+            throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
+        }
+        /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
+        if (Double.isNaN(vitesse)) {
+            this.vitesse = vitesseDefaut;
+        }
     }
 
     /**
