@@ -1,17 +1,22 @@
 package Events;
 
+import Simulation.Simulateur;
+import Robot.*;
+
 public abstract class Evenement {
-    long date;
-    
-    public Evenement(long date){
+    protected long date;
+    protected Simulateur simulateur;
+    protected Robot robot;
+
+    public Evenement(long date, Robot robot) {
         this.date = date;
+        this.robot = robot;
     }
 
-    public long getDate(){
+    public long getDate() {
         return this.date;
     }
 
-    abstract void execute();
+    public abstract void execute();
 
-    
 }
