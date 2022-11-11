@@ -41,14 +41,16 @@ testLecture:
 
 testRobots:
 	javac -d bin -classpath bin -sourcepath src src/Test/TestRobots.java
+testSimulateur:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateur.java
 
 # Execution:
 # on peut taper directement la ligne de commande :
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
-exeSimulateur:
-	java -classpath bin:bin/gui.jar Simulation/TestSimulateur cartes/carteSimulation.map
+exeSimulateur: testSimulateur
+	java -classpath bin:bin/gui.jar Test/TestSimulateur cartes/carteSimulation.map
 exeInvader:
 	java -classpath bin:bin/gui.jar Test/TestInvader
 
