@@ -32,7 +32,8 @@ public class Chemin {
         return this.chemin.iterator();
     }
 
-    public double getCout(Case case1) {
+    // todo check wait why should this be public?
+    private double getCout(Case case1) {
         return this.couts.get(case1);
     }
 

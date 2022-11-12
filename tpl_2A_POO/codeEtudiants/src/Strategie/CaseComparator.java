@@ -11,11 +11,11 @@ class CaseComparator implements Comparator<Case> {
         this.couts = new double[lig][col];
     }
 
-    public double getCout(Case case1) {
+    double getCout(Case case1) {
         return this.couts[case1.getLigne()][case1.getColonne()];
     }
 
-    public void setCout(Case case1, double cout) {
+    void setCout(Case case1, double cout) {
         this.couts[case1.getLigne()][case1.getColonne()] = cout;
     }
 
