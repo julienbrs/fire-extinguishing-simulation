@@ -4,7 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Iterator;
 
+import java.lang.Math;
+import Simulation.Simulateur;
+import Robot.Robot;
+import Events.*;
 import Carte.Case;
+import Carte.Carte;
+import Carte.Direction;
 
 public class Chemin {
     private Robot robot;
@@ -29,4 +35,40 @@ public class Chemin {
     public double getCout(Case case1) {
         return this.couts.get(case1);
     }
+
+    public void cheminToEvent(Simulateur simulateur) {
+        Iterator<Case> iterator = this.getChemin();
+        // On saute la premiere case (source)
+        Case casePrecedente = null;
+        Case caseCourante = iterator.next();
+        Evenement evenement = null;
+        long cout = 0;
+        while (iterator.hasNext()) {
+            casePrecedente = caseCourante;
+            caseCourante = iterator.next();
+            cout = (long) Math.ceil(this.getCout(caseCourante));
+            Direction dir = Carte.getDirection(casePrecedente, caseCourante);
+
+            switch (dir) {
+                case NORD:
+                    evenement = new DeplacementNord(cout, this.robot, simulateur);
+                    break;
+                case EST:
+                    evenement = new DeplacementEst(cout, this.robot, simulateur);
+                    break;
+                case OUEST:
+                    evenement = new DeplacementOuest(cout, this.robot, simulateur);
+                    break;
+                case SUD:
+                    evenement = new DeplacementSud(cout, this.robot, simulateur);
+                    break;
+                default:
+                    // bizarre l'ambiance
+                    // todo
+            }
+            simulateur.ajouteEvenement(evenement);
+        }
+
+    }
+
 }
