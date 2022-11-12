@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture io Simulation Robot Carte Strategie
+all: testInvader testLecture testRobots testChemin testSimulateurKO testSimulateurOK testSimulateurBonus testDjikstra Simulation Robot Carte Strategie 
 
 Exception:
 	javac -d bin -classpath bin -sourcepath src src/Exception/*.java
@@ -37,6 +37,9 @@ Strategie:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Strategie/*.java
 Events:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Events/*.java
+Test:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/*.java
+
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
