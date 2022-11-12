@@ -44,7 +44,7 @@ public abstract class Robot {
             case CHENILLES:
                 /* Volume d'eau temporairement à 0, changé dans le constructeur */
                 /* Enlevé vitesse à 0, on suppose qu'on commence avec réservoir plein */
-                //todo à voir
+                // todo à voir
                 return new Chenilles(position, vitesse, donnees);
             case DRONE:
                 // appeller le constructeur du robot drone
@@ -162,6 +162,10 @@ public abstract class Robot {
         this.vitesse = vitesse;
     }
 
+    public boolean peutRemplir() {
+        return this.peutRemplir(this.position);
+    }
+
     // ME TAPEZ PAS
     // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     // public DonneesSimulation getDonnees(){
@@ -176,7 +180,7 @@ public abstract class Robot {
      */
     public abstract double getVitesse(NatureTerrain nature);
 
-    public abstract boolean peutRemplir();
+    public abstract boolean peutRemplir(Case position);
 
     public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
 
