@@ -22,10 +22,11 @@ public class Graphe {
 
     private double Edges(Robot robot, Case source, Case destination) {
 
+        // todo vitesse in km/h and time in ????
         double res = robot.getVitesse(source.getNature()) +
                 robot.getVitesse(destination.getNature());
         res /= 2;
-        res *= carte.getTailleCases();
+        res = carte.getTailleCases() / res;
 
         return res;
     }
@@ -69,11 +70,10 @@ public class Graphe {
 
             if (caseCourante == destination) {
                 Case prec = destination;
-                System.out.println(prev[destination.getLigne()][destination.getColonne()]);
 
                 if (prev[destination.getLigne()][destination.getColonne()] != null || destination == source) {
                     while (prec != null) {
-                        chemin.add(prec, comparator.getCout(caseCourante));
+                        chemin.add(prec, comparator.getCout(prec));
                         prec = prev[prec.getLigne()][prec.getColonne()];
                     }
                 }
@@ -85,7 +85,8 @@ public class Graphe {
                 if (!robot.canMove(voisin))
                     continue;
                 double coutVoisin = comparator.getCout(voisin);
-                double cout = comparator.getCout(caseCourante) + this.Edges(robot, source, destination);
+                double cout = comparator.getCout(caseCourante) + this.Edges(robot, caseCourante, voisin);
+
                 if (cout < coutVoisin) {
                     comparator.setCout(voisin, cout);
                     prev[voisin.getLigne()][voisin.getColonne()] = caseCourante;
