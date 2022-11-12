@@ -18,6 +18,17 @@ import gui.Simulable;
 import io.LecteurDonnees;
 
 public class TestSimulateurBonus {
+    private static void moveRectangle(Simulateur simulateur, Robot robot) {
+        DeplacementNord nord = new DeplacementNord(1, robot, simulateur);
+        DeplacementEst est = new DeplacementEst(2, robot, simulateur);
+        DeplacementSud sud = new DeplacementSud(3, robot, simulateur);
+        DeplacementOuest ouest = new DeplacementOuest(4, robot, simulateur);
+        simulateur.ajouteEvenement(nord);
+        simulateur.ajouteEvenement(est);
+        simulateur.ajouteEvenement(sud);
+        simulateur.ajouteEvenement(ouest);
+    }
+
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -39,19 +50,7 @@ public class TestSimulateurBonus {
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
-            long un = 1;
-            long deux = 2;
-            long trois = 3;
-            long quatre = 4;
-
-            DeplacementNord nord = new DeplacementNord(un, robot);
-            DeplacementEst est = new DeplacementEst(deux, robot);
-            DeplacementSud sud = new DeplacementSud(trois, robot);
-            DeplacementOuest ouest = new DeplacementOuest(quatre, robot);
-            simulateur.ajouteEvenement(nord);
-            simulateur.ajouteEvenement(est);
-            simulateur.ajouteEvenement(sud);
-            simulateur.ajouteEvenement(ouest);
+            TestSimulateurBonus.moveRectangle(simulateur, robot);
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
