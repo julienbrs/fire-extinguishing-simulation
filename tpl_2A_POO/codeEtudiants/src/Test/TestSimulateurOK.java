@@ -34,22 +34,20 @@ public class TestSimulateurOK {
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            PriorityQueue<Evenement> scenario = new PriorityQueue();
-            Simulateur simulateur = new Simulateur(gui, donnees, scenario, time);
+            Simulateur simulateur = new Simulateur(gui, donnees, time);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
             robot = robots.next();
 
+            DeplacementNord nord = new DeplacementNord((long) 1, robot, simulateur);
+            DeversementEau ext1 = new DeversementEau((long) 2, robot, 5000, simulateur);
+            DeplacementOuest ouest1 = new DeplacementOuest((long) 3, robot, simulateur);
+            DeplacementOuest ouest2 = new DeplacementOuest((long) 4, robot, simulateur);
+            RemplissageEau recharge = new RemplissageEau((long) 5, robot, simulateur);
+            DeplacementEst est1 = new DeplacementEst((long) 6, robot, simulateur);
+            DeplacementEst est2 = new DeplacementEst((long) 7, robot, simulateur);
+            DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur);
 
-            DeplacementNord nord = new DeplacementNord((long)1, robot);
-            DeversementEau ext1 = new DeversementEau((long)2, robot, 5000);
-            DeplacementOuest ouest1 = new DeplacementOuest((long)3, robot);
-            DeplacementOuest ouest2 = new DeplacementOuest((long)4, robot);
-            RemplissageEau recharge = new RemplissageEau((long)5, robot);
-            DeplacementEst est1 = new DeplacementEst((long)6, robot);
-            DeplacementEst est2 = new DeplacementEst((long)7, robot);
-            DeversementEau ext2 = new DeversementEau((long)8, robot, 5000);
-            
             simulateur.ajouteEvenement(nord);
             simulateur.ajouteEvenement(ext1);
             simulateur.ajouteEvenement(ouest1);
@@ -58,7 +56,6 @@ public class TestSimulateurOK {
             simulateur.ajouteEvenement(est1);
             simulateur.ajouteEvenement(est2);
             simulateur.ajouteEvenement(ext2);
-
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");

@@ -45,8 +45,7 @@ public class TestSimulateurBonus {
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            PriorityQueue<Evenement> scenario = new PriorityQueue();
-            Simulateur simulateur = new Simulateur(gui, donnees, scenario, time);
+            Simulateur simulateur = new Simulateur(gui, donnees, time);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
