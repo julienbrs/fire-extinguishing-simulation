@@ -41,7 +41,7 @@ Test:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/*.java
 
 testInvader:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
 testLecture:
 	javac -d bin -classpath bin -sourcepath src src/Test/TestLecteurDonnees.java
@@ -87,7 +87,7 @@ exeSimulateurOK: testSimulateurOK
 exeSimulateurBonus: testSimulateurBonus
 		java -classpath bin:bin/gui.jar Test/TestSimulateurBonus cartes/carteSimulation.map
 
-exeInvader:
+exeInvader: testInvader
 	java -classpath bin:bin/gui.jar Test/TestInvader
 
 exeLecture:

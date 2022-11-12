@@ -1,3 +1,5 @@
+package Test;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +10,6 @@ import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
 
-
 public class TestInvader {
     public static void main(String[] args) {
         // crée la fenêtre graphique dans laquelle dessiner
@@ -18,21 +19,20 @@ public class TestInvader {
     }
 }
 
-
 /**
  * Un mini-invader...
  * cet objet est associé à une fenêtre graphique GUISimulator, dans laquelle
  * il peut se dessiner.
- * De plus il hérite de Simulable, donc il définit deux méthodes next() et 
+ * De plus il hérite de Simulable, donc il définit deux méthodes next() et
  * restart() invoquées par la fenêtre graphique de simulation selon les
  * commandes entrées par l'utilisateur.
  */
 class Invader implements Simulable {
     /** L'interface graphique associée */
-    private GUISimulator gui;	
+    private GUISimulator gui;
 
     /** La couleur de dessin de l'invader */
-    private Color invaderColor;	
+    private Color invaderColor;
 
     /** Abcisse courante de l'invader (bord gauche) */
     private int x;
@@ -48,14 +48,15 @@ class Invader implements Simulable {
 
     /**
      * Crée un Invader et le dessine.
-     * @param gui l'interface graphique associée, dans laquelle se fera le
-     * dessin et qui enverra les messages via les méthodes héritées de
-     * Simulable.
+     * 
+     * @param gui   l'interface graphique associée, dans laquelle se fera le
+     *              dessin et qui enverra les messages via les méthodes héritées de
+     *              Simulable.
      * @param color la couleur de l'invader
      */
     public Invader(GUISimulator gui, Color invaderColor) {
         this.gui = gui;
-        gui.setSimulable(this);				// association a la gui!
+        gui.setSimulable(this); // association a la gui!
         this.invaderColor = invaderColor;
 
         planCoordinates();
@@ -63,7 +64,7 @@ class Invader implements Simulable {
     }
 
     /**
-     * Programme les déplacements de l'invader. 
+     * Programme les déplacements de l'invader.
      */
     private void planCoordinates() {
         // panel must be large enough... unchecked here!
@@ -98,15 +99,15 @@ class Invader implements Simulable {
         this.yIterator = yCoords.iterator();
         // current position
         this.x = xMin;
-        this.y = yMin;		
+        this.y = yMin;
     }
 
     @Override
     public void next() {
         if (this.xIterator.hasNext())
-            this.x = this.xIterator.next();		
+            this.x = this.xIterator.next();
         if (this.yIterator.hasNext())
-            this.y = this.yIterator.next();		
+            this.y = this.yIterator.next();
         draw();
     }
 
@@ -116,16 +117,15 @@ class Invader implements Simulable {
         draw();
     }
 
-
     /**
      * Dessine l'invader.
      */
     private void draw() {
-        gui.reset();	// clear the window
+        gui.reset(); // clear the window
 
-        gui.addGraphicalElement(new Rectangle(x + 30, y     , invaderColor, invaderColor, 10));
-        gui.addGraphicalElement(new Rectangle(x + 40, y     , invaderColor, invaderColor, 10));
-        gui.addGraphicalElement(new Rectangle(x + 50, y     , invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x + 30, y, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x + 40, y, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x + 50, y, invaderColor, invaderColor, 10));
 
         gui.addGraphicalElement(new Rectangle(x + 20, y + 10, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 30, y + 10, invaderColor, invaderColor, 10));
@@ -141,19 +141,19 @@ class Invader implements Simulable {
         gui.addGraphicalElement(new Rectangle(x + 60, y + 20, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 70, y + 20, invaderColor, invaderColor, 10));
 
-        gui.addGraphicalElement(new Rectangle(x     , y + 30, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x, y + 30, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 10, y + 30, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 40, y + 30, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 70, y + 30, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 80, y + 30, invaderColor, invaderColor, 10));
 
-        gui.addGraphicalElement(new Rectangle(x     , y + 40, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x, y + 40, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 10, y + 40, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 40, y + 40, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 70, y + 40, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 80, y + 40, invaderColor, invaderColor, 10));
 
-        gui.addGraphicalElement(new Rectangle(x     , y + 50, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x, y + 50, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 10, y + 50, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 20, y + 50, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 30, y + 50, invaderColor, invaderColor, 10));
@@ -185,7 +185,7 @@ class Invader implements Simulable {
         gui.addGraphicalElement(new Rectangle(x + 60, y + 80, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 70, y + 80, invaderColor, invaderColor, 10));
 
-        gui.addGraphicalElement(new Rectangle(x     , y + 90, invaderColor, invaderColor, 10));
+        gui.addGraphicalElement(new Rectangle(x, y + 90, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 20, y + 90, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 60, y + 90, invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 80, y + 90, invaderColor, invaderColor, 10));
