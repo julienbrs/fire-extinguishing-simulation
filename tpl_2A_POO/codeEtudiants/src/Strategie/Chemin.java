@@ -7,10 +7,12 @@ import java.util.Iterator;
 import Carte.Case;
 
 public class Chemin {
+    private Robot robot;
     private LinkedList<Case> chemin;
     private HashMap<Case, Double> couts;
 
-    public Chemin() {
+    public Chemin(Robot robot) {
+        this.robot = robot;
         this.chemin = new LinkedList<Case>();
         this.couts = new HashMap<Case, Double>();
     }

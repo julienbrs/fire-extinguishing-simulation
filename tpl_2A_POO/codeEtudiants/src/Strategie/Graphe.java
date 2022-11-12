@@ -35,7 +35,7 @@ public class Graphe {
         int nbColonnes = this.carte.getNbColonnes();
         int nbElements = nbLignes * nbColonnes;
         Case prev[][] = new Case[nbLignes][nbColonnes];
-        Chemin chemin = new Chemin();
+        Chemin chemin = new Chemin(robot);
 
         CaseComparator comparator = new CaseComparator(nbLignes, nbColonnes);
 

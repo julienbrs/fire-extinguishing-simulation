@@ -35,6 +35,8 @@ Carte:
 	javac -d bin -classpath bin -sourcepath src src/Carte/*.java
 Strategie:
 	javac -d bin -classpath bin -sourcepath src src/Strategie/*.java
+Events:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Events/*.java
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 

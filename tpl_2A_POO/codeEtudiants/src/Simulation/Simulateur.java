@@ -40,6 +40,10 @@ public class Simulateur implements Simulable {
         this.draw();
     }
 
+    public long getDateCourante() {
+        return this.dateSimulation;
+    }
+
     public void ajouteEvenement(Evenement e) {
         scenario.add(e);
     }
@@ -52,7 +56,7 @@ public class Simulateur implements Simulable {
         }
     }
 
-    boolean simulationTerminee() {
+    public boolean simulationTerminee() {
         if (scenario.peek() == null) {
             return true;
         }
