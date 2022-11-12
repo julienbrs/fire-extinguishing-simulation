@@ -6,10 +6,11 @@ import Simulation.DonneesSimulation;
 
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
-
+    static int volumeEauMax = (int)Double.POSITIVE_INFINITY;
     public Pattes(Case position, DonneesSimulation donnees)
             throws VitesseIncorrectException {
         super(position, 0, vitesseDefaut, donnees);
+        this.volumeEau = volumeEauMax;
         this.type = TypeRobot.PATTES;
         if (vitesse < 0) {
             throw new VitesseIncorrectException(

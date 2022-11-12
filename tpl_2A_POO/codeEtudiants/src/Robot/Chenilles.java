@@ -10,11 +10,12 @@ public class Chenilles extends Robot {
     static double vitesseMax = 80;
     static int volumeEauMax = 2000;
 
-    public Chenilles(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
+    public Chenilles(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException
 
     {
-        super(position, volumeEau, vitesse, donnees);
+        super(position,0, vitesse, donnees);
+        this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.CHENILLES;
         if (vitesse < 0) {
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");

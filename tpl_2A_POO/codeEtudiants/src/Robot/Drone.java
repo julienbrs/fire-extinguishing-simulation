@@ -9,9 +9,10 @@ public class Drone extends Robot {
     static double vitesseMax = 150;
     static int volumeEauMax = 10000;
 
-    public Drone(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
+    public Drone(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException {
-        super(position, volumeEau, vitesse, donnees);
+        super(position, 0, vitesse, donnees);
+        this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.DRONE;
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");

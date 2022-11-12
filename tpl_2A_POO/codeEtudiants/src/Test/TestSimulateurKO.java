@@ -17,7 +17,7 @@ import gui.GUISimulator;
 import gui.Simulable;
 import io.LecteurDonnees;
 
-public class TestSimulateur {
+public class TestSimulateurKO {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");

@@ -43,13 +43,15 @@ public abstract class Robot {
         switch (type) {
             case CHENILLES:
                 /* Volume d'eau temporairement à 0, changé dans le constructeur */
-                return new Chenilles(position, 0, vitesse, donnees);
+                /* Enlevé vitesse à 0, on suppose qu'on commence avec réservoir plein */
+                //todo à voir
+                return new Chenilles(position, vitesse, donnees);
             case DRONE:
                 // appeller le constructeur du robot drone
-                return new Drone(position, 0, vitesse, donnees);
+                return new Drone(position, vitesse, donnees);
             case ROUES:
                 // appeller le constructeur du robot roues
-                return new Roues(position, 0, vitesse, donnees);
+                return new Roues(position, vitesse, donnees);
             case PATTES:
                 // appeller le constructeur du robot pattes ( pas un copié-collé)
                 return new Pattes(position, donnees);
