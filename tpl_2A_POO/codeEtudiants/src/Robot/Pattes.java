@@ -1,30 +1,27 @@
 package Robot;
 
 import Carte.*;
-import Simulation.DonneesSimulation;
 import Exception.*;
+import Simulation.DonneesSimulation;
 
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
-
-    public Pattes(Case position, double vitesse, DonneesSimulation donnees)
-            throws VitesseIncorrectException
-    {
-        super(position, 0, vitesse, donnees);
+    static int volumeEauMax = (int)Double.POSITIVE_INFINITY;
+    public Pattes(Case position, DonneesSimulation donnees)
+            throws VitesseIncorrectException {
+        super(position, 0, vitesseDefaut, donnees);
+        this.volumeEau = volumeEauMax;
         this.type = TypeRobot.PATTES;
         if (vitesse < 0) {
-            throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
-        }
-        /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
-        if (Double.isNaN(vitesse)) {
-            this.vitesse = vitesseDefaut;
+            throw new VitesseIncorrectException(
+                    "La vitesse ne peut pas être négative");
         }
     }
 
     /**
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
      * Le parametre nature doit être non null.
-     * 
+     *
      * @param nature
      * @return double
      */
@@ -44,7 +41,6 @@ public class Pattes extends Robot {
                 // this should not happen
                 return Double.NaN;
         }
-
     }
 
     public boolean peutRemplir() {
@@ -62,5 +58,4 @@ public class Pattes extends Robot {
         if (incendie != null)
             incendie.decreaseIntensite(vol);
     }
-
 }

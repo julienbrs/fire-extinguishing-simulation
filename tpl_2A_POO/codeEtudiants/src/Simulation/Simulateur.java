@@ -1,7 +1,9 @@
 package Simulation;
 
 import java.awt.Color;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 import Robot.*;
 import Carte.*;
@@ -9,18 +11,52 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
+import Events.Evenement;
+
+class ComparatorEvenements implements Comparator<Evenement> {
+    public int compare(Evenement o1, Evenement o2) {
+
+        Evenement event1 = (Evenement) o1;
+        Evenement event2 = (Evenement) o2;
+
+        return Long.compare(event1.getDate(), event2.getDate());
+    }
+}
 
 public class Simulateur implements Simulable {
+    private long dateSimulation;
+    private PriorityQueue<Evenement> scenario;
     private GUISimulator gui;
     private DonneesSimulation donnees;
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees) {
+    public Simulateur(GUISimulator gui, DonneesSimulation donnees, PriorityQueue<Evenement> scenario,
+            long dateSimulation) {
         this.gui = gui;
         gui.setSimulable(this);
         this.donnees = donnees;
-
+        this.dateSimulation = dateSimulation;
+        this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         // Initialisation des couleurs
         this.draw();
+    }
+
+    public void ajouteEvenement(Evenement e) {
+        scenario.add(e);
+    }
+
+    void incrementeDate() {
+        dateSimulation++;
+        while (scenario.peek() != null && dateSimulation >= scenario.peek().getDate()) {
+            // poll : récupère et supprime la tete de la queue
+            scenario.poll().execute();
+        }
+    }
+
+    boolean simulationTerminee() {
+        if (scenario.peek() == null) {
+            return true;
+        }
+        return false;
     }
 
     private Color NatureTerrainToColor(NatureTerrain nature) {
@@ -123,8 +159,14 @@ public class Simulateur implements Simulable {
         }
     }
 
+    public DonneesSimulation getDonnees() {
+        return this.donnees;
+    }
+
     @Override
     public void next() {
+        if (!simulationTerminee())
+            incrementeDate();
         draw();
     }
 

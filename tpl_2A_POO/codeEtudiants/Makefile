@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture io Simulation Robot Carte Strategie 
+all: testInvader testLecture io Simulation Robot Carte Strategie
 
 Exception:
 	javac -d bin -classpath bin -sourcepath src src/Exception/*.java
@@ -43,8 +43,13 @@ testLecture:
 
 testRobots:
 	javac -d bin -classpath bin -sourcepath src src/Test/TestRobots.java
-testSimulateur:
-	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateur.java
+testSimulateurKO:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurKO.java
+testSimulateurOK:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurOK.java
+testSimulateurBonus:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurBonus.java
+
 
 testDjikstra:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
@@ -60,6 +65,16 @@ exeDjikstra: testDjikstra
 
 exeSimulateur: testSimulateur
 	java -classpath bin:bin/gui.jar Test/TestSimulateur cartes/carteSimulation.map
+
+exeSimulateurKO: testSimulateurKO
+		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
+
+exeSimulateurOK: testSimulateurOK
+		java -classpath bin:bin/gui.jar Test/TestSimulateurOK cartes/carteSimulation.map
+
+exeSimulateurBonus: testSimulateurBonus
+		java -classpath bin:bin/gui.jar Test/TestSimulateurBonus cartes/carteSimulation.map
+
 exeInvader:
 	java -classpath bin:bin/gui.jar Test/TestInvader
 

@@ -2,17 +2,22 @@ package Test;
 
 import Simulation.Simulateur;
 import Simulation.DonneesSimulation;
+import Events.*;
+import Robot.*;
+import Carte.*;
 
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 
 import java.awt.Color;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 import gui.GUISimulator;
 import gui.Simulable;
 import io.LecteurDonnees;
 
-public class TestSimulateur {
+public class TestSimulateurKO {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -28,7 +33,25 @@ public class TestSimulateur {
             System.out.println(
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
-            Simulable simulateur = new Simulateur(gui, donnees);
+            long time = 0;
+            PriorityQueue<Evenement> scenario = new PriorityQueue();
+            Simulateur simulateur = new Simulateur(gui, donnees, scenario, time);
+            Iterator<Robot> robots = donnees.getRobots();
+            Robot robot = robots.next();
+
+            long un = 1;
+            long deux = 2;
+            long trois = 3;
+            long quatre = 4;
+
+            DeplacementNord nord1 = new DeplacementNord(un, robot);
+            DeplacementNord nord2 = new DeplacementNord(deux, robot);
+            DeplacementNord nord3 = new DeplacementNord(trois, robot);
+            DeplacementNord nord4 = new DeplacementNord(quatre, robot);
+            simulateur.ajouteEvenement(nord1);
+            simulateur.ajouteEvenement(nord2);
+            simulateur.ajouteEvenement(nord3);
+            simulateur.ajouteEvenement(nord4);
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");

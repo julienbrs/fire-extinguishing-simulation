@@ -8,9 +8,10 @@ public class Roues extends Robot {
     static double vitesseDefaut = 80;
     static int volumeEauMax = 5000;
 
-    public Roues(Case position, int volumeEau, double vitesse, DonneesSimulation donnees)
+    public Roues(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException {
-        super(position, volumeEau, vitesse, donnees);
+        super(position, 0, vitesse, donnees);
+        this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.ROUES;
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
