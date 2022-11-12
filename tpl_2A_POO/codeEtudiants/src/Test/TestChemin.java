@@ -41,7 +41,7 @@ public class TestChemin {
             Robot robot = robots.next();
 
             Graphe g = new Graphe(donnees.getCarte());
-            Chemin chemin = g.Dijkstra(robot.getPosition(), donnees.getCarte().getCase(5, 0), robot);
+            Chemin chemin = g.cheminRemplir(robot);
             chemin.cheminToEvent(simulateur);
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");

@@ -20,6 +20,14 @@ public class Graphe {
         this.carte = carte;
     }
 
+    public Chemin cheminDestination(Case source, Case destination, Robot robot) {
+        return this.Dijkstra(source, destination, robot, false);
+    }
+
+    public Chemin cheminRemplir(Robot robot) {
+        return this.Dijkstra(robot.getPosition(), null, robot, true);
+    }
+
     private double Edges(Robot robot, Case source, Case destination) {
 
         // todo vitesse in km/h and time in ????
@@ -31,7 +39,7 @@ public class Graphe {
         return res;
     }
 
-    public Chemin Dijkstra(Case source, Case destination, Robot robot) {
+    private Chemin Dijkstra(Case source, Case destination, Robot robot, boolean chercheEau) {
         int nbLignes = this.carte.getNbLignes();
         int nbColonnes = this.carte.getNbColonnes();
         int nbElements = nbLignes * nbColonnes;
@@ -68,10 +76,9 @@ public class Graphe {
             // We get the min (head cause min-priority queue)
             caseCourante = queue.poll();
 
-            if (caseCourante == destination) {
-                Case prec = destination;
-
-                if (prev[destination.getLigne()][destination.getColonne()] != null || destination == source) {
+            if ((!chercheEau && caseCourante == destination) || (chercheEau && robot.peutRemplir(caseCourante))) {
+                Case prec = caseCourante;
+                if (prev[caseCourante.getLigne()][caseCourante.getColonne()] != null || caseCourante == source) {
                     while (prec != null) {
                         chemin.add(prec, comparator.getCout(prec));
                         prec = prev[prec.getLigne()][prec.getColonne()];
