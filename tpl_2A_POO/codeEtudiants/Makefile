@@ -34,7 +34,7 @@ Robot:
 Carte:
 	javac -d bin -classpath bin -sourcepath src src/Carte/*.java
 Strategie:
-	javac -d bin -classpath bin -sourcepath src src/Strategie/*.java
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Strategie/*.java
 Events:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Events/*.java
 testInvader:
@@ -45,6 +45,10 @@ testLecture:
 
 testRobots:
 	javac -d bin -classpath bin -sourcepath src src/Test/TestRobots.java
+
+testChemin:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestChemin.java
+
 testSimulateurKO:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurKO.java
 testSimulateurOK:
@@ -64,6 +68,9 @@ testDjikstra:
 #   > make exeInvader
 exeDjikstra: testDjikstra
 	java -classpath bin:bin/gui.jar Test/TestDjikstra cartes/mushroomOfHell-20x20.map
+
+exeChemin: testChemin
+	java -classpath bin:bin/gui.jar Test/TestChemin cartes/carteChenilles.map
 
 exeSimulateur: testSimulateur
 	java -classpath bin:bin/gui.jar Test/TestSimulateur cartes/carteSimulation.map
