@@ -43,11 +43,12 @@ public class LecteurDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * 
      * @param fichierDonnees Nom du fichier à lire
+     * @return {@link DonneesSimulation} lues
      */
     public static DonneesSimulation creeDonneesSimulation(String fichierDonnees)
             throws FileNotFoundException, DataFormatException {
 
-        DonneesSimulation donnees = new DonneesSimulation();
+        DonneesSimulation donnees = new DonneesSimulation(fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.creeCarte(donnees);
         donnees.setCarte(carte);
