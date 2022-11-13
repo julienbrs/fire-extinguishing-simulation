@@ -83,7 +83,7 @@ public class Roues extends Robot {
 
     public void remplirReservoir() throws TerrainIncorrectException {
         if (peutRemplir()) {
-            this.setVolumeEau(volumeEauMax);
+            this.volumeEau = volumeEauMax;
         } else {
             throw new TerrainIncorrectException("Il n'y a pas d'eau autour du robot");
         }
