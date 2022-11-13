@@ -35,15 +35,7 @@ public class TestSimulation {
             Robot robot = robots.next();
             Iterator<Incendie> incendies = donnees.getIncendies();
             Incendie incendie;
-            while (incendies.hasNext()) {
-                System.out.println(robot.isDisponible());
-                if (robot.isDisponible()) {
-                    System.out.println("QUANTE VOLTE ENTRO QUA?");
-                    incendie = incendies.next();
-                    robot.affecteIncendie(incendie);
-                    robot.nextStep(simulateur);
-                }
-            }
+
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

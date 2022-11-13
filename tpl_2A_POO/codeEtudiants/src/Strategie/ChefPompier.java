@@ -43,7 +43,7 @@ public class ChefPompier {
         if (this.incendiesNonAffectes.isEmpty())
             return true;
         // /* On récupère le premier incendie */
-        Incendie incendie = this.incendiesNonAffectes.poll();
+        Incendie incendie = this.incendiesNonAffectes.peek();
 
         /* Robots qui peuvent pas atteindre incendie */
         Queue<Robot> robotsInvalides = new LinkedList<Robot>();
@@ -63,6 +63,7 @@ public class ChefPompier {
             /* Aucun robot existe qui peut l'éteindre */
             if (this.robotsAffectes.isEmpty()) {
                 // On ignore l'incendie
+                this.incendiesNonAffectes.poll();
                 return true;
             }
             /* On remet les robots parcourus dans la liste non affectées */
@@ -72,7 +73,10 @@ public class ChefPompier {
         }
 
         /* Sinon, il a été affecté */
+        this.robotsAffectes.add(robot);
+        incendie = this.incendiesNonAffectes.poll();
         this.incendiesAffectes.add(incendie);
+        robot.nextStep(simulation);
         return true;
 
     }
@@ -80,10 +84,32 @@ public class ChefPompier {
     private void checkRobotsAffectes() {
         Queue<Robot> tempQueue = new LinkedList<Robot>();
         Robot robot = this.robotsAffectes.poll();
-        while(this.robotsNonAffectes.)
+        while (robot != null) {
+            System.out.println("WE HERE");
+
+            if (robot.isDisponible()) {
+                this.robotsNonAffectes.add(robot);
+            } else {
+                tempQueue.add(robot);
+            }
+
+            robot = this.robotsAffectes.poll();
+        }
+        this.robotsAffectes = tempQueue;
     }
 
     public void affecteIncendies() {
+        this.checkRobotsAffectes();
 
+        Queue<Incendie> tmpQueue = new LinkedList<Incendie>();
+        boolean affected = true;
+        while (!this.incendiesNonAffectes.isEmpty()) {
+            affected = this.affecteRobotIncendie();
+            /* Si il a pas été affecté, il est toujours dans nonAffectes */
+            if (!affected) {
+                tmpQueue.add(this.incendiesNonAffectes.poll());
+            }
+        }
+        this.incendiesNonAffectes = tmpQueue;
     }
 }

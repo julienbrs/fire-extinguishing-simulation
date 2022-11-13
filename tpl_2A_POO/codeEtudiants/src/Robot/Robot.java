@@ -43,8 +43,7 @@ public abstract class Robot {
     }
 
     public boolean affecteIncendie(Incendie incendie) {
-        // todo
-        // si il a deja un incendie, throw exception?
+        /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
             Graphe graphe = new Graphe(this.donnees.getCarte());
             Chemin chemin = graphe.cheminDestination(this.position, incendie.getPosition(), this);
@@ -52,12 +51,11 @@ public abstract class Robot {
             /* Si il existe un chemin, on accepte */
             if (chemin != null) {
                 this.incendie = incendie;
-                chemin.cheminToEvent(null);
                 return true;
             }
         }
+        // Sinon false
         return false;
-        // rajouter dans chemin l'ajout de DebutDeplacement et FinDeplacement
     }
 
     private void stepRemplir(Simulateur simulateur) {
@@ -74,8 +72,6 @@ public abstract class Robot {
         // Pas besoin de check volumeEau >= interventionUnitaire car son multiple
         while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
             eauVerse += this.interventionUnitaire;
-            System.out.println(eauVerse);
-            System.out.println(this.volumeEau);
             dateCumule += this.tempsInterventionUnitaire;
             simulateur.ajouteEvenement(new DeversementEau(dateCumule, this, this.interventionUnitaire, simulateur));
         }
@@ -115,7 +111,7 @@ public abstract class Robot {
                 return;
             }
         }
-        System.out.println("Je ne devrais pas arriver ici");
+
         /* Volume eau pas vide, et pas d'incendie affecté */
         this.disponible = true;
         return;
@@ -202,7 +198,6 @@ public abstract class Robot {
      * @throws TerrainIncorrectException
      */
     private void setPosition(Case positionCase) throws TerrainIncorrectException {
-        System.out.println(this.canMove(positionCase));
         if (!this.canMove(positionCase)) {
             System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
         } else {
