@@ -6,7 +6,8 @@ import Simulation.DonneesSimulation;
 
 public class Pattes extends Robot {
     static double vitesseDefaut = 30;
-    static int volumeEauMax = (int)Double.POSITIVE_INFINITY;
+    static int volumeEauMax = (int) Double.POSITIVE_INFINITY;
+
     public Pattes(Case position, DonneesSimulation donnees)
             throws VitesseIncorrectException {
         super(position, 0, vitesseDefaut, donnees);
@@ -43,7 +44,7 @@ public class Pattes extends Robot {
         }
     }
 
-    public boolean peutRemplir() {
+    public boolean peutRemplir(Case position) {
         return false;
     }
 

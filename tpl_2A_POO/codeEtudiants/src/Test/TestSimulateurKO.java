@@ -34,8 +34,7 @@ public class TestSimulateurKO {
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            PriorityQueue<Evenement> scenario = new PriorityQueue();
-            Simulateur simulateur = new Simulateur(gui, donnees, scenario, time);
+            Simulateur simulateur = new Simulateur(gui, donnees, time);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
@@ -44,10 +43,10 @@ public class TestSimulateurKO {
             long trois = 3;
             long quatre = 4;
 
-            DeplacementNord nord1 = new DeplacementNord(un, robot);
-            DeplacementNord nord2 = new DeplacementNord(deux, robot);
-            DeplacementNord nord3 = new DeplacementNord(trois, robot);
-            DeplacementNord nord4 = new DeplacementNord(quatre, robot);
+            DeplacementNord nord1 = new DeplacementNord(un, robot, simulateur);
+            DeplacementNord nord2 = new DeplacementNord(deux, robot, simulateur);
+            DeplacementNord nord3 = new DeplacementNord(trois, robot, simulateur);
+            DeplacementNord nord4 = new DeplacementNord(quatre, robot, simulateur);
             simulateur.ajouteEvenement(nord1);
             simulateur.ajouteEvenement(nord2);
             simulateur.ajouteEvenement(nord3);

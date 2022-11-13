@@ -60,8 +60,8 @@ public class Drone extends Robot {
     }
 
     @Override
-    public boolean peutRemplir() {
-        return (this.position.getNature() == NatureTerrain.EAU);
+    public boolean peutRemplir(Case position) {
+        return (position.getNature() == NatureTerrain.EAU);
     }
 
     public void remplirReservoir() throws TerrainIncorrectException {

@@ -146,6 +146,34 @@ public class Carte {
         }
     }
 
+    /*
+     * Voisin DOIT etre un voisin de courante
+     * todo
+     * Rappel: lignes numeroté de 0 à nbLignes, haut en bas
+     */
+    public static Direction getDirection(Case courante, Case voisin) {
+        int ligCourante = courante.getLigne();
+        int colCourante = courante.getColonne();
+
+        int ligVoisin = voisin.getLigne();
+        int colVoisin = voisin.getColonne();
+
+        if (ligCourante < ligVoisin)
+            return Direction.SUD;
+        else if (ligCourante > ligVoisin)
+            return Direction.NORD;
+
+        // Ici ligCourante == ligVoisin car voisins
+        if (colCourante < colVoisin)
+            return Direction.EST;
+        else if (colCourante > colVoisin)
+            return Direction.OUEST;
+
+        return null;
+        // todo
+        // Courante == voisin
+    }
+
     public Iterator<Case> getVoisins(Case src) {
         ArrayList<Case> voisins = new ArrayList<Case>();
 

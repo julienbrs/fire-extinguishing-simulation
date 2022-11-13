@@ -1,5 +1,7 @@
 package Robot;
 
+import java.util.Iterator;
+
 import Carte.*;
 import Simulation.DonneesSimulation;
 import Exception.*;
@@ -60,22 +62,31 @@ public class Roues extends Robot {
     }
 
     @Override
-    public boolean peutRemplir() {
+    public boolean peutRemplir(Case position) {
         /* vérifie si une des cases alentours est de type eau */
-        for (Direction dir : Direction.values()) {
-            try {
-                Carte carte = this.donnees.getCarte();
-                Case caseVoisine = carte.getVoisin(this.position, dir);
+        // for (Direction dir : Direction.values()) {
+        // try {
+        // Carte carte = this.donnees.getCarte();
+        // Case caseVoisine = carte.getVoisin(this.position, dir);
 
-                if (caseVoisine.getNature() == NatureTerrain.EAU) {
-                    return true;
-                }
-            } catch (IllegalArgumentException e) {
-                /*
-                 * on ne fait rien, on continue la boucle, pour éviter de raise une erreur si on
-                 * est sur un bord
-                 */
-            }
+        // if (caseVoisine.getNature() == NatureTerrain.EAU) {
+        // return true;
+        // }
+        // } catch (IllegalArgumentException e) {
+        // /*
+        // * on ne fait rien, on continue la boucle, pour éviter de raise une erreur si
+        // on
+        // * est sur un bord
+        // */
+        // }
+        // }
+        Case voisin = null;
+        Carte carte = this.donnees.getCarte();
+        Iterator<Case> iterator = carte.getVoisins(position);
+        while (iterator.hasNext()) {
+            voisin = iterator.next();
+            if (voisin.getNature() == NatureTerrain.EAU)
+                return true;
         }
         return false;
 

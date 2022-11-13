@@ -1,6 +1,8 @@
 package Test;
 
 import Simulation.Simulateur;
+import Strategie.Chemin;
+import Strategie.Graphe;
 import Simulation.DonneesSimulation;
 import Events.*;
 import Robot.*;
@@ -17,7 +19,7 @@ import gui.GUISimulator;
 import gui.Simulable;
 import io.LecteurDonnees;
 
-public class TestSimulateurOK {
+public class TestChemin {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -37,26 +39,10 @@ public class TestSimulateurOK {
             Simulateur simulateur = new Simulateur(gui, donnees, time);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
-            robot = robots.next();
 
-            DeplacementNord nord = new DeplacementNord((long) 1, robot, simulateur);
-            DeversementEau ext1 = new DeversementEau((long) 2, robot, 5000, simulateur);
-            DeplacementOuest ouest1 = new DeplacementOuest((long) 3, robot, simulateur);
-            DeplacementOuest ouest2 = new DeplacementOuest((long) 4, robot, simulateur);
-            RemplissageEau recharge = new RemplissageEau((long) 5, robot, simulateur);
-            DeplacementEst est1 = new DeplacementEst((long) 6, robot, simulateur);
-            DeplacementEst est2 = new DeplacementEst((long) 7, robot, simulateur);
-            DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur);
-            
-            simulateur.ajouteEvenement(nord);
-            simulateur.ajouteEvenement(ext1);
-            simulateur.ajouteEvenement(ouest1);
-            simulateur.ajouteEvenement(ouest2);
-            simulateur.ajouteEvenement(recharge);
-            simulateur.ajouteEvenement(est1);
-            simulateur.ajouteEvenement(est2);
-            simulateur.ajouteEvenement(ext2);
-
+            Graphe g = new Graphe(donnees.getCarte());
+            Chemin chemin = g.cheminRemplir(robot);
+            chemin.cheminToEvent(simulateur);
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

@@ -29,8 +29,7 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees, PriorityQueue<Evenement> scenario,
-            long dateSimulation) {
+    public Simulateur(GUISimulator gui, DonneesSimulation donnees, long dateSimulation) {
         this.gui = gui;
         gui.setSimulable(this);
         this.donnees = donnees;
@@ -56,6 +55,8 @@ public class Simulateur implements Simulable {
         }
     }
 
+    // todo
+    // return just the condition
     public boolean simulationTerminee() {
         if (scenario.peek() == null) {
             return true;
