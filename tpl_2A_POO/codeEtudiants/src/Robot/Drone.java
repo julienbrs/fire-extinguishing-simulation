@@ -56,9 +56,7 @@ public class Drone extends Robot {
         // Check si incendie sur la case courante
         Incendie incendie = this.donnees.getIncendie(this.position);
         if (incendie != null) {
-            System.out.println("VOLUME EAU: " + this.volumeEau + "VOL DEVERSE " + vol + "reste :" + (volumeEau - vol));
             this.volumeEau -= vol;
-            System.out.println("Déversement d'eau sur l'incendie en " + this.position);
             incendie.decreaseIntensite(vol);
         }
     }

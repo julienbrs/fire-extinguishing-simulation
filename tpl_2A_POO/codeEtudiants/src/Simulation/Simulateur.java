@@ -162,7 +162,6 @@ public class Simulateur implements Simulable {
                         break;
                 }
                 if (incendie != null && !incendie.estEteint()) {
-                    System.out.println("DESSINE FEUU AAAA");
                     gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire.gif",
                             tailleCases, tailleCases, null));
                 }

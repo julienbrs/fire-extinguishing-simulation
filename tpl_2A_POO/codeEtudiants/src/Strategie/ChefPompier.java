@@ -89,8 +89,6 @@ public class ChefPompier {
         Queue<Robot> tempQueue = new LinkedList<Robot>();
         Robot robot = this.robotsAffectes.poll();
         while (robot != null) {
-            System.out.println("WE HERE");
-
             if (robot.isDisponible()) {
                 this.robotsNonAffectes.add(robot);
             } else {

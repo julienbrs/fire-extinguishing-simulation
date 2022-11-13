@@ -59,7 +59,6 @@ public class Roues extends Robot {
         Incendie incendie = this.donnees.getIncendie(this.position);
         if (incendie != null) {
             this.volumeEau -= vol;
-            System.out.println("Déversement d'eau sur l'incendie en " + this.position);
             incendie.decreaseIntensite(vol);
         }
     }

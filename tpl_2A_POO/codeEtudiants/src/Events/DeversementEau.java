@@ -23,10 +23,8 @@ public class DeversementEau extends Evenement {
 
             this.robot.deverserEau(this.volume);
 
-            if (incendie.estEteint() || this.robot.getVolumeEau() == 0) {
-                System.out.println("On a fini de remplir");
-                System.out.println(
-                        "Incendie eteint: " + incendie.estEteint() + "VOlume eau?" + this.robot.getVolumeEau());
+            /* Si il reste moins d'une interventionUnitaire */
+            if (incendie.estEteint() || this.robot.getVolumeEau() < volume) {
                 this.robot.checkIncendie();
                 this.simulateur.ajouteEvenement(new FinAction(0, robot, simulateur));
             } else {

@@ -9,7 +9,6 @@ public class FinAction extends Evenement {
     }
 
     public void execute() {
-        System.out.println("FIN ACTION PET");
         this.robot.nextStep(this.simulateur);
     }
 

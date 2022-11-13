@@ -84,7 +84,6 @@ public class Chenilles extends Robot {
         if (incendie != null) {
             this.volumeEau -= vol;
             /* on déverse l'eau sur la position du robot */
-            System.out.println("Déversement d'eau sur l'incendie en " + this.position);
             incendie.decreaseIntensite(vol);
         }
     }
