@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 
 import Robot.*;
+import Strategie.ChefPompier;
 import Carte.*;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
+import Events.AffectationIncendiesRobots;
 import Events.Evenement;
 
 class ComparatorEvenements implements Comparator<Evenement> {
@@ -28,6 +30,7 @@ public class Simulateur implements Simulable {
     private PriorityQueue<Evenement> scenario;
     private GUISimulator gui;
     private DonneesSimulation donnees;
+    private ChefPompier chef;
 
     public Simulateur(GUISimulator gui, DonneesSimulation donnees, long dateSimulation) {
         this.gui = gui;
@@ -35,8 +38,15 @@ public class Simulateur implements Simulable {
         this.donnees = donnees;
         this.dateSimulation = dateSimulation;
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
+        this.chef = new ChefPompier(this, this.donnees);
+        // todo 100?
+        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
         // Initialisation des couleurs
         this.draw();
+    }
+
+    public ChefPompier getChefPompier() {
+        return this.chef;
     }
 
     public long getDateCourante() {
@@ -151,7 +161,7 @@ public class Simulateur implements Simulable {
                                 NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
                         break;
                 }
-                if (incendie != null) {
+                if (incendie != null && incendie.getIntensite() > 0) {
                     gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire2.gif",
                             tailleCases, tailleCases, null));
                 }

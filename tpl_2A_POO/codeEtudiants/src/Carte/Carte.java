@@ -42,7 +42,7 @@ public class Carte {
 
     /**
      * Renvoie le nombre de lignes totales dans une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getNbLignes() {
@@ -51,7 +51,7 @@ public class Carte {
 
     /**
      * Renvoie le nombre de colonnes totales dans une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getNbColonnes() {
@@ -60,7 +60,7 @@ public class Carte {
 
     /**
      * Renvoie la taille des cases d'une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getTailleCases() {
@@ -69,7 +69,7 @@ public class Carte {
 
     /**
      * Renvoie la {@link Case} de la {@link Carte} à la position (lig, col).
-     * 
+     *
      * @param lig
      * @param col
      * @return Case
@@ -84,7 +84,7 @@ public class Carte {
      * {@link Case} donnée.
      * <p>
      * Jette {@link NullPointerException} si dir est null.
-     * 
+     *
      * @param src
      * @param dir
      * @return boolean
@@ -120,7 +120,7 @@ public class Carte {
      * Si inexistant, jette {@link IllegalArgumentException}.
      * <p>
      * Si dir est null, jette {@link NullPointerException}.
-     * 
+     *
      * @param src
      * @param dir
      * @return Case
@@ -150,7 +150,7 @@ public class Carte {
     /**
      * Renvoie la direction associée au déplacement {@Case} courante vers la
      * {@Case} voisin.
-     * 
+     *
      * @param courante
      * @param voisin
      * @return Direction
@@ -180,7 +180,7 @@ public class Carte {
 
     /**
      * Renvoie toute les {@link Case}s voisines existantes de src.
-     * 
+     *
      * @param src
      * @return Iterator<Case>
      */
@@ -205,7 +205,7 @@ public class Carte {
      * <p>
      * La superposition des éléments est telle que: {@link Robot} > {@link Incendie}
      * > élément décoratif de la {@link Case} (forêt, roche, etc..).
-     * 
+     *
      * @return String
      */
     @Override

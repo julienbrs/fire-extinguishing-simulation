@@ -40,7 +40,7 @@ public class TestDjikstra {
                 System.exit(1);
             }
             System.out.println(" test " + lig + col);
-            Chemin chemin = graphe.Dijkstra(robot.getPosition(), carte.getCase(lig, col), robot);
+            Chemin chemin = graphe.cheminDestination(robot.getPosition(), carte.getCase(lig, col), robot);
 
             Iterator<Case> iteratorChemin = chemin.getChemin();
             while (iteratorChemin.hasNext()) {

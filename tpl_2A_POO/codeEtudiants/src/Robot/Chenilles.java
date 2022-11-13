@@ -11,11 +11,15 @@ public class Chenilles extends Robot {
     static double vitesseMax = 80;
     static int volumeEauMax = 2000;
 
+    static int interventionUnitaire = 100;
+    static int tempsInterventionUnitaire = 8;
+    static int tempsRemplissage = 5 * 60;
+
     public Chenilles(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException
 
     {
-        super(position, 0, vitesse, donnees);
+        super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.CHENILLES;
         if (vitesse < 0) {
@@ -29,6 +33,7 @@ public class Chenilles extends Robot {
         if (Double.isNaN(vitesse)) {
             this.vitesse = vitesseDefaut;
         }
+
     }
 
     /**

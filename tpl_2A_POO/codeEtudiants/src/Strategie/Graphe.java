@@ -36,7 +36,7 @@ public class Graphe {
         res /= 2;
         res = carte.getTailleCases() / res;
 
-        return res;
+        return res * 3600;
     }
 
     private Chemin Dijkstra(Case source, Case destination, Robot robot, boolean chercheEau) {
@@ -104,7 +104,7 @@ public class Graphe {
             }
         }
         // On devrait pas arriver la
-        return chemin;
+        return null;
 
     }
 

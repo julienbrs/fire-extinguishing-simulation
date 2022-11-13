@@ -44,6 +44,9 @@ public class Chemin {
         Case caseCourante = iterator.next();
         Evenement evenement = null;
         long cout = 0;
+
+        simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));// <33333
+                                                                               // COUCOUUUUUUUUUUUUUUUUUUUUUUUUUUU
         while (iterator.hasNext()) {
             casePrecedente = caseCourante;
             caseCourante = iterator.next();
@@ -69,6 +72,7 @@ public class Chemin {
             }
             simulateur.ajouteEvenement(evenement);
         }
+        simulateur.ajouteEvenement(new FinAction(cout + 1, this.robot, simulateur));
 
     }
 
