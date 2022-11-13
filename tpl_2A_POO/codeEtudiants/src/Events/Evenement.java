@@ -8,8 +8,9 @@ public abstract class Evenement {
     protected Simulateur simulateur;
     protected Robot robot;
 
-    public Evenement(long date, Robot robot) {
-        this.date = date;
+    public Evenement(long date, Robot robot, Simulateur simulateur) {
+        this.simulateur = simulateur;
+        this.date = this.simulateur.getDateCourante() + date;
         this.robot = robot;
     }
 

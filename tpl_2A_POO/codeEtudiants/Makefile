@@ -33,6 +33,8 @@ Robot:
 	javac -d bin -classpath bin -sourcepath src src/Robot/*.java
 Carte:
 	javac -d bin -classpath bin -sourcepath src src/Carte/*.java
+Events:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Events/*.java
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test/TestInvader.java
 
