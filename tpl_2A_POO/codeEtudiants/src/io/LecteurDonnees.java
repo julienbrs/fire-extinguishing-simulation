@@ -241,9 +241,10 @@ public class LecteurDonnees {
 
     /**
      * Verifie qu'il n'y a plus rien a lire sur cette ligne (int ou float).
-     * Jette une erreur s'il y a trop de données sur une seule ligne.
+     * Jette {@link DataFormatException} s'il y a trop de données sur une même
+     * ligne.
      * 
-     * @throws ExceptionFormatDonnees
+     * @throws DataFormatException
      * @return void
      */
     private void verifieLigneTerminee() throws DataFormatException {

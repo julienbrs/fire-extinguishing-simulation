@@ -20,11 +20,12 @@ public abstract class Robot {
     protected TypeRobot type;
     protected DonneesSimulation donnees;
     protected boolean disponible;
-    // interventionUnitaire est un multiple de volume
+    // interventionUnitaire est un diviseur de volume
     protected int interventionUnitaire;
     protected int tempsInterventionUnitaire;
     protected int tempsRemplissage;
 
+    // todo à expliquer
     protected Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees, int interventionUnitaire,
             int tempsInterventionUnitaire, int tempsRemplissage) {
         this(position, volumeEau, vitesse, donnees);
@@ -33,6 +34,7 @@ public abstract class Robot {
         this.tempsRemplissage = tempsRemplissage;
     }
 
+    // todo à expliquer
     public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees) {
         this.position = position;
         this.volumeEau = volumeEau;
@@ -42,18 +44,39 @@ public abstract class Robot {
         this.disponible = true;
     }
 
+    /**
+     * Renvoie interventionUnitaireVolume du {@link Robot}, correspondant à un
+     * diviseur du volumeMaxRéservoir du {@link Robot}.
+     * 
+     * @return int
+     */
     public int getInterventionUnitaireVolume() {
         return this.interventionUnitaire;
     }
 
+    /**
+     * 
+     * 
+     * @return int
+     */
     public int getTempsInterventionUnitaire() {
         return this.tempsInterventionUnitaire;
     }
 
+    /**
+     * Renvoie le temps pour remplir le réservoir.
+     * 
+     * @return int
+     */
     public int getTempsRemplissage() {
         return this.tempsRemplissage;
     }
 
+    /**
+     * 
+     * @param incendie
+     * @return boolean
+     */
     public boolean affecteIncendie(Incendie incendie) {
         /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
@@ -70,6 +93,9 @@ public abstract class Robot {
         return false;
     }
 
+    /**
+     * @param simulateur
+     */
     private void stepRemplir(Simulateur simulateur) {
         simulateur.ajouteEvenement(new DebutAction(0, this, simulateur));
         simulateur.ajouteEvenement(new RemplissageEau(this.tempsRemplissage, this, simulateur));
@@ -82,6 +108,9 @@ public abstract class Robot {
         }
     }
 
+    /**
+     * @param simulateur
+     */
     private void stepEteindre(Simulateur simulateur) {
         int dateCumule = 0;
         int eauVerse = 0;
@@ -102,6 +131,9 @@ public abstract class Robot {
         // simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
     }
 
+    /**
+     * @param simulateur
+     */
     public void nextStep(Simulateur simulateur) {
         this.disponible = false;
         Graphe graphe = new Graphe(this.donnees.getCarte());
@@ -137,16 +169,26 @@ public abstract class Robot {
         return;
     }
 
+    /**
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public void eteinsIncendie(int vol) throws VolumeEauIncorrectException {
         if (this.incendie != null && this.incendie.getPosition() == this.position) {
             this.deverserEau(vol);
         }
     }
 
+    /**
+     * @param disponible
+     */
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean isDisponible() {
         return this.disponible;
     }
@@ -203,10 +245,17 @@ public abstract class Robot {
         return this.position;
     }
 
+    /**
+     * @return TypeRobot
+     */
     public TypeRobot getType() {
         return this.type;
     }
 
+    /**
+     * @param positionCase
+     * @return boolean
+     */
     public boolean canMove(Case positionCase) {
         return this.getVitesse((positionCase).getNature()) != 0;
     }
@@ -293,10 +342,16 @@ public abstract class Robot {
         this.vitesse = vitesse;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean peutRemplir() {
         return this.peutRemplir(this.position);
     }
 
+    /**
+     * @return double
+     */
     // ME TAPEZ PAS
     // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     // public DonneesSimulation getDonnees(){

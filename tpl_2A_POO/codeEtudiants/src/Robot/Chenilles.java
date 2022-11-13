@@ -65,6 +65,13 @@ public class Chenilles extends Robot {
     }
 
     /**
+     * Vérifie s'il y a bien un {@link Incendie} sur la case courante. Si oui, on
+     * diminue son intensité avec la méthode {@link Incendie#decreaseIntensite
+     * decreaseIntensite}.
+     * <p>
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau
+     * disponible est négatif.
+     * 
      * @param vol
      * @throws VolumeEauIncorrectException
      */
@@ -79,7 +86,7 @@ public class Chenilles extends Robot {
         if (vol > this.volumeEau) {
             vol = this.volumeEau;
         }
-        /* on regarde si la case est un incendie */
+        /* On regarde si la case est un incendie */
         Incendie incendie = this.donnees.getIncendie(this.position);
         if (incendie != null) {
             this.volumeEau -= vol;
@@ -89,42 +96,35 @@ public class Chenilles extends Robot {
     }
 
     /**
+     * Vérifie si le {@link Robot} peut remplir son réservoir d'eau.
+     * <p>
+     * Pour le robot {@link Chenilles}, on vérifie si l'une des cases voisines est
+     * de type EAU.
+     * 
      * @param position
      * @return boolean
      */
     @Override
     public boolean peutRemplir(Case position) {
-        /* variable si condition respectée ou non */
-        boolean peuxRemplir = false;
-        /* vérifie si une des cases alentours est de type eau */
-        // for (Direction dir : Direction.values()) {
-        // try {
-        // Carte carte = this.donnees.getCarte();
-        // Case caseVoisine = carte.getVoisin(this.position, dir);
-
-        // if (caseVoisine.getNature() == NatureTerrain.EAU) {
-        // peuxRemplir = true;
-        // }
-        // } catch (IllegalArgumentException e) {
-        // /*
-        // * on ne fait rien, on continue la boucle, pour éviter de raise une erreur si
-        // on
-        // * est sur un bord
-        // */
-        // }
-        // }
         Case voisin = null;
         Carte carte = this.donnees.getCarte();
         Iterator<Case> iterator = carte.getVoisins(position);
+        // On regarde si au moins une des cases voisines est de type eau
         while (iterator.hasNext()) {
             voisin = iterator.next();
             if (voisin.getNature() == NatureTerrain.EAU)
                 return true;
         }
-        return peuxRemplir;
+        return false;
     }
 
     /**
+     * Remplit complètement le réservoir du robot {@link Chenilles}.
+     * 
+     * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
+     * réservoir
+     * grâce à la méthode {@link #peutRemplir()}
+     * 
      * @throws TerrainIncorrectException
      */
     public void remplirReservoir() throws TerrainIncorrectException {

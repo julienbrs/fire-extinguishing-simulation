@@ -14,10 +14,20 @@ public class Incendie {
         this.donnees = donnees;
     }
 
+    /**
+     * Regarde si le feux est éteint, si oui renvoie true.
+     * 
+     * @return boolean
+     */
     public boolean estEteint() {
         return this.intensite <= 0;
     }
 
+    /**
+     * Renvoie la {@link Case} où se situe l' {@link Incendie}.
+     * 
+     * @return Case
+     */
     public Case getPosition() {
         return this.position;
     }
