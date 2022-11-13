@@ -50,7 +50,6 @@ public class Chemin {
         while (iterator.hasNext()) {
             casePrecedente = caseCourante;
             caseCourante = iterator.next();
-            System.out.println(caseCourante);
             cout = (long) Math.ceil(this.getCout(caseCourante));
             Direction dir = Carte.getDirection(casePrecedente, caseCourante);
 
