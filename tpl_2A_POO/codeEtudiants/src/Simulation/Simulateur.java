@@ -89,8 +89,12 @@ public class Simulateur implements Simulable {
                 gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/pattes.gif",
                         tailleCases, tailleCases, null));
                 break;
+            case CHENILLES:
+                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/tracks.gif",
+                        tailleCases, tailleCases, null));
+                break;
             default:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/robobo.gif",
+                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/wheel.gif",
                         tailleCases, tailleCases, null));
                 break;
         }
