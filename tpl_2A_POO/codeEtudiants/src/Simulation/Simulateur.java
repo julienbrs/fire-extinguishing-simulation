@@ -92,21 +92,33 @@ public class Simulateur implements Simulable {
     }
 
     private void drawRobot(Robot robot, int tailleCases, GUISimulator gui) {
+        Carte carte = this.donnees.getCarte();
         Case caseRobot = robot.getPosition();
+        int centerCol = (carte.getNbColonnes() - 1) * carte.getTailleCases();
+
         int lig = caseRobot.getLigne();
         int col = caseRobot.getColonne();
         switch (robot.getType()) {
             case DRONE:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/drone.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(centerCol + (col - lig) * tailleCases,
+                                (col + lig) * tailleCases / 2,
+                                "assets/drone.gif",
+                                tailleCases, tailleCases, null));
                 break;
             case PATTES:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/pattes.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(centerCol + (col - lig) * tailleCases,
+                                (col + lig) * tailleCases / 2,
+                                "assets/pattes.gif",
+                                tailleCases, tailleCases, null));
                 break;
             default:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/robobo.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(centerCol + (col - lig) * tailleCases,
+                                (col + lig) * tailleCases / 2,
+                                "assets/robobo.gif",
+                                tailleCases, tailleCases, null));
                 break;
         }
     }
@@ -114,6 +126,7 @@ public class Simulateur implements Simulable {
     private void draw() {
         gui.reset(); // clear window
         Carte carte = donnees.getCarte();
+        int centerCol = (carte.getNbColonnes() - 1) * carte.getTailleCases();
         Case caseCourante = null;
         int tailleCases = carte.getTailleCases();
         Incendie incendie = null;
@@ -127,42 +140,57 @@ public class Simulateur implements Simulable {
                 switch (nature) {
                     case TERRAIN_LIBRE:
                         // drawTerrainLibre(caseCourante, tailleCases, gui);
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/grass.png", tailleCases * 2, tailleCases, null));
                         break;
                     case ROCHE:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/rock.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/grass.png", tailleCases * 2, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/dirt.png", tailleCases * 2, tailleCases, null));
                         break;
                     case EAU:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/water2.gif", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/water.png", tailleCases * 2, tailleCases, null));
                         break;
                     case HABITAT:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/habitat2.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/road.png", tailleCases * 2, tailleCases, null));
                         break;
                     case FORET:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/forest.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/forest.png", tailleCases * 2, tailleCases, null));
+                        // gui.addGraphicalElement(new ImageElement((col + lig) *tailleCases/2, (col +
+                        // lig) *
+                        // tailleCases,
+                        // "assets/forest.png", tailleCases*2, tailleCases*2, null));
                         break;
                     default:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/fire2.gif", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new Rectangle(tailleCases / 2 + col * carte.getTailleCases(),
-                                tailleCases / 2 + lig * carte.getTailleCases(),
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases, (col + lig) * tailleCases / 2,
+                                        "assets2/fire.gif", tailleCases * 2, tailleCases * 2, null));
+                        gui.addGraphicalElement(new Rectangle(tailleCases / 2 + (col + lig) * carte.getTailleCases(),
+                                tailleCases / 2 + (col + lig) * carte.getTailleCases(),
                                 NatureTerrainToColor(caseCourante.getNature()),
                                 NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
                         break;
                 }
                 if (incendie != null && !incendie.estEteint()) {
-                    gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire.gif",
+                    gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
+                            (col + lig) * tailleCases / 2 - tailleCases / 4,
+                            "assets/fire.gif",
                             tailleCases, tailleCases, null));
                 }
             }
