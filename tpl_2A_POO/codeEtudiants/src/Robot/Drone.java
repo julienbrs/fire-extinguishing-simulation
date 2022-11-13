@@ -8,10 +8,13 @@ public class Drone extends Robot {
     static double vitesseDefaut = 100;
     static double vitesseMax = 150;
     static int volumeEauMax = 10000;
+    static int interventionUnitaire = volumeEauMax;
+    static int tempsInterventionUnitaire = 30;
+    static int tempsRemplissage = 30 * 60;
 
     public Drone(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException {
-        super(position, 0, vitesse, donnees);
+        super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.DRONE;
         if (vitesse < 0)
@@ -53,6 +56,7 @@ public class Drone extends Robot {
         // Check si incendie sur la case courante
         Incendie incendie = this.donnees.getIncendie(this.position);
         if (incendie != null) {
+            System.out.println("VOLUME EAU: " + this.volumeEau + "VOL DEVERSE " + vol + "reste :" + (volumeEau - vol));
             this.volumeEau -= vol;
             System.out.println("Déversement d'eau sur l'incendie en " + this.position);
             incendie.decreaseIntensite(vol);

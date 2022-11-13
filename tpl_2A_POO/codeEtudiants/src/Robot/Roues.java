@@ -9,10 +9,13 @@ import Exception.*;
 public class Roues extends Robot {
     static double vitesseDefaut = 80;
     static int volumeEauMax = 5000;
+    static int interventionUnitaire = 100;
+    static int tempsInterventionUnitaire = 5;
+    static int tempsRemplissage = 10 * 60;
 
     public Roues(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException {
-        super(position, 0, vitesse, donnees);
+        super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = this.volumeEauMax;
         this.type = TypeRobot.ROUES;
         if (vitesse < 0)
