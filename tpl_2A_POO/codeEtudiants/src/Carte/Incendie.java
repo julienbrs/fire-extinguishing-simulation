@@ -22,24 +22,46 @@ public class Incendie {
         return this.position;
     }
 
+    /**
+     * Renvoie l'intensité de l' {@link Incendie}.
+     * <p>
+     * L'intensité correspond au volume d'eau nécessaire pour éteindre l'incendie.
+     *
+     * @return double
+     */
     public double getIntensite() {
         return this.intensite;
     }
 
-    // I imagine we have to decrease the fire
-    // intensity to slowly put it out
+    /**
+     * Définit l'intensité de l' {@link Incendie}.
+     *
+     * @param intensite
+     */
     public void setIntensite(double intensite) {
         this.intensite = intensite;
     }
 
+    /**
+     * Diminue l'intensité de l' {@link Incendie}.
+     * <p>
+     *
+     * @param vol
+     */
     public void decreaseIntensite(double vol) {
         this.intensite -= vol;
-        // if (this.intensite <= 0)
+        // if (this.intensite <= 0) todo remove
         // {this.donnees.removeIncendie(this.position);}
 
     }
 
-    // Pour debug
+    /**
+     * toString() de l' {@link Incendie}, affichant sa position (ligne, colonne) et
+     * son intensité.
+     *
+     * @return String
+     */
+    // Pour debug todo
     @Override
     public String toString() {
         return "(lig: " + position.getLigne() + " col: "

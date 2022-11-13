@@ -161,8 +161,9 @@ public class Simulateur implements Simulable {
                                 NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
                         break;
                 }
-                if (incendie != null && incendie.getIntensite() > 0) {
-                    gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire2.gif",
+                if (incendie != null && !incendie.estEteint()) {
+                    System.out.println("DESSINE FEUU AAAA");
+                    gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire.gif",
                             tailleCases, tailleCases, null));
                 }
             }
@@ -187,6 +188,11 @@ public class Simulateur implements Simulable {
 
     @Override
     public void restart() {
+        this.donnees.resetDonnees();
+        this.dateSimulation = 0;
+        this.chef = new ChefPompier(this, this.donnees);
+        this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
+        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
         draw();
     }
 }

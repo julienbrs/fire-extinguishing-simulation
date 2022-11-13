@@ -6,10 +6,14 @@ import Carte.Incendie;
 import Exception.*;
 import Robot.Robot;
 import Robot.TypeRobot;
+import io.LecteurDonnees;
+
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.zip.DataFormatException;
 
 // For now we don't need anything
 // Will have to check how to display 
@@ -18,10 +22,26 @@ public class DonneesSimulation {
     private Carte carte;
     private HashMap<Case, Incendie> incendies;
     private LinkedList<Robot> robots;
+    private String fichierDonnees;
 
-    public DonneesSimulation() {
+    public DonneesSimulation(String fichierDonnees) {
         this.incendies = new HashMap<Case, Incendie>();
         this.robots = new LinkedList<Robot>();
+        this.fichierDonnees = fichierDonnees;
+    }
+
+    public void resetDonnees() {
+        try {
+            DonneesSimulation nouvellesDonnees = LecteurDonnees.creeDonneesSimulation(this.fichierDonnees);
+            this.incendies = nouvellesDonnees.incendies;
+            this.carte = nouvellesDonnees.carte;
+            this.robots = nouvellesDonnees.robots;
+        } catch (FileNotFoundException e) {
+            System.out.println("fichier " + this.fichierDonnees + " inconnu ou illisible");
+        } catch (DataFormatException e) {
+            System.out.println("\n\t**format du fichier " + this.fichierDonnees + " invalide: " + e.getMessage());
+        }
+
     }
 
     /**
@@ -29,7 +49,6 @@ public class DonneesSimulation {
      * 
      * @return Carte
      */
-    // Possibly temporary method for testing
     public Carte getCarte() {
         return this.carte;
     }

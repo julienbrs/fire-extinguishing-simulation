@@ -42,6 +42,8 @@ public class Case {
     }
 
     /**
+     * toString() d'une case, affichant ses attributs {ligne, colonne, nature}.
+     * 
      * @return String
      */
     @Override
