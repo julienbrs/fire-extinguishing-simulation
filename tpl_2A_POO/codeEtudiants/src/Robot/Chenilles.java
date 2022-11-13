@@ -64,6 +64,10 @@ public class Chenilles extends Robot {
         }
     }
 
+    /**
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public void deverserEau(int vol) throws VolumeEauIncorrectException {
         if (vol < 0) {
             throw new VolumeEauIncorrectException("Le volume d'eau ne peut pas être négatif");
@@ -85,6 +89,10 @@ public class Chenilles extends Robot {
         }
     }
 
+    /**
+     * @param position
+     * @return boolean
+     */
     @Override
     public boolean peutRemplir(Case position) {
         /* variable si condition respectée ou non */
@@ -117,6 +125,9 @@ public class Chenilles extends Robot {
         return peuxRemplir;
     }
 
+    /**
+     * @throws TerrainIncorrectException
+     */
     public void remplirReservoir() throws TerrainIncorrectException {
         if (!this.peutRemplir()) {
             throw new TerrainIncorrectException("Il n'y a pas d'eau autour du robot");
