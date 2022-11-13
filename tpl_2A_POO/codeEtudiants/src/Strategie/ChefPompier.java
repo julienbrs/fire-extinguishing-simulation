@@ -45,6 +45,10 @@ public class ChefPompier {
         // /* On récupère le premier incendie */
         Incendie incendie = this.incendiesNonAffectes.peek();
 
+        if (incendie.estEteint()) {
+            this.incendiesNonAffectes.poll();
+            return true;
+        }
         /* Robots qui peuvent pas atteindre incendie */
         Queue<Robot> robotsInvalides = new LinkedList<Robot>();
 
@@ -100,16 +104,21 @@ public class ChefPompier {
 
     public void affecteIncendies() {
         this.checkRobotsAffectes();
-
+        if (this.incendiesNonAffectes.isEmpty()) {
+            this.incendiesNonAffectes.addAll(this.incendiesAffectes);
+            this.incendiesAffectes = new LinkedList<Incendie>();
+        }
         Queue<Incendie> tmpQueue = new LinkedList<Incendie>();
         boolean affected = true;
-        while (!this.incendiesNonAffectes.isEmpty()) {
+        /* Pendant qu'il reste des incendies ou des robots */
+        while (!this.incendiesNonAffectes.isEmpty() && !this.robotsNonAffectes.isEmpty()) {
             affected = this.affecteRobotIncendie();
             /* Si il a pas été affecté, il est toujours dans nonAffectes */
             if (!affected) {
                 tmpQueue.add(this.incendiesNonAffectes.poll());
             }
         }
-        this.incendiesNonAffectes = tmpQueue;
+        /* On rajoute tous les incendies non affectées */
+        this.incendiesNonAffectes.addAll(tmpQueue);
     }
 }

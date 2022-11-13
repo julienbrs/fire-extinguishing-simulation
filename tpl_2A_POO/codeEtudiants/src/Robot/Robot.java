@@ -42,6 +42,18 @@ public abstract class Robot {
         this.disponible = true;
     }
 
+    public int getInterventionUnitaireVolume() {
+        return this.interventionUnitaire;
+    }
+
+    public int getTempsInterventionUnitaire() {
+        return this.tempsInterventionUnitaire;
+    }
+
+    public int getTempsRemplissage() {
+        return this.tempsRemplissage;
+    }
+
     public boolean affecteIncendie(Incendie incendie) {
         /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
@@ -64,22 +76,30 @@ public abstract class Robot {
         simulateur.ajouteEvenement(new FinAction(this.tempsRemplissage + 1, this, simulateur));
     }
 
+    public void checkIncendie() {
+        if (this.incendie.estEteint()) {
+            this.incendie = null;
+        }
+    }
+
     private void stepEteindre(Simulateur simulateur) {
         int dateCumule = 0;
         int eauVerse = 0;
         simulateur.ajouteEvenement(new DebutAction(dateCumule, this, simulateur));
 
         // Pas besoin de check volumeEau >= interventionUnitaire car son multiple
-        while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
-            eauVerse += this.interventionUnitaire;
-            dateCumule += this.tempsInterventionUnitaire;
-            simulateur.ajouteEvenement(new DeversementEau(dateCumule, this, this.interventionUnitaire, simulateur));
-        }
+        // while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
+        // eauVerse += this.interventionUnitaire;
+        // dateCumule += this.tempsInterventionUnitaire;
+        simulateur.ajouteEvenement(
+                new DeversementEau(this.tempsInterventionUnitaire, this, this.interventionUnitaire, simulateur,
+                        this.tempsInterventionUnitaire));
+        // }
 
-        if (this.incendie.getIntensite() - eauVerse <= 0) {
-            this.incendie = null;
-        }
-        simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
+        // if (this.incendie.getIntensite() - eauVerse <= 0) {
+        // this.incendie = null;
+        // }
+        // simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
     }
 
     public void nextStep(Simulateur simulateur) {

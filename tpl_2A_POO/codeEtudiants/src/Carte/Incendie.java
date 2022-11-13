@@ -14,6 +14,10 @@ public class Incendie {
         this.donnees = donnees;
     }
 
+    public boolean estEteint() {
+        return this.intensite <= 0;
+    }
+
     public Case getPosition() {
         return this.position;
     }
