@@ -46,6 +46,17 @@ public class Drone extends Robot {
         }
     }
 
+    /**
+     * Vérifie s'il y a bien un {@link Incendie} sur la case courante. Si oui, on
+     * diminue son intensité avec la méthode {@link Incendie#decreaseIntensite
+     * decreaseIntensite}.
+     * <p>
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau
+     * disponible est négatif.
+     * 
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public void deverserEau(int vol) throws VolumeEauIncorrectException {
         if (vol < 0)
             throw new VolumeEauIncorrectException("Le volume d'eau est incorrect");
@@ -63,11 +74,30 @@ public class Drone extends Robot {
         }
     }
 
+    /**
+     * Vérifie si le {@link Robot} peut remplir son réservoir d'eau.
+     * <p>
+     * Pour le robot {@link Drone}, on vérifie si la case courante du {@link Robot}
+     * est
+     * de type EAU.
+     * 
+     * @param position
+     * @return boolean
+     */
     @Override
     public boolean peutRemplir(Case position) {
         return (position.getNature() == NatureTerrain.EAU);
     }
 
+    /**
+     * Remplit complètement le réservoir du robot {@link Drone}.
+     * 
+     * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
+     * réservoir
+     * grâce à la méthode {@link #peutRemplir()}
+     * 
+     * @throws TerrainIncorrectException
+     */
     public void remplirReservoir() throws TerrainIncorrectException {
         if (peutRemplir()) {
             this.volumeEau = volumeEauMax;

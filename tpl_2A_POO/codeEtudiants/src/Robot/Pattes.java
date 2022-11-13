@@ -47,14 +47,17 @@ public class Pattes extends Robot {
         }
     }
 
-    public boolean peutRemplir(Case position) {
-        return false;
-    }
-
-    public void remplirReservoir() {
-        return;
-    }
-
+    /**
+     * Vérifie s'il y a bien un {@link Incendie} sur la case courante. Si oui, on
+     * diminue son intensité avec la méthode {@link Incendie#decreaseIntensite
+     * decreaseIntensite}.
+     * <p>
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau
+     * disponible est négatif.
+     * 
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public void deverserEau(int vol) throws VolumeEauIncorrectException {
         if (vol < 0)
             throw new VolumeEauIncorrectException("Le volume est incorrect");
@@ -62,4 +65,27 @@ public class Pattes extends Robot {
         if (incendie != null)
             incendie.decreaseIntensite(vol);
     }
+
+    /**
+     * Le robot {@link Pattes} n'a pas de réservoir à remplir.
+     * Renvoie donc toujours false
+     * 
+     * @param position
+     * @return boolean
+     */
+    public boolean peutRemplir(Case position) {
+        return false;
+    }
+
+    /**
+     * Le robot {@link Pattes} n'a pas de réservoir à remplir.
+     * Renvoie donc toujours false
+     * 
+     * @param position
+     * @return boolean
+     */
+    public void remplirReservoir() {
+        return;
+    }
+
 }
