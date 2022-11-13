@@ -151,7 +151,7 @@ public class Simulateur implements Simulable {
                                 NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
                         break;
                 }
-                if (incendie != null) {
+                if (incendie != null && incendie.getIntensite() > 0) {
                     gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire2.gif",
                             tailleCases, tailleCases, null));
                 }

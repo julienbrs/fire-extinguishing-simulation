@@ -44,9 +44,13 @@ public class Chemin {
         Case caseCourante = iterator.next();
         Evenement evenement = null;
         long cout = 0;
+
+        simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));// <33333
+                                                                               // COUCOUUUUUUUUUUUUUUUUUUUUUUUUUUU
         while (iterator.hasNext()) {
             casePrecedente = caseCourante;
             caseCourante = iterator.next();
+            System.out.println(caseCourante);
             cout = (long) Math.ceil(this.getCout(caseCourante));
             Direction dir = Carte.getDirection(casePrecedente, caseCourante);
 
@@ -69,6 +73,7 @@ public class Chemin {
             }
             simulateur.ajouteEvenement(evenement);
         }
+        simulateur.ajouteEvenement(new FinAction(cout + 1, this.robot, simulateur));
 
     }
 
