@@ -14,11 +14,10 @@ public class Incendie {
         this.donnees = donnees;
     }
 
-    /**
-     * Renvoie la {@link Case} où se situe l' {@link Incendie}.
-     * 
-     * @return Case
-     */
+    public boolean estEteint() {
+        return this.intensite <= 0;
+    }
+
     public Case getPosition() {
         return this.position;
     }
@@ -27,7 +26,7 @@ public class Incendie {
      * Renvoie l'intensité de l' {@link Incendie}.
      * <p>
      * L'intensité correspond au volume d'eau nécessaire pour éteindre l'incendie.
-     * 
+     *
      * @return double
      */
     public double getIntensite() {
@@ -36,7 +35,7 @@ public class Incendie {
 
     /**
      * Définit l'intensité de l' {@link Incendie}.
-     * 
+     *
      * @param intensite
      */
     public void setIntensite(double intensite) {
@@ -46,7 +45,7 @@ public class Incendie {
     /**
      * Diminue l'intensité de l' {@link Incendie}.
      * <p>
-     * 
+     *
      * @param vol
      */
     public void decreaseIntensite(double vol) {
@@ -59,7 +58,7 @@ public class Incendie {
     /**
      * toString() de l' {@link Incendie}, affichant sa position (ligne, colonne) et
      * son intensité.
-     * 
+     *
      * @return String
      */
     // Pour debug todo

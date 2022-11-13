@@ -14,6 +14,6 @@ public class AffectationIncendiesRobots extends Evenement {
     public void execute() {
         this.simulateur.getChefPompier().affecteIncendies();
         simulateur.ajouteEvenement(
-                new AffectationIncendiesRobots(this.date + this.periode, this.robot, this.simulateur, this.periode));
+                new AffectationIncendiesRobots(this.periode, this.robot, this.simulateur, this.periode));
     }
 }

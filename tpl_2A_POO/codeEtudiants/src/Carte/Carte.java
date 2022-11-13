@@ -208,48 +208,48 @@ public class Carte {
      *
      * @return String
      */
-    @Override
-    /* before the graphic interface, we use shell to display donnees */
-    public String toString() {
-        /* on recupere les incendies et les robots */
-        HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
-        // Iterator<Robot> robots = this.donnees.getRobots();
+    // @Override
+    // /* before the graphic interface, we use shell to display donnees */
+    // public String toString() {
+    // /* on recupere les incendies et les robots */
+    // HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
+    // // Iterator<Robot> robots = this.donnees.getRobots();
 
-        String chaine = "";
-        /* on fait d'abord la map vierge */
-        for (int lig = 0; lig < nbLignes; lig++) {
-            for (int col = 0; col < nbColonnes; col++) {
-                /* On check s'il y a un incendie ici */
-                if (incendies.containsKey(this.carte[lig][col])) {
-                    chaine += "🔥";
-                } else if (donnees.getRobot(this.carte[lig][col]) != null) {
-                    chaine += "🤖";
-                } else {
-                    switch (carte[lig][col].getNature()) {
-                        case EAU:
-                            // 💧
-                            chaine += "💧";
-                            break;
-                        case FORET:
-                            chaine += "🌲";
-                            break;
-                        case ROCHE:
-                            chaine += "⛰️ ";
-                            break;
-                        case TERRAIN_LIBRE:
-                            chaine += "⬜";
-                            break;
-                        case HABITAT:
-                            chaine += "🏠";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            chaine += '\n';
-        }
-        System.out.println("Map générée");
-        return chaine;
-    }
+    // String chaine = "";
+    // /* on fait d'abord la map vierge */
+    // for (int lig = 0; lig < nbLignes; lig++) {
+    // for (int col = 0; col < nbColonnes; col++) {
+    // /* On check s'il y a un incendie ici */
+    // if (incendies.containsKey(this.carte[lig][col])) {
+    // chaine += "🔥";
+    // } else if (donnees.getRobot(this.carte[lig][col]) != null) {
+    // chaine += "🤖";
+    // } else {
+    // switch (carte[lig][col].getNature()) {
+    // case EAU:
+    // // 💧
+    // chaine += "💧";
+    // break;
+    // case FORET:
+    // chaine += "🌲";
+    // break;
+    // case ROCHE:
+    // chaine += "⛰️ ";
+    // break;
+    // case TERRAIN_LIBRE:
+    // chaine += "⬜";
+    // break;
+    // case HABITAT:
+    // chaine += "🏠";
+    // break;
+    // default:
+    // break;
+    // }
+    // }
+    // }
+    // chaine += '\n';
+    // }
+    // System.out.println("Map générée");
+    // return chaine;
+    // }
 }
