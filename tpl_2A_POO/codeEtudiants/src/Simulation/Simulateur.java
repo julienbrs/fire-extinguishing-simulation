@@ -134,7 +134,8 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
-                int hashLots = (int) (Math.random() * 100);
+                int easterEgg = (int) (Math.random() * 100);
+                int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 2 + carte.hashCode();
 
                 switch (nature) {
                     case TERRAIN_LIBRE:
@@ -148,17 +149,26 @@ public class Simulateur implements Simulable {
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
-                                        "assets2/dirt" + Integer.toString(hashLots % 5) + ".png", tailleCases * 2,
+                                        "assets2/dirt" + Integer.toString(hashLots % 4) + ".png", tailleCases * 2,
                                         tailleCases, null));
                         break;
                     case EAU:
+
+                        // ca marche po
+                        // if (hashLots % 100 < 15) {
+                        // gui.addGraphicalElement(new ImageElement(
+                        // centerCol + (col - lig) * tailleCases,
+                        // (col + lig) * tailleCases / 2, "assets2/fancy_water.png",
+                        // tailleCases * 2,
+                        // tailleCases, null));
+                        // break;
+                        // }
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
                                         "assets2/water.png", tailleCases * 2, tailleCases, null));
                         break;
                     case HABITAT:
-                        System.out.println(hashLots % 7);
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
