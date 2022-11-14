@@ -24,6 +24,8 @@ public abstract class Robot {
     protected int interventionUnitaire;
     protected int tempsInterventionUnitaire;
     protected int tempsRemplissage;
+    // pour l'affichage du robot
+    protected Direction directionImage;
 
     // todo à expliquer
     protected Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees, int interventionUnitaire,
@@ -32,6 +34,7 @@ public abstract class Robot {
         this.interventionUnitaire = interventionUnitaire;
         this.tempsInterventionUnitaire = tempsInterventionUnitaire;
         this.tempsRemplissage = tempsRemplissage;
+        this.directionImage = Direction.SUD;
     }
 
     // todo à expliquer
@@ -70,6 +73,15 @@ public abstract class Robot {
      */
     public int getTempsRemplissage() {
         return this.tempsRemplissage;
+    }
+
+    // todo
+    public Direction getDirectionImage() {
+        return this.directionImage;
+    }
+
+    public void setDirectionImage(Direction directionImage) {
+        this.directionImage = directionImage;
     }
 
     /**
