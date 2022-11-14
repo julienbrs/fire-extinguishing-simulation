@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import Robot.*;
 import Strategie.ChefPompier;
@@ -12,6 +13,7 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
+import gui.Text;
 import Events.AffectationIncendiesRobots;
 import Events.Evenement;
 
@@ -41,6 +43,7 @@ public class Simulateur implements Simulable {
         this.chef = new ChefPompier(this, this.donnees);
         // todo 100?
         this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+
         // Initialisation des couleurs
         this.draw();
     }
@@ -98,27 +101,21 @@ public class Simulateur implements Simulable {
 
         int lig = caseRobot.getLigne();
         int col = caseRobot.getColonne();
+        int coordX = centerCol + (col - lig) * tailleCases + tailleCases / 2;
+        int coordY = (col + lig) * tailleCases / 2 - tailleCases / 4;
         switch (robot.getType()) {
             case DRONE:
                 gui.addGraphicalElement(
-                        new ImageElement(centerCol + (col - lig) * tailleCases,
-                                (col + lig) * tailleCases / 2,
-                                "assets/drone.gif",
-                                tailleCases, tailleCases, null));
+                        new ImageElement(coordX, coordY, "assets/drone.gif", tailleCases, tailleCases, null));
                 break;
             case PATTES:
                 gui.addGraphicalElement(
-                        new ImageElement(centerCol + (col - lig) * tailleCases,
-                                (col + lig) * tailleCases / 2,
-                                "assets/pattes.gif",
-                                tailleCases, tailleCases, null));
+                        new ImageElement(coordX, coordY, "assets/pattes.gif", tailleCases, tailleCases, null));
+
                 break;
             default:
                 gui.addGraphicalElement(
-                        new ImageElement(centerCol + (col - lig) * tailleCases,
-                                (col + lig) * tailleCases / 2,
-                                "assets/robobo.gif",
-                                tailleCases, tailleCases, null));
+                        new ImageElement(coordX, coordY, "assets/robobo.gif", tailleCases, tailleCases, null));
                 break;
         }
     }
@@ -137,6 +134,8 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
+                int hashLots = (int) (Math.random() * 100);
+
                 switch (nature) {
                     case TERRAIN_LIBRE:
                         // drawTerrainLibre(caseCourante, tailleCases, gui);
@@ -149,11 +148,8 @@ public class Simulateur implements Simulable {
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
-                                        "assets2/grass.png", tailleCases * 2, tailleCases, null));
-                        gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
-                                        "assets2/dirt.png", tailleCases * 2, tailleCases, null));
+                                        "assets2/dirt" + Integer.toString(hashLots % 5) + ".png", tailleCases * 2,
+                                        tailleCases, null));
                         break;
                     case EAU:
                         gui.addGraphicalElement(
@@ -162,10 +158,13 @@ public class Simulateur implements Simulable {
                                         "assets2/water.png", tailleCases * 2, tailleCases, null));
                         break;
                     case HABITAT:
+                        System.out.println(hashLots % 7);
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
-                                        "assets2/road.png", tailleCases * 2, tailleCases, null));
+                                        "assets2/lot" + Integer.toString(hashLots % 7) + ".png", tailleCases * 2,
+                                        tailleCases,
+                                        null));
                         break;
                     case FORET:
                         gui.addGraphicalElement(
@@ -189,9 +188,11 @@ public class Simulateur implements Simulable {
                 }
                 if (incendie != null && !incendie.estEteint()) {
                     gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
-                            (col + lig) * tailleCases / 2 - tailleCases / 4,
-                            "assets/fire.gif",
-                            tailleCases, tailleCases, null));
+                            (col + lig) * tailleCases / 2 - tailleCases / 4, "assets/fire.gif", tailleCases,
+                            tailleCases, null));
+                    gui.addGraphicalElement(new Text(centerCol + (col - lig) * tailleCases + tailleCases,
+                            (col + lig) * tailleCases / 2, Color.RED,
+                            Double.toString(incendie.getIntensite())));
                 }
             }
         }
