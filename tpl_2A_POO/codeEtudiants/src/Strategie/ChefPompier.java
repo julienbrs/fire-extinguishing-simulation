@@ -2,6 +2,7 @@ package Strategie;
 
 import java.util.HashMap;
 
+import Carte.Case;
 import Carte.Incendie;
 import Robot.Robot;
 import Simulation.DonneesSimulation;
@@ -13,8 +14,8 @@ import java.util.Queue;
 public class ChefPompier {
     Simulateur simulation;
     DonneesSimulation donnees;
-    Queue<Incendie> incendiesAffectes;
-    Queue<Incendie> incendiesNonAffectes;
+    HashMap<Incendie, Robot> incendiesAffectes;
+    HashMap<Incendie, Robot> incendiesNonAffectes;
 
     Queue<Robot> robotsAffectes;
     Queue<Robot> robotsNonAffectes;
@@ -22,101 +23,86 @@ public class ChefPompier {
     public ChefPompier(Simulateur simulation, DonneesSimulation donnees) {
         this.simulation = simulation;
         this.donnees = donnees;
-        this.incendiesAffectes = new LinkedList<Incendie>();
-        this.incendiesNonAffectes = new LinkedList<Incendie>();
-        this.robotsAffectes = new LinkedList<Robot>();
-        this.robotsNonAffectes = new LinkedList<Robot>();
+        this.incendiesAffectes = new HashMap<Incendie, Robot>();
+        this.incendiesNonAffectes = new HashMap<Incendie, Robot>();
         Iterator<Incendie> incendies = this.donnees.getIncendies();
-        Iterator<Robot> robots = this.donnees.getRobots();
 
         while (incendies.hasNext())
-            this.incendiesNonAffectes.add(incendies.next());
-        while (robots.hasNext())
-            this.robotsNonAffectes.add(robots.next());
+            this.incendiesNonAffectes.put(incendies.next(), null);
     }
 
-    /*
-     * renvoie vrai si l'incendie a été affecté
-     */
-    private boolean affecteRobotIncendie() {
-        // /* Si tout les incendies sont affectées */
-        if (this.incendiesNonAffectes.isEmpty())
-            return true;
-        // /* On récupère le premier incendie */
-        Incendie incendie = this.incendiesNonAffectes.peek();
+    private void checkIncendiesAffectes() {
+        if (!this.incendiesNonAffectes.isEmpty())
+            return;
+        Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
 
-        if (incendie.estEteint()) {
-            this.incendiesNonAffectes.poll();
-            return true;
-        }
-        /* Robots qui peuvent pas atteindre incendie */
-        Queue<Robot> robotsInvalides = new LinkedList<Robot>();
-
-        Robot robot = this.robotsNonAffectes.poll();
-
-        /*
-         * Si robot.affecteIncendie renvoie false
-         * Le robot n'accepte pas l'incendie
-         */
-        while (robot != null && !robot.affecteIncendie(incendie)) {
-            robotsInvalides.add(robot);
-            robot = robotsNonAffectes.poll();
-        }
-        /* Si on trouve pas de robot qui peut éteindre l'incendie */
-        if (robot == null) {
-            /* Aucun robot existe qui peut l'éteindre */
-            if (this.robotsAffectes.isEmpty()) {
-                // On ignore l'incendie
-                this.incendiesNonAffectes.poll();
-                return true;
+        for (Incendie incendie : this.incendiesAffectes.keySet()) {
+            if (!incendie.estEteint()) {
+                incendiesASupprimer.add(incendie);
+                this.incendiesNonAffectes.put(incendie, null);
             }
-            /* On remet les robots parcourus dans la liste non affectées */
-            /* L'ordre est inversé mais c'est pas important */
-            this.robotsNonAffectes = robotsInvalides;
-            return false;
         }
 
-        /* Sinon, il a été affecté */
-        this.robotsAffectes.add(robot);
-        incendie = this.incendiesNonAffectes.poll();
-        this.incendiesAffectes.add(incendie);
-        robot.nextStep(simulation);
-        return true;
-
+        for (Incendie incendie : incendiesASupprimer) {
+            this.incendiesAffectes.remove(incendie);
+        }
     }
 
-    private void checkRobotsAffectes() {
-        Queue<Robot> tempQueue = new LinkedList<Robot>();
-        Robot robot = this.robotsAffectes.poll();
-        while (robot != null) {
-            if (robot.isDisponible()) {
-                this.robotsNonAffectes.add(robot);
-            } else {
-                tempQueue.add(robot);
+    public void affecteRobots() {
+        Iterator<Robot> robots = this.donnees.getRobots();
+        Robot robot = null;
+        Graphe graphe = null;
+
+        Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
+        while (robots.hasNext()) {
+            double minCout = Double.POSITIVE_INFINITY;
+            double cout = 0;
+            Incendie incendiePlusProche = null;
+            robot = robots.next();
+            if (!robot.isDisponible())
+                continue;
+            graphe = new Graphe(donnees, donnees.getCarte(), robot);
+            graphe.calculeChemins();
+            for (Incendie incendie : this.incendiesNonAffectes.keySet()) {
+                if (incendie.estEteint()) {
+                    incendiesASupprimer.add(incendie);
+                    continue;
+                }
+
+                if (!robot.peutEteindre(incendie))
+                    continue;
+                try {
+                    cout = graphe.getCout(incendie.getPosition());
+                    if (cout < minCout) {
+                        minCout = cout;
+                        incendiePlusProche = incendie;
+                    }
+                } catch (Exception e) {
+                    // Si graphe pas initialisé, ca doit pas arriver
+                    e.printStackTrace();
+                }
             }
 
-            robot = this.robotsAffectes.poll();
-        }
-        this.robotsAffectes = tempQueue;
-    }
+            for (Incendie incendie : incendiesASupprimer) {
+                this.incendiesAffectes.remove(incendie);
+            }
 
-    public void affecteIncendies() {
-        this.checkRobotsAffectes();
+            if (incendiePlusProche != null) {
+                this.incendiesNonAffectes.remove(incendiePlusProche);
+                this.incendiesAffectes.put(incendiePlusProche, robot);
+
+                robot.affecteIncendie(incendiePlusProche);
+                Chemin chemin = graphe.cheminDestination(incendiePlusProche.getPosition());
+                chemin.cheminToEvent(simulation);
+            }
+        }
+
+        // SOLO SI ISETEINT
+        // todo a tester
         if (this.incendiesNonAffectes.isEmpty()) {
-            this.incendiesNonAffectes.addAll(this.incendiesAffectes);
-            this.incendiesAffectes = new LinkedList<Incendie>();
+            this.checkIncendiesAffectes();
         }
-        Queue<Incendie> tmpQueue = new LinkedList<Incendie>();
-        boolean affected = true;
-        /* Pendant qu'il reste des incendies ou des robots */
-        while (!this.incendiesNonAffectes.isEmpty() && !this.robotsNonAffectes.isEmpty()) {
-            affected = this.affecteRobotIncendie();
-            /* Si il a pas été affecté, il est toujours dans nonAffectes */
-            if (!affected) {
-                tmpQueue.add(this.incendiesNonAffectes.poll());
-            }
-        }
-        /* On rajoute tous les incendies non affectées */
-        this.incendiesNonAffectes.addAll(tmpQueue);
+
     }
+
 }

@@ -25,7 +25,6 @@ public class TestDjikstra {
             DonneesSimulation donnees = LecteurDonnees.creeDonneesSimulation(args[0]);
             System.out.println("Lecture des donnees terminee");
             Carte carte = donnees.getCarte();
-            Graphe graphe = new Graphe(carte);
             System.out.println(carte);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Type the line and column of the case you want to go to (<lig> <col>): ");
@@ -34,13 +33,15 @@ public class TestDjikstra {
 
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
+            Graphe graphe = new Graphe(donnees, carte, robot);
 
             if (robot == null) {
                 System.out.println("Aucun robot trouvé");
                 System.exit(1);
             }
             System.out.println(" test " + lig + col);
-            Chemin chemin = graphe.cheminDestination(robot.getPosition(), carte.getCase(lig, col), robot);
+            graphe.calculeChemins();
+            Chemin chemin = graphe.cheminDestination(carte.getCase(lig, col));
 
             Iterator<Case> iteratorChemin = chemin.getChemin();
             while (iteratorChemin.hasNext()) {

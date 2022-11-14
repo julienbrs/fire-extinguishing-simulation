@@ -27,9 +27,8 @@ public class TestSimulation {
             int nbColonnes = donnees.getCarte().getNbColonnes();
             int nbLignes = donnees.getCarte().getNbLignes();
 
-            GUISimulator gui = new GUISimulator(tailleCases * nbColonnes * 2, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            Simulateur simulateur = new Simulateur(gui, donnees, time);
+            Simulateur simulateur = new Simulateur(donnees, time);
 
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();

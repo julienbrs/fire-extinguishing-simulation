@@ -34,9 +34,14 @@ public class Simulateur implements Simulable {
     private DonneesSimulation donnees;
     private ChefPompier chef;
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees, long dateSimulation) {
-        this.gui = gui;
+    public Simulateur(DonneesSimulation donnees, long dateSimulation) {
+        Carte carte = donnees.getCarte();
+        int tailleCases = carte.getTailleCases();
+        GUISimulator gui = new GUISimulator(carte.getNbColonnes() * 2 * tailleCases, carte.getNbLignes() * tailleCases,
+                null);
         gui.setSimulable(this);
+
+        this.gui = gui;
         this.donnees = donnees;
         this.dateSimulation = dateSimulation;
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());

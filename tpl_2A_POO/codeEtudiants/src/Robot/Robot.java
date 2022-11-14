@@ -72,6 +72,10 @@ public abstract class Robot {
         return this.tempsRemplissage;
     }
 
+    public boolean peutEteindre(Incendie incendie) {
+        return this.getVitesse(incendie.getPosition().getNature()) != 0;
+    }
+
     /**
      * 
      * @param incendie
@@ -80,14 +84,15 @@ public abstract class Robot {
     public boolean affecteIncendie(Incendie incendie) {
         /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
-            Graphe graphe = new Graphe(this.donnees.getCarte());
-            Chemin chemin = graphe.cheminDestination(this.position, incendie.getPosition(), this);
+            // Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte());
+            // Chemin chemin = graphe.cheminDestination(this.position,
+            // incendie.getPosition(), this);
 
-            /* Si il existe un chemin, on accepte */
-            if (chemin != null) {
-                this.incendie = incendie;
-                return true;
-            }
+            // /* Si il existe un chemin, on accepte */
+            // if (chemin != null) {
+            this.incendie = incendie;
+            return true;
+            // }
         }
         // Sinon false
         return false;
@@ -136,7 +141,7 @@ public abstract class Robot {
      */
     public void nextStep(Simulateur simulateur) {
         this.disponible = false;
-        Graphe graphe = new Graphe(this.donnees.getCarte());
+        Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte(), this);
         Chemin chemin = null;
 
         /* Si on a pas d'eau, peu importe l'affectation d'incendie */
@@ -146,7 +151,7 @@ public abstract class Robot {
                 return;
             }
             /* On cherche le chemin vers l'eau la plus proche */
-            chemin = graphe.cheminRemplir(this);
+            chemin = graphe.cheminRemplir();
             chemin.cheminToEvent(simulateur);
             return;
         }
@@ -157,7 +162,7 @@ public abstract class Robot {
             return;
         } else if (this.incendie != null) {
             /* Sinon on se rend sur l'incendie en question */
-            chemin = graphe.cheminDestination(this.position, this.incendie.getPosition(), this);
+            chemin = graphe.cheminDestination(this.incendie.getPosition());
             if (chemin != null) {
                 chemin.cheminToEvent(simulateur);
                 return;
