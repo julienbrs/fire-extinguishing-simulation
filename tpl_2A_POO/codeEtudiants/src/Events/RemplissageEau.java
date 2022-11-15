@@ -9,6 +9,11 @@ public class RemplissageEau extends Evenement {
         super(date, robot, simulateur);
     }
 
+    /**
+     * Remplit le réservoir du robot au maximum.
+     * Jette {@link TerrainIncorrectException} si cela n'est pas possible (mauvais
+     * robot ou pas de case pour remplir )
+     */
     public void execute() {
         try {
             this.robot.remplirReservoir();

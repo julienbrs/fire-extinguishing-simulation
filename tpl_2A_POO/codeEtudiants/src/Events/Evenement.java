@@ -10,10 +10,13 @@ public abstract class Evenement {
 
     public Evenement(long date, Robot robot, Simulateur simulateur) {
         this.simulateur = simulateur;
-        this.date = this.simulateur.getDateCourante() + date;
+        this.date = this.simulateur.getDateCourante() + date; // On ajoute la date de manière relative
         this.robot = robot;
     }
 
+    /**
+     * Renvoie la date à laquelle l'évènement doit s'exécuter.
+     */
     public long getDate() {
         return this.date;
     }

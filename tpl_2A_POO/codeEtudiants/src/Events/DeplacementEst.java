@@ -10,6 +10,9 @@ public class DeplacementEst extends Evenement {
         super(date, robot, simulateur);
     }
 
+    /**
+     * Le robot se tourne vers l'Est et avance.
+     */
     public void execute() {
         this.robot.setDirectionImage(Direction.EST);
         this.robot.moveRobotDirection(Direction.EST);

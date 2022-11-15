@@ -58,7 +58,8 @@ public abstract class Robot {
     }
 
     /**
-     * 
+     * Renvoie le temps nécessaire pour déverser un volume
+     * {@link #interventionUnitaire} sur un incendie.
      * 
      * @return int
      */
@@ -75,11 +76,19 @@ public abstract class Robot {
         return this.tempsRemplissage;
     }
 
-    // todo
+    /**
+     * Renvoie la direction actuelle du {@link Robot}.
+     * 
+     * @return {@link Direction}
+     */
     public Direction getDirectionImage() {
         return this.directionImage;
     }
 
+    /**
+     * Change la valeur {@link Direction} du {@link Robot} par
+     * {@link Direction DirectionImage}.
+     */
     public void setDirectionImage(Direction directionImage) {
         this.directionImage = directionImage;
     }

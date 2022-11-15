@@ -8,6 +8,9 @@ public class DebutAction extends Evenement {
         super(date, robot, simulateur);
     }
 
+    /**
+     * Le robot n'est plus considéré comme disponible.
+     */
     public void execute() {
         this.robot.setDisponible(false);
     }

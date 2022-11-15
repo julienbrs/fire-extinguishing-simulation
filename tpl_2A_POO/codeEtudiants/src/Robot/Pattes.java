@@ -11,6 +11,7 @@ public class Pattes extends Robot {
     static int tempsInterventionUnitaire = 1;
     static int tempsRemplissage = 0;
 
+    /* Le robot pattes à une vitesse de base fixée */
     public Pattes(Case position, DonneesSimulation donnees)
             throws VitesseIncorrectException {
         super(position, 0, vitesseDefaut, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
@@ -42,7 +43,7 @@ public class Pattes extends Robot {
             case HABITAT:
                 return this.vitesse;
             default:
-                // this should not happen
+                /* Impossible d'arriver ici, l'erreur est catch avant. */
                 return Double.NaN;
         }
     }

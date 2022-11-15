@@ -8,6 +8,9 @@ public class FinAction extends Evenement {
         super(date, robot, simulateur);
     }
 
+    /**
+     * Le robot a fini sa tâche actuelle, on va lui assigner une nouvelle tâche.
+     */
     public void execute() {
         this.robot.nextStep(this.simulateur);
     }
