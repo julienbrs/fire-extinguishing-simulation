@@ -15,6 +15,7 @@ import gui.ImageElement;
 import gui.Simulable;
 import gui.Text;
 import Events.AffectationIncendiesRobots;
+import Events.Avion;
 import Events.Evenement;
 
 class ComparatorEvenements implements Comparator<Evenement> {
@@ -28,6 +29,7 @@ class ComparatorEvenements implements Comparator<Evenement> {
 }
 
 public class Simulateur implements Simulable {
+    private Case positionAvion;
     private long dateSimulation;
     private PriorityQueue<Evenement> scenario;
     private GUISimulator gui;
@@ -36,9 +38,13 @@ public class Simulateur implements Simulable {
 
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
         Carte carte = donnees.getCarte();
+
         int tailleCases = carte.getTailleCases();
-        GUISimulator gui = new GUISimulator(carte.getNbColonnes() * 2 * tailleCases, carte.getNbLignes() * tailleCases,
-                null);
+        int nbColonnes = carte.getNbColonnes();
+        int nbLignes = carte.getNbLignes();
+
+        this.positionAvion = carte.getCase(nbLignes / 5, 0);
+        GUISimulator gui = new GUISimulator(nbColonnes * 2 * tailleCases, nbLignes * tailleCases, null);
         gui.setSimulable(this);
 
         this.gui = gui;
@@ -48,9 +54,13 @@ public class Simulateur implements Simulable {
         this.chef = new ChefPompier(this, this.donnees);
         // todo 100?
         this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
-
+        this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
         // Initialisation des couleurs
         this.draw();
+    }
+
+    public void setPositionAvion(Case position) {
+        this.positionAvion = position;
     }
 
     public ChefPompier getChefPompier() {
@@ -111,7 +121,7 @@ public class Simulateur implements Simulable {
         switch (robot.getType()) {
             case DRONE:
                 gui.addGraphicalElement(
-                        new ImageElement(coordX, coordY, "assets/drone_water.gif", tailleCases, tailleCases, null));
+                        new ImageElement(coordX, coordY, "assets/drone.gif", tailleCases, tailleCases, null));
                 break;
             case PATTES:
                 gui.addGraphicalElement(
@@ -155,8 +165,7 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
-                int easterEgg = (int) (Math.random() * 100);
-                int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 2 + carte.hashCode();
+                int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 9 + carte.hashCode();
 
                 switch (nature) {
                     case TERRAIN_LIBRE:
@@ -164,7 +173,8 @@ public class Simulateur implements Simulable {
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
-                                        "assets2/grass.png", tailleCases * 2, tailleCases, null));
+                                        "assets2/grass.png", tailleCases * 2,
+                                        tailleCases, null));
                         break;
                     case ROCHE:
                         gui.addGraphicalElement(
@@ -201,7 +211,8 @@ public class Simulateur implements Simulable {
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
-                                        "assets2/forest.png", tailleCases * 2, tailleCases, null));
+                                        "assets2/forest" + Integer.toString(hashLots % 2) + ".png", tailleCases * 2,
+                                        tailleCases, null));
                         // gui.addGraphicalElement(new ImageElement((col + lig) *tailleCases/2, (col +
                         // lig) *
                         // tailleCases,
@@ -232,6 +243,15 @@ public class Simulateur implements Simulable {
             Robot robot = robots.next();
             drawRobot(robot, tailleCases, gui);
         }
+
+        if (this.positionAvion != null) {
+            int lig = this.positionAvion.getLigne();
+            int col = this.positionAvion.getColonne();
+            gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
+                    (col + lig) * tailleCases / 2 - tailleCases / 4, "assets2/airplane.png", tailleCases,
+                    tailleCases, null));
+        }
+
     }
 
     public DonneesSimulation getDonnees() {
@@ -252,6 +272,11 @@ public class Simulateur implements Simulable {
         this.chef = new ChefPompier(this, this.donnees);
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+
+        Carte carte = this.donnees.getCarte();
+        this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);
+        this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
+
         draw();
     }
 }
