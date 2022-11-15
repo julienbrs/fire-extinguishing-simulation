@@ -82,7 +82,7 @@ public class ChefPompier {
                 continue;
 
             /* On calcule les meilleurs chemins à toutes les cases */
-            graphe = new Graphe(donnees, donnees.getCarte(), robot);
+            graphe = new Graphe(this.donnees, this.donnees.getCarte(), robot);
             graphe.calculeChemins();
 
             Iterator<Incendie> incendies = this.incendiesNonAffectes.iterator();
@@ -116,7 +116,7 @@ public class ChefPompier {
 
             /* On supprime les incendies éteints */
             for (Incendie incendieASupprimer : incendiesASupprimer) {
-                this.incendiesAffectes.remove(incendieASupprimer);
+                this.incendiesNonAffectes.remove(incendieASupprimer);
             }
 
             /* Si on a trouvé un incendie, il est alors le plus proche */
