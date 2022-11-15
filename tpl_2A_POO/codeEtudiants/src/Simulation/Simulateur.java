@@ -144,10 +144,6 @@ public class Simulateur implements Simulable {
                                 (int) (tailleCases * 0.688),
                                 (int) (tailleCases * 0.8), null));
                 break;
-            case CHENILLES:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/tracks.gif",
-                        tailleCases, tailleCases, null));
-                break;
             default:
                 gui.addGraphicalElement(
                         new ImageElement(coordX, coordY, "assets/robobo.gif", tailleCases, tailleCases, null));
