@@ -181,7 +181,7 @@ public abstract class Robot {
         if (this.incendie != null && this.position == this.incendie.getPosition()) {
             this.stepEteindre(simulateur);
             return;
-        } else if (this.incendie != null) {
+        } else if (this.incendie != null && !this.incendie.estEteint()) {
             /* Sinon on se rend sur l'incendie en question */
             chemin = graphe.cheminDestination(this.incendie.getPosition());
             if (chemin != null) {

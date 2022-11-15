@@ -53,7 +53,7 @@ public class ChefPompier {
 
         /* On mets à jour les structures de données */
         for (Incendie incendieASupprimer : incendiesASupprimer) {
-            this.incendiesNonAffectes.add(incendie);
+            this.incendiesNonAffectes.add(incendieASupprimer);
             this.incendiesAffectes.remove(incendieASupprimer);
         }
     }
