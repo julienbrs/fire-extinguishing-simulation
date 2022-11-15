@@ -138,23 +138,10 @@ public abstract class Robot {
      * @param simulateur
      */
     private void stepEteindre(Simulateur simulateur) {
-        int dateCumule = 0;
-        int eauVerse = 0;
-        simulateur.ajouteEvenement(new DebutAction(dateCumule, this, simulateur));
-
-        // Pas besoin de check volumeEau >= interventionUnitaire car son multiple
-        // while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
-        // eauVerse += this.interventionUnitaire;
-        // dateCumule += this.tempsInterventionUnitaire;
+        simulateur.ajouteEvenement(new DebutAction(0, this, simulateur));
         simulateur.ajouteEvenement(
                 new DeversementEau(this.tempsInterventionUnitaire, this, this.interventionUnitaire, simulateur,
                         this.tempsInterventionUnitaire));
-        // }
-
-        // if (this.incendie.getIntensite() - eauVerse <= 0) {
-        // this.incendie = null;
-        // }
-        // simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
     }
 
     /**
@@ -256,7 +243,8 @@ public abstract class Robot {
                 // appeller le constructeur du robot pattes ( pas un copié-collé)
                 return new Pattes(position, donnees);
             default:
-                // SI TYPE EST NULL CA VA BUG ici
+                // Ca arrive pas parceque on ne crée des robots que dans LecteurDonnees
+                // Et là les erreurs sont déjà gérés
                 // todo
                 throw new NoSuchElementException("Le  type robot " + type.toString() + " n'existe pas!");
         }
