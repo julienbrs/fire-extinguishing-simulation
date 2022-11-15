@@ -78,7 +78,8 @@ exeChemin: testChemin
 	java -classpath bin:bin/gui.jar Test/TestChemin cartes/carteChenilles.map
 
 exeSimulateur: testSimulateur
-	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/mushroomOfHell-20x20.map
+	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/carteSimulation.map
+
 exeSimulateurKO: testSimulateurKO
 		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
 
