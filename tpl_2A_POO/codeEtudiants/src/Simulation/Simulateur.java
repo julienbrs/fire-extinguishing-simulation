@@ -121,7 +121,8 @@ public class Simulateur implements Simulable {
         switch (robot.getType()) {
             case DRONE:
                 gui.addGraphicalElement(
-                        new ImageElement(coordX, coordY, "assets/drone.gif", tailleCases, tailleCases, null));
+                        new ImageElement(coordX, (int) (coordY * 0.95), "assets/drone.gif", (int) (tailleCases * 0.85),
+                                (int) (tailleCases * 0.87), null));
                 break;
             case PATTES:
                 gui.addGraphicalElement(
