@@ -10,6 +10,7 @@ public class DeplacementOuest extends Evenement {
     }
 
     public void execute() {
+        this.robot.setDirectionImage(Direction.OUEST);
         this.robot.moveRobotDirection(Direction.OUEST);
     }
 

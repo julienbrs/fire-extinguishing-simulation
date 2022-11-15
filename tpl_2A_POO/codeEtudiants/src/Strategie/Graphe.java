@@ -2,6 +2,7 @@ package Strategie;
 
 import Carte.*;
 import Robot.Robot;
+import Simulation.DonneesSimulation;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,40 +15,88 @@ import java.util.PriorityQueue;
 *
 */
 public class Graphe {
-    Carte carte;
+    private DonneesSimulation donnees;
+    private Carte carte;
+    private Robot robot;
+    private Case[][] previousCase;
+    private CaseComparator caseComparator;
 
-    public Graphe(Carte carte) {
+    private boolean rempli;
+
+    public Graphe(DonneesSimulation donnees, Carte carte, Robot robot) {
+        this.donnees = donnees;
         this.carte = carte;
+        this.robot = robot;
+        this.previousCase = null;
+        this.caseComparator = null;
+        this.rempli = false;
     }
 
-    public Chemin cheminDestination(Case source, Case destination, Robot robot) {
-        return this.Dijkstra(source, destination, robot, false);
+    /* Must be preceded by a remplitChemins call */
+    public double getCout(Case position) throws Exception {
+        if (!rempli) {
+            throw new Exception("Le graphe n'as pas été initialisé");
+        }
+        return this.caseComparator.getCout(position);
     }
 
-    public Chemin cheminRemplir(Robot robot) {
-        return this.Dijkstra(robot.getPosition(), null, robot, true);
+    public Chemin cheminDestination(Case destination) {
+        /* Si le graphe est rempli on le cherche */
+        if (!rempli) {
+            return this.cheminDestination(this.robot.getPosition(), destination);
+        }
+        /* Sinon on le calcule */
+        return this.createChemin(destination, this.previousCase, this.caseComparator);
     }
 
-    private double Edges(Robot robot, Case source, Case destination) {
+    public void calculeChemins() {
+        this.rempli = true;
+        this.Dijkstra(robot.getPosition(), null, false);
+    }
+
+    private Chemin cheminDestination(Case source, Case destination) {
+        this.rempli = false;
+        return this.Dijkstra(source, destination, false);
+    }
+
+    public Chemin cheminRemplir() {
+        this.rempli = false;
+        return this.Dijkstra(this.robot.getPosition(), null, true);
+    }
+
+    private double Edges(Case source, Case destination) {
 
         // todo vitesse in km/h and time in ????
-        double res = robot.getVitesse(source.getNature()) +
+        double res = this.robot.getVitesse(source.getNature()) +
                 robot.getVitesse(destination.getNature());
         res /= 2;
         res = carte.getTailleCases() / res;
 
-        return res;
+        return res * 3600;
     }
 
-    private Chemin Dijkstra(Case source, Case destination, Robot robot, boolean chercheEau) {
+    private Chemin createChemin(Case destination, Case[][] prev, CaseComparator comparator) {
+        Chemin chemin = null;
+        Case source = this.robot.getPosition();
+        Case prec = destination;
+        if (prev[destination.getLigne()][destination.getColonne()] != null || destination == source) {
+            chemin = new Chemin(robot);
+            while (prec != null) {
+                chemin.add(prec, comparator.getCout(prec));
+                prec = prev[prec.getLigne()][prec.getColonne()];
+            }
+        }
+        return chemin;
+    }
+
+    private Chemin Dijkstra(Case source, Case destination, boolean chercheEau) {
+        Robot robot = this.robot;
         int nbLignes = this.carte.getNbLignes();
         int nbColonnes = this.carte.getNbColonnes();
         int nbElements = nbLignes * nbColonnes;
         Case prev[][] = new Case[nbLignes][nbColonnes];
-        Chemin chemin = new Chemin(robot);
-
+        Chemin chemin = null;
         CaseComparator comparator = new CaseComparator(nbLignes, nbColonnes);
-
         PriorityQueue<Case> queue = new PriorityQueue<Case>(nbElements, comparator);
 
         // initialize prev and ""dist""
@@ -77,13 +126,7 @@ public class Graphe {
             caseCourante = queue.poll();
 
             if ((!chercheEau && caseCourante == destination) || (chercheEau && robot.peutRemplir(caseCourante))) {
-                Case prec = caseCourante;
-                if (prev[caseCourante.getLigne()][caseCourante.getColonne()] != null || caseCourante == source) {
-                    while (prec != null) {
-                        chemin.add(prec, comparator.getCout(prec));
-                        prec = prev[prec.getLigne()][prec.getColonne()];
-                    }
-                }
+                chemin = this.createChemin(caseCourante, prev, comparator);
                 return chemin;
             }
             for (Iterator<Case> voisins = this.carte.getVoisins(caseCourante); voisins.hasNext();) {
@@ -92,7 +135,7 @@ public class Graphe {
                 if (!robot.canMove(voisin))
                     continue;
                 double coutVoisin = comparator.getCout(voisin);
-                double cout = comparator.getCout(caseCourante) + this.Edges(robot, caseCourante, voisin);
+                double cout = comparator.getCout(caseCourante) + this.Edges(caseCourante, voisin);
 
                 if (cout < coutVoisin) {
                     comparator.setCout(voisin, cout);
@@ -103,8 +146,31 @@ public class Graphe {
 
             }
         }
-        // On devrait pas arriver la
-        return chemin;
+        // /* Si il n'y a pas de chemin */
+        // if (!chercheFeu)
+        // return null;
+        // // On arrive ici que si on cherche l'incendie plus proche
+        // // Ou il y a pas de
+        // double cout = 0;
+        // double coutMin = Double.POSITIVE_INFINITY;
+        // Iterator<Incendie> incendies = donnees.getIncendies();
+        // Incendie incendie = null;
+        // Incendie plusProcheIncendie = null;
+        // while (incendies.hasNext()) {
+        // incendie = incendies.next();
+        // if (!incendie.estEteint() && robot.peutEteindre(incendie)) {
+        // cout = comparator.getCout(incendie.getPosition());
+        // if (cout < coutMin) {
+        // coutMin = cout;
+        // plusProcheIncendie = incendie;
+        // }
+        // }
+        // }
+        // if (plusProcheIncendie == null)
+        // return null;
+        this.previousCase = prev;
+        this.caseComparator = comparator;
+        return null;
 
     }
 

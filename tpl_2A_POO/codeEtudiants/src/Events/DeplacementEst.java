@@ -11,6 +11,7 @@ public class DeplacementEst extends Evenement {
     }
 
     public void execute() {
+        this.robot.setDirectionImage(Direction.EST);
         this.robot.moveRobotDirection(Direction.EST);
     }
 }

@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import Robot.*;
+import Strategie.ChefPompier;
 import Carte.*;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
+import gui.Text;
+import Events.AffectationIncendiesRobots;
+import Events.Avion;
 import Events.Evenement;
 
 class ComparatorEvenements implements Comparator<Evenement> {
@@ -24,19 +29,42 @@ class ComparatorEvenements implements Comparator<Evenement> {
 }
 
 public class Simulateur implements Simulable {
+    private Case positionAvion;
     private long dateSimulation;
     private PriorityQueue<Evenement> scenario;
     private GUISimulator gui;
     private DonneesSimulation donnees;
+    private ChefPompier chef;
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees, long dateSimulation) {
-        this.gui = gui;
+    public Simulateur(DonneesSimulation donnees, long dateSimulation) {
+        Carte carte = donnees.getCarte();
+
+        int tailleCases = carte.getTailleCases();
+        int nbColonnes = carte.getNbColonnes();
+        int nbLignes = carte.getNbLignes();
+
+        this.positionAvion = carte.getCase(nbLignes / 5, 0);
+        GUISimulator gui = new GUISimulator(nbColonnes * 2 * tailleCases, nbLignes * tailleCases, null);
         gui.setSimulable(this);
+
+        this.gui = gui;
         this.donnees = donnees;
         this.dateSimulation = dateSimulation;
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
+        this.chef = new ChefPompier(this, this.donnees);
+        // todo 100?
+        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+        this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
         // Initialisation des couleurs
         this.draw();
+    }
+
+    public void setPositionAvion(Case position) {
+        this.positionAvion = position;
+    }
+
+    public ChefPompier getChefPompier() {
+        return this.chef;
     }
 
     public long getDateCourante() {
@@ -82,25 +110,47 @@ public class Simulateur implements Simulable {
     }
 
     private void drawRobot(Robot robot, int tailleCases, GUISimulator gui) {
+        Carte carte = this.donnees.getCarte();
         Case caseRobot = robot.getPosition();
+        int centerCol = (carte.getNbColonnes() - 1) * carte.getTailleCases();
+
         int lig = caseRobot.getLigne();
         int col = caseRobot.getColonne();
+        int coordX = centerCol + (col - lig) * tailleCases + tailleCases / 2;
+        int coordY = (col + lig) * tailleCases / 2 - tailleCases / 4;
         switch (robot.getType()) {
             case DRONE:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/drone.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(coordX, coordY, "assets/drone.gif", tailleCases, tailleCases, null));
                 break;
             case PATTES:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/pattes.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(coordX, coordY,
+                                "assets/pattes_" + robot.getDirectionImage() + ".gif",
+                                tailleCases,
+                                tailleCases, null));
+                break;
+            case ROUES:
+                gui.addGraphicalElement(
+                        new ImageElement((int) (coordX * 1.03), (int) (coordY * 1),
+                                "assets/wheel.gif",
+                                (int) (tailleCases * 0.6),
+                                (int) (tailleCases * 0.8), null));
+                break;
+            case CHENILLES:
+                gui.addGraphicalElement(
+                        new ImageElement((int) (coordX * 1.03), (int) (coordY * 1.02),
+                                "assets/tracks_" + robot.getDirectionImage() + ".gif",
+                                (int) (tailleCases * 0.688),
+                                (int) (tailleCases * 0.8), null));
                 break;
             case CHENILLES:
                 gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/tracks.gif",
                         tailleCases, tailleCases, null));
                 break;
             default:
-                gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/wheel.gif",
-                        tailleCases, tailleCases, null));
+                gui.addGraphicalElement(
+                        new ImageElement(coordX, coordY, "assets/robobo.gif", tailleCases, tailleCases, null));
                 break;
         }
     }
@@ -108,6 +158,7 @@ public class Simulateur implements Simulable {
     private void draw() {
         gui.reset(); // clear window
         Carte carte = donnees.getCarte();
+        int centerCol = (carte.getNbColonnes() - 1) * carte.getTailleCases();
         Case caseCourante = null;
         int tailleCases = carte.getTailleCases();
         Incendie incendie = null;
@@ -118,46 +169,76 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
+                int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 9 + carte.hashCode();
+
                 switch (nature) {
                     case TERRAIN_LIBRE:
                         // drawTerrainLibre(caseCourante, tailleCases, gui);
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/grass.png", tailleCases * 2,
+                                        tailleCases, null));
                         break;
                     case ROCHE:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/rock.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/dirt" + Integer.toString(hashLots % 4) + ".png", tailleCases * 2,
+                                        tailleCases, null));
                         break;
                     case EAU:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/water2.gif", tailleCases, tailleCases, null));
+
+                        // ca marche po
+                        // if (hashLots % 100 < 15) {
+                        // gui.addGraphicalElement(new ImageElement(
+                        // centerCol + (col - lig) * tailleCases,
+                        // (col + lig) * tailleCases / 2, "assets2/fancy_water.png",
+                        // tailleCases * 2,
+                        // tailleCases, null));
+                        // break;
+                        // }
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/water.png", tailleCases * 2, tailleCases, null));
                         break;
                     case HABITAT:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/habitat2.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/lot" + Integer.toString(hashLots % 7) + ".png", tailleCases * 2,
+                                        tailleCases,
+                                        null));
                         break;
                     case FORET:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/grass2.jpg", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/forest.png", tailleCases, tailleCases, null));
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases,
+                                        (col + lig) * tailleCases / 2,
+                                        "assets2/forest" + Integer.toString(hashLots % 2) + ".png", tailleCases * 2,
+                                        tailleCases, null));
+                        // gui.addGraphicalElement(new ImageElement((col + lig) *tailleCases/2, (col +
+                        // lig) *
+                        // tailleCases,
+                        // "assets/forest.png", tailleCases*2, tailleCases*2, null));
                         break;
                     default:
-                        gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases,
-                                "assets/fire2.gif", tailleCases, tailleCases, null));
-                        gui.addGraphicalElement(new Rectangle(tailleCases / 2 + col * carte.getTailleCases(),
-                                tailleCases / 2 + lig * carte.getTailleCases(),
+                        gui.addGraphicalElement(
+                                new ImageElement(centerCol + (col - lig) * tailleCases, (col + lig) * tailleCases / 2,
+                                        "assets2/fire.gif", tailleCases * 2, tailleCases * 2, null));
+                        gui.addGraphicalElement(new Rectangle(tailleCases / 2 + (col + lig) * carte.getTailleCases(),
+                                tailleCases / 2 + (col + lig) * carte.getTailleCases(),
                                 NatureTerrainToColor(caseCourante.getNature()),
                                 NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
                         break;
                 }
-                if (incendie != null) {
-                    gui.addGraphicalElement(new ImageElement(col * tailleCases, lig * tailleCases, "assets/fire2.gif",
-                            tailleCases, tailleCases, null));
+                if (incendie != null && !incendie.estEteint()) {
+                    gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
+                            (col + lig) * tailleCases / 2 - tailleCases / 4, "assets/fire.gif", tailleCases,
+                            tailleCases, null));
+                    gui.addGraphicalElement(new Text(centerCol + (col - lig) * tailleCases + tailleCases,
+                            (col + lig) * tailleCases / 2, Color.RED,
+                            Double.toString(incendie.getIntensite())));
                 }
             }
         }
@@ -166,6 +247,15 @@ public class Simulateur implements Simulable {
             Robot robot = robots.next();
             drawRobot(robot, tailleCases, gui);
         }
+
+        if (this.positionAvion != null) {
+            int lig = this.positionAvion.getLigne();
+            int col = this.positionAvion.getColonne();
+            gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
+                    (col + lig) * tailleCases / 2 - tailleCases / 4, "assets2/airplane.png", tailleCases,
+                    tailleCases, null));
+        }
+
     }
 
     public DonneesSimulation getDonnees() {
@@ -181,6 +271,16 @@ public class Simulateur implements Simulable {
 
     @Override
     public void restart() {
+        this.donnees.resetDonnees();
+        this.dateSimulation = 0;
+        this.chef = new ChefPompier(this, this.donnees);
+        this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
+        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+
+        Carte carte = this.donnees.getCarte();
+        this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);
+        this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
+
         draw();
     }
 }

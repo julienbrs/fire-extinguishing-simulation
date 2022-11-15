@@ -11,6 +11,7 @@ public class DeplacementSud extends Evenement {
     }
 
     public void execute() {
+        this.robot.setDirectionImage(Direction.SUD);
         this.robot.moveRobotDirection(Direction.SUD);
     }
 }

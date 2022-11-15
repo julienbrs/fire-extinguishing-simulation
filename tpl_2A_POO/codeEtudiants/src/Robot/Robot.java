@@ -2,21 +2,212 @@ package Robot;
 
 import java.util.NoSuchElementException;
 import Simulation.DonneesSimulation;
+import Simulation.Simulateur;
+import Strategie.Chemin;
+import Strategie.Graphe;
 import Carte.*;
+import Events.DebutAction;
+import Events.DeversementEau;
+import Events.FinAction;
+import Events.RemplissageEau;
 import Exception.*;
 
 public abstract class Robot {
     protected Case position;
+    protected Incendie incendie;
     protected int volumeEau;
     protected double vitesse;
     protected TypeRobot type;
     protected DonneesSimulation donnees;
+    protected boolean disponible;
+    // interventionUnitaire est un diviseur de volume
+    protected int interventionUnitaire;
+    protected int tempsInterventionUnitaire;
+    protected int tempsRemplissage;
+    // pour l'affichage du robot
+    protected Direction directionImage;
 
+    // todo à expliquer
+    protected Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees, int interventionUnitaire,
+            int tempsInterventionUnitaire, int tempsRemplissage) {
+        this(position, volumeEau, vitesse, donnees);
+        this.interventionUnitaire = interventionUnitaire;
+        this.tempsInterventionUnitaire = tempsInterventionUnitaire;
+        this.tempsRemplissage = tempsRemplissage;
+        this.directionImage = Direction.SUD;
+    }
+
+    // todo à expliquer
     public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees) {
         this.position = position;
         this.volumeEau = volumeEau;
         this.vitesse = vitesse;
         this.donnees = donnees;
+        this.incendie = null;
+        this.disponible = true;
+    }
+
+    /**
+     * Renvoie interventionUnitaireVolume du {@link Robot}, correspondant à un
+     * diviseur du volumeMaxRéservoir du {@link Robot}.
+     * 
+     * @return int
+     */
+    public int getInterventionUnitaireVolume() {
+        return this.interventionUnitaire;
+    }
+
+    /**
+     * 
+     * 
+     * @return int
+     */
+    public int getTempsInterventionUnitaire() {
+        return this.tempsInterventionUnitaire;
+    }
+
+    /**
+     * Renvoie le temps pour remplir le réservoir.
+     * 
+     * @return int
+     */
+    public int getTempsRemplissage() {
+        return this.tempsRemplissage;
+    }
+
+    // todo
+    public Direction getDirectionImage() {
+        return this.directionImage;
+    }
+
+    public void setDirectionImage(Direction directionImage) {
+        this.directionImage = directionImage;
+    }
+
+    public boolean peutEteindre(Incendie incendie) {
+        return this.getVitesse(incendie.getPosition().getNature()) != 0;
+    }
+
+    /**
+     * 
+     * @param incendie
+     * @return boolean
+     */
+    public boolean affecteIncendie(Incendie incendie) {
+        /* Si il a déjà un incendie, on renvoie false */
+        if (this.incendie == null) {
+            // Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte());
+            // Chemin chemin = graphe.cheminDestination(this.position,
+            // incendie.getPosition(), this);
+
+            // /* Si il existe un chemin, on accepte */
+            // if (chemin != null) {
+            this.incendie = incendie;
+            return true;
+            // }
+        }
+        // Sinon false
+        return false;
+    }
+
+    /**
+     * @param simulateur
+     */
+    private void stepRemplir(Simulateur simulateur) {
+        simulateur.ajouteEvenement(new DebutAction(0, this, simulateur));
+        simulateur.ajouteEvenement(new RemplissageEau(this.tempsRemplissage, this, simulateur));
+        simulateur.ajouteEvenement(new FinAction(this.tempsRemplissage + 1, this, simulateur));
+    }
+
+    public void checkIncendie() {
+        if (this.incendie.estEteint()) {
+            this.incendie = null;
+        }
+    }
+
+    /**
+     * @param simulateur
+     */
+    private void stepEteindre(Simulateur simulateur) {
+        int dateCumule = 0;
+        int eauVerse = 0;
+        simulateur.ajouteEvenement(new DebutAction(dateCumule, this, simulateur));
+
+        // Pas besoin de check volumeEau >= interventionUnitaire car son multiple
+        // while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
+        // eauVerse += this.interventionUnitaire;
+        // dateCumule += this.tempsInterventionUnitaire;
+        simulateur.ajouteEvenement(
+                new DeversementEau(this.tempsInterventionUnitaire, this, this.interventionUnitaire, simulateur,
+                        this.tempsInterventionUnitaire));
+        // }
+
+        // if (this.incendie.getIntensite() - eauVerse <= 0) {
+        // this.incendie = null;
+        // }
+        // simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
+    }
+
+    /**
+     * @param simulateur
+     */
+    public void nextStep(Simulateur simulateur) {
+        this.disponible = false;
+        Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte(), this);
+        Chemin chemin = null;
+
+        /* Si on a pas d'eau, peu importe l'affectation d'incendie */
+        if (this.volumeEau == 0) {
+            if (this.peutRemplir()) {
+                this.stepRemplir(simulateur);
+                return;
+            }
+            /* On cherche le chemin vers l'eau la plus proche */
+            chemin = graphe.cheminRemplir();
+            chemin.cheminToEvent(simulateur);
+            return;
+        }
+
+        /* Si on se trouve sur l'incendie affecté */
+        if (this.incendie != null && this.position == this.incendie.getPosition()) {
+            this.stepEteindre(simulateur);
+            return;
+        } else if (this.incendie != null) {
+            /* Sinon on se rend sur l'incendie en question */
+            chemin = graphe.cheminDestination(this.incendie.getPosition());
+            if (chemin != null) {
+                chemin.cheminToEvent(simulateur);
+                return;
+            }
+        }
+
+        /* Volume eau pas vide, et pas d'incendie affecté */
+        this.disponible = true;
+        return;
+    }
+
+    /**
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
+    public void eteinsIncendie(int vol) throws VolumeEauIncorrectException {
+        if (this.incendie != null && this.incendie.getPosition() == this.position) {
+            this.deverserEau(vol);
+        }
+    }
+
+    /**
+     * @param disponible
+     */
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isDisponible() {
+        return this.disponible;
     }
 
     /**
@@ -71,10 +262,17 @@ public abstract class Robot {
         return this.position;
     }
 
+    /**
+     * @return TypeRobot
+     */
     public TypeRobot getType() {
         return this.type;
     }
 
+    /**
+     * @param positionCase
+     * @return boolean
+     */
     public boolean canMove(Case positionCase) {
         return this.getVitesse((positionCase).getNature()) != 0;
     }
@@ -86,7 +284,6 @@ public abstract class Robot {
      * @throws TerrainIncorrectException
      */
     private void setPosition(Case positionCase) throws TerrainIncorrectException {
-        System.out.println(this.canMove(positionCase));
         if (!this.canMove(positionCase)) {
             System.out.println("Le robot ne peut pas se déplacer sur ce terrain");
         } else {
@@ -162,10 +359,16 @@ public abstract class Robot {
         this.vitesse = vitesse;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean peutRemplir() {
         return this.peutRemplir(this.position);
     }
 
+    /**
+     * @return double
+     */
     // ME TAPEZ PAS
     // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     // public DonneesSimulation getDonnees(){

@@ -13,7 +13,7 @@ import Simulation.DonneesSimulation;
 import java.lang.IllegalArgumentException;
 import java.lang.NullPointerException;
 
-/* pour le tostring, on import Robot */
+/* Import Robot pour la méthode */
 import Robot.*;
 
 public class Carte {
@@ -42,7 +42,7 @@ public class Carte {
 
     /**
      * Renvoie le nombre de lignes totales dans une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getNbLignes() {
@@ -51,7 +51,7 @@ public class Carte {
 
     /**
      * Renvoie le nombre de colonnes totales dans une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getNbColonnes() {
@@ -60,7 +60,7 @@ public class Carte {
 
     /**
      * Renvoie la taille des cases d'une {@link Carte}.
-     * 
+     *
      * @return int
      */
     public int getTailleCases() {
@@ -69,22 +69,22 @@ public class Carte {
 
     /**
      * Renvoie la {@link Case} de la {@link Carte} à la position (lig, col).
-     * 
+     *
      * @param lig
      * @param col
      * @return Case
      */
-    // dont even check for errors smh
+    // dont even check for errors smh //todo
     public Case getCase(int lig, int col) {
         return this.carte[lig][col];
     }
 
     /**
-     * Renvoie true si un voisin existe (on sort pas de la {@link Carte}) à la
-     * {@link Direction} dir de la {@link Case} donnée.
+     * Renvoie true si un voisin existe à la {@link Direction} dir de la
+     * {@link Case} donnée.
      * <p>
-     * Jete {@link NullPointerException} si dir est null.
-     * 
+     * Jette {@link NullPointerException} si dir est null.
+     *
      * @param src
      * @param dir
      * @return boolean
@@ -113,13 +113,14 @@ public class Carte {
     // QUE THROW UNE EXCEPTION, UN PEU COMME AVEC getIncendie
     // MAUVAISE IDEE ON VA CHANGER CA PTN
     // ET getRobot
+
     /**
-     * Renvoie le voisin de la {@link Case} src, à la {@link Direction} dir.
+     * Renvoie le voisin de la {@link Case} src à la {@link Direction} dir.
      * <p>
-     * Si inexistant, jete {@link IllegalArgumentException}.
+     * Si inexistant, jette {@link IllegalArgumentException}.
      * <p>
-     * Si dir est null, jete {@link NullPointerException}.
-     * 
+     * Si dir est null, jette {@link NullPointerException}.
+     *
      * @param src
      * @param dir
      * @return Case
@@ -146,10 +147,13 @@ public class Carte {
         }
     }
 
-    /*
-     * Voisin DOIT etre un voisin de courante
-     * todo
-     * Rappel: lignes numeroté de 0 à nbLignes, haut en bas
+    /**
+     * Renvoie la direction associée au déplacement {@Case} courante vers la
+     * {@Case} voisin.
+     *
+     * @param courante
+     * @param voisin
+     * @return Direction
      */
     public static Direction getDirection(Case courante, Case voisin) {
         int ligCourante = courante.getLigne();
@@ -174,6 +178,12 @@ public class Carte {
         // Courante == voisin
     }
 
+    /**
+     * Renvoie toute les {@link Case}s voisines existantes de src.
+     *
+     * @param src
+     * @return Iterator<Case>
+     */
     public Iterator<Case> getVoisins(Case src) {
         ArrayList<Case> voisins = new ArrayList<Case>();
 
@@ -182,7 +192,7 @@ public class Carte {
                 if (this.voisinExiste(src, dir))
                     voisins.add(this.getVoisin(src, dir));
             } catch (IllegalArgumentException e) {
-                // Ca doit pas arriver
+                // Ca doit pas arriver //todo
             } catch (NullPointerException e) {
                 // Ca doit pas arriver
             }
@@ -190,11 +200,18 @@ public class Carte {
         return voisins.iterator();
     }
 
-    @Override
+    /**
+     * Affiche la carte, les robots ainsi que les incendies dans un terminal.
+     * <p>
+     * La superposition des éléments est telle que: {@link Robot} > {@link Incendie}
+     * > élément décoratif de la {@link Case} (forêt, roche, etc..).
+     *
+     * @return String
+     */
+    // @Override
     /* before the graphic interface, we use shell to display donnees */
     public String toString() {
         /* on recupere les incendies et les robots */
-        HashMap<Case, Incendie> incendies = this.donnees.getIncendies();
         // Iterator<Robot> robots = this.donnees.getRobots();
 
         String chaine = "";
@@ -202,7 +219,7 @@ public class Carte {
         for (int lig = 0; lig < nbLignes; lig++) {
             for (int col = 0; col < nbColonnes; col++) {
                 /* On check s'il y a un incendie ici */
-                if (incendies.containsKey(this.carte[lig][col])) {
+                if (donnees.getIncendie(this.carte[lig][col]) != null) {
                     chaine += "🔥";
                 } else if (donnees.getRobot(this.carte[lig][col]) != null) {
                     chaine += "🤖";

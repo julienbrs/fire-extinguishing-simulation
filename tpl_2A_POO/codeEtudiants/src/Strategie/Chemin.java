@@ -23,6 +23,10 @@ public class Chemin {
         this.couts = new HashMap<Case, Double>();
     }
 
+    public Case getDestination() {
+        return this.chemin.getLast();
+    }
+
     void add(Case caseToAdd, double date) {
         chemin.addFirst(caseToAdd);
         couts.put(caseToAdd, date);
@@ -33,7 +37,7 @@ public class Chemin {
     }
 
     // todo check wait why should this be public?
-    private double getCout(Case case1) {
+    public double getCout(Case case1) {
         return this.couts.get(case1);
     }
 
@@ -44,6 +48,9 @@ public class Chemin {
         Case caseCourante = iterator.next();
         Evenement evenement = null;
         long cout = 0;
+
+        simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));// <33333
+                                                                               // COUCOUUUUUUUUUUUUUUUUUUUUUUUUUUU
         while (iterator.hasNext()) {
             casePrecedente = caseCourante;
             caseCourante = iterator.next();
@@ -69,6 +76,7 @@ public class Chemin {
             }
             simulateur.ajouteEvenement(evenement);
         }
+        simulateur.ajouteEvenement(new FinAction(cout + 1, this.robot, simulateur));
 
     }
 
