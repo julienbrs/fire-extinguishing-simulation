@@ -11,14 +11,33 @@ class CaseComparator implements Comparator<Case> {
         this.couts = new double[lig][col];
     }
 
+    /**
+     * Retourne le cout de la {@link Case} case1
+     * 
+     * @param case1
+     * @return double
+     */
     double getCout(Case case1) {
         return this.couts[case1.getLigne()][case1.getColonne()];
     }
 
+    /**
+     * Définit le cout de la {@link Case} case1
+     * 
+     * @param case1
+     * @param cout
+     */
     void setCout(Case case1, double cout) {
         this.couts[case1.getLigne()][case1.getColonne()] = cout;
     }
 
+    /**
+     * Compare deux {@link Case} en fonction de leur cout.
+     * 
+     * @param case1
+     * @param case2
+     * @return int
+     */
     @Override
     public int compare(Case case1, Case case2) {
         double cout1 = this.getCout(case1);

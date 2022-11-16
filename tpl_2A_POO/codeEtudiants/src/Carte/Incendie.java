@@ -44,6 +44,11 @@ public class Incendie {
     }
 
     /**
+     * Renvoie les {@link DonneesSimulation} de l' {@link Incendie}.
+     * 
+     * @return DonneesSimulation
+     */
+    /**
      * Définit l'intensité de l' {@link Incendie}.
      *
      * @param intensite

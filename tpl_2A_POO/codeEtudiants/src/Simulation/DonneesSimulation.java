@@ -45,7 +45,7 @@ public class DonneesSimulation {
     }
 
     /**
-     * Renvoie la carte associé à cette simulation.
+     * Renvoie la {@link Carte} associé à cette simulation.
      * 
      * @return Carte
      */
@@ -55,7 +55,7 @@ public class DonneesSimulation {
 
     /**
      * Associe la {@link Carte} carte aux {@link DonneesSimulation}
-     * sur laquelle la methode est appellé.
+     * sur laquelle la methode est appellée.
      * 
      * @param carte
      */
@@ -77,7 +77,7 @@ public class DonneesSimulation {
     }
 
     /**
-     * Renvoie le HashMap containant tous les incendies sur la carte.
+     * Renvoie le HashMap contenant tous les incendies sur la carte.
      * 
      * @return HashMap<Case, Incendie>
      */
@@ -86,8 +86,8 @@ public class DonneesSimulation {
     }
 
     /**
-     * Renvoie un {@link Iterator} sur les robots de la carte.
-     * On pourra y iterer dans une boucle for, ou avancer avec la
+     * Renvoie un {@link Iterator} sur les {@link Robot} de la carte.
+     * On pourra itérer avec une boucle for, ou avancer avec la
      * méthode next.
      * 
      * @return Iterator<Robot>
@@ -143,7 +143,7 @@ public class DonneesSimulation {
 
     /**
      * Ajoute un robot du {@link TypeRobot} donnée, à la {@link Case} position,
-     * et avec la vitesse donnée.
+     * et avec la {@link #vitesse} vitesse donnée.
      * <p>
      * Throws:
      * <p>

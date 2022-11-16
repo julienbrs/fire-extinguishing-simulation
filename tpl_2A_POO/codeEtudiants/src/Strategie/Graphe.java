@@ -32,7 +32,15 @@ public class Graphe {
         this.rempli = false;
     }
 
-    /* Must be preceded by a remplitChemins call */
+    /**
+     * Renvoie le coût d'une {@link Case}.
+     * Doit être précédé par un appel à remplitChemins todo c'est quel nom de
+     * fonction maintenant
+     * 
+     * @param position
+     * @return double
+     * @throws Exception
+     */
     public double getCout(Case position) throws Exception {
         if (!rempli) {
             throw new Exception("Le graphe n'as pas été initialisé");
@@ -40,6 +48,13 @@ public class Graphe {
         return this.caseComparator.getCout(position);
     }
 
+    /**
+     * Remplit le {@link Graphe} avec le {@link Chemin} le plus court entre la
+     * {@link Case} de départ et la {@link Case} d'arrivée.
+     * 
+     * @param destination
+     * @return Chemin
+     */
     public Chemin cheminDestination(Case destination) {
         /* Si le graphe est rempli on le cherche */
         if (!rempli) {
@@ -49,21 +64,39 @@ public class Graphe {
         return this.createChemin(destination, this.previousCase, this.caseComparator);
     }
 
+    /**
+     * Calcul les {@link Chemin}s les plus courts depuis la {@link Case} de
+     * départ grâce à l'algorithme de Dijkstra.
+     */
     public void calculeChemins() {
         this.rempli = true;
         this.Dijkstra(robot.getPosition(), null, false);
     }
 
+    /**
+     * 
+     * @param source
+     * @param destination
+     * @return Chemin
+     */
     private Chemin cheminDestination(Case source, Case destination) {
         this.rempli = false;
         return this.Dijkstra(source, destination, false);
     }
 
+    /**
+     * @return Chemin
+     */
     public Chemin cheminRemplir() {
         this.rempli = false;
         return this.Dijkstra(this.robot.getPosition(), null, true);
     }
 
+    /**
+     * @param source
+     * @param destination
+     * @return double
+     */
     private double Edges(Case source, Case destination) {
 
         // todo vitesse in km/h and time in ????
@@ -75,6 +108,12 @@ public class Graphe {
         return res * 3600;
     }
 
+    /**
+     * @param destination
+     * @param prev
+     * @param comparator
+     * @return Chemin
+     */
     private Chemin createChemin(Case destination, Case[][] prev, CaseComparator comparator) {
         Chemin chemin = null;
         Case source = this.robot.getPosition();
@@ -89,6 +128,12 @@ public class Graphe {
         return chemin;
     }
 
+    /**
+     * @param source
+     * @param destination
+     * @param chercheEau
+     * @return Chemin
+     */
     private Chemin Dijkstra(Case source, Case destination, boolean chercheEau) {
         Robot robot = this.robot;
         int nbLignes = this.carte.getNbLignes();

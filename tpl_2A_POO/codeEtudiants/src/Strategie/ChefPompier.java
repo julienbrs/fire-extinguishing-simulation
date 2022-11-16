@@ -32,6 +32,10 @@ public class ChefPompier {
             this.incendiesNonAffectes.add(incendies.next());
     }
 
+    /**
+     * Si tous les incendies sont affectés, on ne fait rien. Sinon, on affecte un
+     * incendie à un robot disponible.
+     */
     private void checkIncendiesAffectes() {
         /* Que si il n'y a plus d'incendie à affecter */
         if (!this.incendiesNonAffectes.isEmpty())
@@ -58,14 +62,18 @@ public class ChefPompier {
         }
     }
 
+    /**
+     * Si tous les robots sont affectés, on ne fait rien. Sinon, on affecte un
+     * robot à un incendie disponible. //todo parler de la stratégie ?
+     */
     public void affecteRobots() {
         Iterator<Robot> robots = this.donnees.getRobots();
         Robot robot = null;
         Graphe graphe = null;
 
         /*
-         * On peut pas supprimer un element dans une strucutre
-         * pendant le parcours de son iterateur
+         * On ne peut pas supprimer un element dans une structure
+         * pendant le parcours de son itérateur
          */
         Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
 
@@ -92,7 +100,7 @@ public class ChefPompier {
             while (incendies.hasNext()) {
                 incendie = incendies.next();
 
-                /* Si l'incendie a été éteint entretemps, on le supprimera */
+                /* Si l'incendie a été éteint entre temps, on le supprimera */
                 if (incendie.estEteint()) {
                     incendiesASupprimer.add(incendie);
                     continue;
@@ -109,7 +117,7 @@ public class ChefPompier {
                         incendiePlusProche = incendie;
                     }
                 } catch (Exception e) {
-                    // Si graphe pas initialisé, ca doit pas arriver
+                    // Si graphe pas initialisé, ca ne doit pas arriver
                     e.printStackTrace();
                 }
             }

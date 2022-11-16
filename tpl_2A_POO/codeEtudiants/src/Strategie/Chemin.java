@@ -23,24 +23,55 @@ public class Chemin {
         this.couts = new HashMap<Case, Double>();
     }
 
+    /**
+     * Renvoie le dernier élément de la liste (qui sera la première case à
+     * atteindre)
+     * 
+     * @return Case
+     */
     public Case getDestination() {
         return this.chemin.getLast();
     }
 
+    /**
+     * Ajoute une {@link Case} à la liste des cases, et il faudra atteindre
+     * cette case à la date donnée.
+     * 
+     * @param caseToAdd
+     * @param date
+     */
     void add(Case caseToAdd, double date) {
         chemin.addFirst(caseToAdd);
         couts.put(caseToAdd, date);
     }
 
+    /**
+     * Renvoie le chemin sous forme d'un itérateur sur les {@link Case}s.
+     * 
+     * @return Iterator<Case>
+     */
     public Iterator<Case> getChemin() {
         return this.chemin.iterator();
     }
 
+    /**
+     * Renvoie le coût d'une {@link Case} dans le chemin.
+     * //todo on a déjà une fonction comme ça non ?
+     * 
+     * @param case1
+     * @return double
+     */
     // todo check wait why should this be public?
     public double getCout(Case case1) {
         return this.couts.get(case1);
     }
 
+    /**
+     * Convertit le {@link Chemin} en {@link Event}s grâce à la méthode
+     * {@link Carte #getDirection(casePrecedente, caseCourante)}.
+     * 
+     * @param simulateur
+     */
     public void cheminToEvent(Simulateur simulateur) {
         Iterator<Case> iterator = this.getChemin();
         // On saute la premiere case (source)
@@ -49,8 +80,7 @@ public class Chemin {
         Evenement evenement = null;
         long cout = 0;
 
-        simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));// <33333
-                                                                               // COUCOUUUUUUUUUUUUUUUUUUUUUUUUUUU
+        simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));
         while (iterator.hasNext()) {
             casePrecedente = caseCourante;
             caseCourante = iterator.next();
