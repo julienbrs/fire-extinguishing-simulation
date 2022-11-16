@@ -123,34 +123,34 @@ public class Simulateur implements Simulable {
             case DRONE:
                 gui.addGraphicalElement(
                         new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
-                                "assets/drone_" + ".gif",
+                                "assets/robots/drone_" + robot.getDirectionImage() + ".gif",
                                 (int) (tailleCases * 0.85),
                                 (int) (tailleCases * 0.87), null));
                 break;
             case PATTES:
                 gui.addGraphicalElement(
                         new ImageElement(coordX, coordY,
-                                "assets/pattes_" + robot.getDirectionImage() + ".gif",
+                                "assets/robots/pattes_" + robot.getDirectionImage() + ".gif",
                                 tailleCases,
                                 tailleCases, null));
                 break;
             case ROUES:
                 gui.addGraphicalElement(
                         new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
-                                "assets/wheels_" + robot.getDirectionImage() + ".gif",
+                                "assets/robots/wheels_" + robot.getDirectionImage() + ".gif",
                                 (int) (tailleCases * 0.6),
                                 (int) (tailleCases * 0.8), null));
                 break;
             case CHENILLES:
                 gui.addGraphicalElement(
                         new ImageElement(coordX, (int) (coordY + tailleCases * 0.15),
-                                "assets/tracks_" + robot.getDirectionImage() + ".gif",
+                                "assets/robots/tracks_" + robot.getDirectionImage() + ".gif",
                                 (int) (tailleCases),
                                 (int) (tailleCases * 0.625), null));
                 break;
             default:
                 gui.addGraphicalElement(
-                        new ImageElement(coordX, coordY, "assets/robobo.gif", tailleCases, tailleCases, null));
+                        new ImageElement(coordX, coordY, "assets/robots/robobo.gif", tailleCases, tailleCases, null));
                 break;
         }
     }
