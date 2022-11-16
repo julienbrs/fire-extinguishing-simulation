@@ -64,6 +64,8 @@ testSimulateurBonus:
 
 testDjikstra:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
+testStrategie:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestStrategieInteractif.java
 
 
 # Execution:
@@ -78,7 +80,7 @@ exeChemin: testChemin
 	java -classpath bin:bin/gui.jar Test/TestChemin cartes/carteChenilles.map
 
 exeSimulateur: testSimulateur
-	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/carteSimulation.map
+	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/mushroomOfHell-20x20.map
 
 exeSimulateurKO: testSimulateurKO
 		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
@@ -97,6 +99,9 @@ exeLecture:
 
 exeRobots: testRobots
 	java -classpath src:bin Test/TestRobots cartes/cartePattes.map
+
+exeStrategie: testStrategie
+	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTest.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete
