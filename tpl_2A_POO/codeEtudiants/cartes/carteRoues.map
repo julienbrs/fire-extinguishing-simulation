@@ -1,5 +1,5 @@
 # Carte 6x6, 10m de cote
-6 6 10
+6 6 50
 
 # l0
 ROCHE
@@ -51,9 +51,9 @@ TERRAIN_LIBRE
 
 # Incendies
 2
-2 0 10000
-3 0 5000
+2 0 1000000
+3 0 500000
 
 # Robots
 1
-3 1 ROUES
+1 1 ROUES

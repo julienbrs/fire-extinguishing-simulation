@@ -20,6 +20,7 @@ public abstract class Robot {
     protected TypeRobot type;
     protected DonneesSimulation donnees;
     protected boolean disponible;
+    protected boolean verseEau;
     // interventionUnitaire est un diviseur de volume
     protected int interventionUnitaire;
     protected int tempsInterventionUnitaire;
@@ -35,6 +36,7 @@ public abstract class Robot {
         this.tempsInterventionUnitaire = tempsInterventionUnitaire;
         this.tempsRemplissage = tempsRemplissage;
         this.directionImage = Direction.SUD;
+        this.verseEau = false;
     }
 
     // todo à expliquer
@@ -45,6 +47,7 @@ public abstract class Robot {
         this.donnees = donnees;
         this.incendie = null;
         this.disponible = true;
+        this.verseEau = false;
     }
 
     /**
@@ -95,6 +98,14 @@ public abstract class Robot {
 
     public boolean peutEteindre(Incendie incendie) {
         return this.getVitesse(incendie.getPosition().getNature()) != 0;
+    }
+
+    public boolean getVerseEau() {
+        return this.verseEau;
+    }
+
+    public void setVerseEau(boolean verseEau) {
+        this.verseEau = verseEau;
     }
 
     /**

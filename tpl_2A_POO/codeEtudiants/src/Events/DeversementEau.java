@@ -11,9 +11,12 @@ public class DeversementEau extends Evenement {
     int periode;
 
     /* Robot est ici sur un incendie */
+
     public DeversementEau(long date, Robot robot, int vol, Simulateur simulateur, int periode) {
         super(date, robot, simulateur);
         this.volume = vol;
+        System.out.println("WE ARE CHANGING THE VALUE \n");
+        robot.setVerseEau(true);
     }
 
     /**
@@ -38,6 +41,7 @@ public class DeversementEau extends Evenement {
             } else {
                 this.simulateur.ajouteEvenement(new DeversementEau(periode, robot, volume, simulateur, periode));
             }
+            robot.setVerseEau(false);
 
         } catch (VolumeEauIncorrectException e) {
             System.out.println(e);
