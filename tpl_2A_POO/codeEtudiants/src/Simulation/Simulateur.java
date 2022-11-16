@@ -67,7 +67,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Définie la position de l'avion via une {@link Case}.
-     * 
+     *
      * @param position
      */
     public void setPositionAvion(Case position) {
@@ -76,7 +76,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Renvoie le {@link ChefPompier} de la simulation.
-     * 
+     *
      * @return ChefPompier
      */
     public ChefPompier getChefPompier() {
@@ -85,7 +85,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Renvoie la date courante de la simulation.
-     * 
+     *
      * @return long
      */
     public long getDateCourante() {
@@ -94,7 +94,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Ajoute un {@link Evenement} au scénario.
-     * 
+     *
      * @param event
      */
     public void ajouteEvenement(Evenement e) {
@@ -116,7 +116,7 @@ public class Simulateur implements Simulable {
     // todo
     /**
      * On regarde si la simulation est finie.
-     * 
+     *
      * @return boolean
      */
     public boolean simulationTerminee() {
@@ -129,7 +129,7 @@ public class Simulateur implements Simulable {
     /**
      * Définie la couleur d'une {@link Case} en fonction de sa nature.
      * Peut servir si les images ne sont pas chargées.
-     * 
+     *
      * @param nature
      * @return Color en RGB
      */
@@ -152,7 +152,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Dessine les {@link Robot} à leur position.
-     * 
+     *
      * @param robot
      * @param tailleCases
      * @param gui
@@ -206,7 +206,7 @@ public class Simulateur implements Simulable {
     /**
      * Dessine les {@link Incendie} à leur position, les {@link Case} en fonction
      * de leur nature et les {@link Robot} à leur position.
-     * 
+     *
      * @param incendie
      * @param tailleCases
      * @param gui
@@ -300,8 +300,8 @@ public class Simulateur implements Simulable {
                             / (intensiteForTailleMax - intensiteforTailleMin * 1.5));
                     if (ratio > 1)
                         ratio = 1;
-                    else if (ratio < 0.3)
-                        ratio = 0.3;
+                    else if (ratio < 0.5)
+                        ratio = 0.5;
                     int tailleFeu = (int) (ratio * tailleCases);
 
                     /* On ajuste sa position pour qu'il soit centré */
@@ -341,7 +341,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Renvoie les {@link DonneesSimulation} de la simulation.
-     * 
+     *
      * @return
      */
     public DonneesSimulation getDonnees() {
