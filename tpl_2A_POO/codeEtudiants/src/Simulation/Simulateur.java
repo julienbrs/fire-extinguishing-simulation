@@ -118,13 +118,12 @@ public class Simulateur implements Simulable {
         int col = caseRobot.getColonne();
         int coordX = centerCol + (col - lig) * tailleCases + tailleCases / 2;
         int coordY = (col + lig) * tailleCases / 2 - tailleCases / 4;
-        String stringVerseEau = robot.getVerseEau() ? "water_" : "";
 
         switch (robot.getType()) {
             case DRONE:
                 gui.addGraphicalElement(
                         new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
-                                "assets/drone_" + stringVerseEau + ".gif",
+                                "assets/drone_" + ".gif",
                                 (int) (tailleCases * 0.85),
                                 (int) (tailleCases * 0.87), null));
                 break;
@@ -138,7 +137,7 @@ public class Simulateur implements Simulable {
             case ROUES:
                 gui.addGraphicalElement(
                         new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
-                                "assets/drone_" + stringVerseEau + ".gif",
+                                "assets/wheels_" + robot.getDirectionImage() + ".gif",
                                 (int) (tailleCases * 0.6),
                                 (int) (tailleCases * 0.8), null));
                 break;
@@ -163,6 +162,10 @@ public class Simulateur implements Simulable {
         Case caseCourante = null;
         int tailleCases = carte.getTailleCases();
         Incendie incendie = null;
+        // todo à mieux expliquer: quand le feu a une intensité supérieure à 15000, il
+        // prend sa taille max (toute une case)
+        int intensiteForTailleMax = 30000;
+        int intensiteforTailleMin = 5000;
         NatureTerrain nature = null;
         for (int lig = 0; lig < carte.getNbLignes(); lig++) {
             for (int col = 0; col < carte.getNbColonnes(); col++) {
@@ -224,9 +227,6 @@ public class Simulateur implements Simulable {
                         // "assets/forest.png", tailleCases*2, tailleCases*2, null));
                         break;
                     default:
-                        gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases, (col + lig) * tailleCases / 2,
-                                        "assets2/fire.gif", tailleCases * 2, tailleCases * 2, null));
                         gui.addGraphicalElement(new Rectangle(tailleCases / 2 + (col + lig) * carte.getTailleCases(),
                                 tailleCases / 2 + (col + lig) * carte.getTailleCases(),
                                 NatureTerrainToColor(caseCourante.getNature()),
@@ -234,9 +234,21 @@ public class Simulateur implements Simulable {
                         break;
                 }
                 if (incendie != null && !incendie.estEteint()) {
-                    gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
-                            (col + lig) * tailleCases / 2 - tailleCases / 4, "assets/fire.gif", tailleCases,
-                            tailleCases, null));
+                    double ratio = (double) (incendie.getIntensite()
+                            / (intensiteForTailleMax - intensiteforTailleMin * 1.5));
+                    if (ratio > 1)
+                        ratio = 1;
+                    else if (ratio < 0.3)
+                        ratio = 0.3;
+                    int tailleFeu = (int) (ratio * tailleCases);
+                    int posY = (col + lig) * tailleCases / 2 - tailleCases / 4
+                            + (int) ((1 - ratio) / 2 * tailleCases);
+                    int posX = centerCol + (col - lig) * tailleCases + tailleCases / 2
+                            + (int) ((1 - ratio) / 2 * tailleCases);
+
+                    gui.addGraphicalElement(new ImageElement(
+                            posX, posY, "assets/fire.gif", tailleFeu, tailleFeu, null));
+
                     gui.addGraphicalElement(new Text(centerCol + (col - lig) * tailleCases + tailleCases,
                             (col + lig) * tailleCases / 2, Color.RED,
                             Double.toString(incendie.getIntensite())));
@@ -256,7 +268,6 @@ public class Simulateur implements Simulable {
                     (col + lig) * tailleCases / 2 - tailleCases / 4, "assets2/airplane.png", tailleCases,
                     tailleCases, null));
         }
-
     }
 
     public DonneesSimulation getDonnees() {
@@ -281,7 +292,6 @@ public class Simulateur implements Simulable {
         Carte carte = this.donnees.getCarte();
         this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
-
         draw();
     }
 }
