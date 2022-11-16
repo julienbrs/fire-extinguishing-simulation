@@ -248,10 +248,6 @@ public class Simulateur implements Simulable {
 
                     gui.addGraphicalElement(new ImageElement(
                             posX, posY, "assets/fire.gif", tailleFeu, tailleFeu, null));
-
-                    gui.addGraphicalElement(new Text(centerCol + (col - lig) * tailleCases + tailleCases,
-                            (col + lig) * tailleCases / 2, Color.RED,
-                            Double.toString(incendie.getIntensite())));
                 }
             }
         }
