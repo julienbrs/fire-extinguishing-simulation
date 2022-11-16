@@ -121,7 +121,9 @@ public class Simulateur implements Simulable {
         switch (robot.getType()) {
             case DRONE:
                 gui.addGraphicalElement(
-                        new ImageElement(coordX, (int) (coordY * 0.95), "assets/drone.gif", (int) (tailleCases * 0.85),
+                        new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
+                                "assets/drone.gif",
+                                (int) (tailleCases * 0.85),
                                 (int) (tailleCases * 0.87), null));
                 break;
             case PATTES:
@@ -133,17 +135,17 @@ public class Simulateur implements Simulable {
                 break;
             case ROUES:
                 gui.addGraphicalElement(
-                        new ImageElement((int) (coordX * 1.03), (int) (coordY * 1),
+                        new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
                                 "assets/wheel.gif",
                                 (int) (tailleCases * 0.6),
                                 (int) (tailleCases * 0.8), null));
                 break;
             case CHENILLES:
                 gui.addGraphicalElement(
-                        new ImageElement((int) (coordX * 1.03), (int) (coordY * 1.02),
+                        new ImageElement((int) (coordX), (int) (coordY + tailleCases * 0.15),
                                 "assets/tracks_" + robot.getDirectionImage() + ".gif",
-                                (int) (tailleCases * 0.688),
-                                (int) (tailleCases * 0.8), null));
+                                (int) (tailleCases),
+                                (int) (tailleCases * 0.625), null));
                 break;
             default:
                 gui.addGraphicalElement(
