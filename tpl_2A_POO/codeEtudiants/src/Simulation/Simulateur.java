@@ -238,8 +238,8 @@ public class Simulateur implements Simulable {
                             / (intensiteForTailleMax - intensiteforTailleMin * 1.5));
                     if (ratio > 1)
                         ratio = 1;
-                    else if (ratio < 0.3)
-                        ratio = 0.3;
+                    else if (ratio < 0.5)
+                        ratio = 0.5;
                     int tailleFeu = (int) (ratio * tailleCases);
                     int posY = (col + lig) * tailleCases / 2 - tailleCases / 4
                             + (int) ((1 - ratio) / 2 * tailleCases);
