@@ -293,23 +293,24 @@ public class Simulateur implements Simulable {
                     double ratio = (double) (incendie.getIntensite()
                             / (intensiteForTailleMax - intensiteforTailleMin * 1.5));
                     if (ratio > 1)
-                        ratio = 1;
+                        ratio = 0.9;
                     else if (ratio < 0.5)
                         ratio = 0.5;
                     int tailleFeu = (int) (ratio * tailleCases);
 
+                    System.out.print("ratio est:" + ratio + "\n");
+                    System.out.print("1 - ratio = " + (1 - ratio) + "\n\n\n");
+                    System.out.println("col, lig = " + col + "  ,  " + lig);
+
                     /* On ajuste sa position pour qu'il soit centré */
                     int posY = (col + lig) * tailleCases / 2 - tailleCases / 4
-                            + (int) ((1 - ratio) / 2 * tailleCases);
+                            + (int) ((0.9 - ratio) / 2 * tailleCases);
                     int posX = centerCol + (col - lig) * tailleCases + tailleCases / 2
                             + (int) ((1 - ratio) / 2 * tailleCases);
 
                     gui.addGraphicalElement(new ImageElement(
                             posX, posY, "assets/nature/fire.gif", tailleFeu, tailleFeu, null));
 
-                    gui.addGraphicalElement(new Text(centerCol + (col - lig) * tailleCases + tailleCases,
-                            (col + lig) * tailleCases / 2, Color.RED,
-                            Double.toString(incendie.getIntensite())));
                 }
             }
         }
