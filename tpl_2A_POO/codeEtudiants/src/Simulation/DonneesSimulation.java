@@ -13,13 +13,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.zip.DataFormatException;
 
 public class DonneesSimulation {
 
     private Carte carte;
     private HashMap<Case, Incendie> incendies;
-    private LinkedList<Robot> robots;
+    private Queue<Robot> robots;
     private String fichierDonnees;
 
     public DonneesSimulation(String fichierDonnees) {
