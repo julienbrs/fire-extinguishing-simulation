@@ -22,6 +22,7 @@ public class ChefPompier {
     Queue<Robot> robotsNonAffectes;
 
     public ChefPompier(Simulateur simulation, DonneesSimulation donnees) {
+
         this.simulation = simulation;
         this.donnees = donnees;
         this.incendiesAffectes = new HashSet<Incendie>();
@@ -55,7 +56,7 @@ public class ChefPompier {
             }
         }
 
-        /* On mets à jour les structures de données */
+        /* On met à jour les structures de données */
         for (Incendie incendieASupprimer : incendiesASupprimer) {
             this.incendiesNonAffectes.add(incendieASupprimer);
             this.incendiesAffectes.remove(incendieASupprimer);
@@ -72,7 +73,7 @@ public class ChefPompier {
         Graphe graphe = null;
 
         /*
-         * On ne peut pas supprimer un element dans une structure
+         * On ne peut pas supprimer un élément dans une structure
          * pendant le parcours de son itérateur
          */
         Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();

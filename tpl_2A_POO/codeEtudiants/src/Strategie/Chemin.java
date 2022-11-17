@@ -13,6 +13,7 @@ import Carte.Carte;
 import Carte.Direction;
 
 public class Chemin {
+
     private Robot robot;
     private LinkedList<Case> chemin;
     private HashMap<Case, Double> couts;
@@ -56,13 +57,11 @@ public class Chemin {
 
     /**
      * Renvoie le coût d'une {@link Case} dans le chemin.
-     * //todo on a déjà une fonction comme ça non ?
      * 
      * @param case1
      * @return double
      */
-    // todo check wait why should this be public?
-    public double getCout(Case case1) {
+    double getCout(Case case1) {
         return this.couts.get(case1);
     }
 
@@ -101,8 +100,7 @@ public class Chemin {
                     evenement = new DeplacementSud(cout, this.robot, simulateur);
                     break;
                 default:
-                    // bizarre l'ambiance
-                    // todo
+                    // N'arrive jamais
             }
             simulateur.ajouteEvenement(evenement);
         }
