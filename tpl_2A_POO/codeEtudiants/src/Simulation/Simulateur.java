@@ -345,8 +345,7 @@ public class Simulateur implements Simulable {
      */
     @Override
     public void next() {
-        if (!simulationTerminee())
-            incrementeDate();
+        incrementeDate();
         draw();
     }
 

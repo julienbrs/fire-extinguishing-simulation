@@ -40,8 +40,9 @@ public class TestChemin {
             Robot robot = robots.next();
 
             Graphe g = new Graphe(donnees, donnees.getCarte(), robot);
-            Chemin chemin = g.cheminRemplir();
-            chemin.cheminToEvent(simulateur);
+            Chemin chemin = g.cheminDestination(donnees.getCarte().getCase(1, 0));
+            if (chemin != null)
+                chemin.cheminToEvent(simulateur);
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
