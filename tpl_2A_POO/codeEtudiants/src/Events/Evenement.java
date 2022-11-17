@@ -4,6 +4,7 @@ import Simulation.Simulateur;
 import Robot.*;
 
 public abstract class Evenement {
+    
     protected long date;
     protected Simulateur simulateur;
     protected Robot robot;

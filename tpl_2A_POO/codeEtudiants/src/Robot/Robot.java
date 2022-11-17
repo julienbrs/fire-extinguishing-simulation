@@ -13,6 +13,7 @@ import Events.RemplissageEau;
 import Exception.*;
 
 public abstract class Robot {
+    
     protected Case position;
     protected Incendie incendie;
     protected int volumeEau;
@@ -45,35 +46,6 @@ public abstract class Robot {
         this.donnees = donnees;
         this.incendie = null;
         this.disponible = true;
-    }
-
-    /**
-     * Renvoie interventionUnitaireVolume du {@link Robot}, correspondant à un
-     * diviseur du volumeMaxRéservoir du {@link Robot}.
-     * 
-     * @return int
-     */
-    public int getInterventionUnitaireVolume() {
-        return this.interventionUnitaire;
-    }
-
-    /**
-     * Renvoie le temps nécessaire pour déverser un volume
-     * {@link #interventionUnitaire} sur un incendie.
-     * 
-     * @return int
-     */
-    public int getTempsInterventionUnitaire() {
-        return this.tempsInterventionUnitaire;
-    }
-
-    /**
-     * Renvoie le temps pour remplir le réservoir.
-     * 
-     * @return int
-     */
-    public int getTempsRemplissage() {
-        return this.tempsRemplissage;
     }
 
     /**
@@ -111,17 +83,9 @@ public abstract class Robot {
     public boolean affecteIncendie(Incendie incendie) {
         /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
-            // Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte());
-            // Chemin chemin = graphe.cheminDestination(this.position,
-            // incendie.getPosition(), this);
-
-            // /* Si il existe un chemin, on accepte */
-            // if (chemin != null) {
             this.incendie = incendie;
             return true;
-            // }
         }
-        // Sinon false
         return false;
     }
 
@@ -258,9 +222,7 @@ public abstract class Robot {
             throws NoSuchElementException, VitesseIncorrectException {
         switch (type) {
             case CHENILLES:
-                /* Volume d'eau temporairement à 0, changé dans le constructeur */
-                /* Enlevé vitesse à 0, on suppose qu'on commence avec réservoir plein */
-                // todo à voir
+                // appeller le constructeur du robot chenilles
                 return new Chenilles(position, vitesse, donnees);
             case DRONE:
                 // appeller le constructeur du robot drone
@@ -269,12 +231,11 @@ public abstract class Robot {
                 // appeller le constructeur du robot roues
                 return new Roues(position, vitesse, donnees);
             case PATTES:
-                // appeller le constructeur du robot pattes ( pas un copié-collé)
+                // appeller le constructeur du robot pattes
                 return new Pattes(position, donnees);
             default:
-                // Ca arrive pas parceque on ne crée des robots que dans LecteurDonnees
-                // Et là les erreurs sont déjà gérés
-                // todo
+                // N'arrive jamais car on ne crée des robots que dans LecteurDonnees
+                // où les erreurs sont déjà gérées
                 throw new NoSuchElementException("Le  type robot " + type.toString() + " n'existe pas!");
         }
     }
@@ -365,30 +326,12 @@ public abstract class Robot {
     }
 
     /**
-     * Set le volume d'eau du Robot.
-     * 
-     * @param volumeEau
-     */
-    public void setVolumeEau(int volumeEau) {
-        this.volumeEau = volumeEau;
-    }
-
-    /**
      * Renvoie la vitesse du Robot.
      * 
      * @return double
      */
     public double getVitesse() {
         return this.vitesse;
-    }
-
-    /**
-     * Set la vitesse du Robot.
-     * 
-     * @param vitesse
-     */
-    public void setVitesse(double vitesse) {
-        this.vitesse = vitesse;
     }
 
     /**
@@ -401,15 +344,6 @@ public abstract class Robot {
         return this.peutRemplir(this.position);
     }
 
-    /**
-     * @return double
-     */
-    // ME TAPEZ PAS
-    // TODO
-    // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-    // public DonneesSimulation getDonnees(){
-    // return this.donnees;
-    // }
     /**
      * //todo à enlever
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.

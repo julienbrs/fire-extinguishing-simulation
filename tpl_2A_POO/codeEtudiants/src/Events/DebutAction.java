@@ -4,6 +4,7 @@ import Robot.*;
 import Simulation.*;
 
 public class DebutAction extends Evenement {
+    
     public DebutAction(long date, Robot robot, Simulateur simulateur) {
         super(date, robot, simulateur);
     }

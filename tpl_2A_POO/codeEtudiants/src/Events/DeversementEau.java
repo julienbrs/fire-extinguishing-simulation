@@ -7,6 +7,7 @@ import Carte.Incendie;
 import Exception.*;
 
 public class DeversementEau extends Evenement {
+    
     int volume;
     int periode;
 
@@ -26,11 +27,9 @@ public class DeversementEau extends Evenement {
         try {
             DonneesSimulation donnees = this.simulateur.getDonnees();
             Incendie incendie = donnees.getIncendie(this.robot.getPosition());
-
             this.robot.deverserEau(this.volume);
-
             /*
-             * Si il reste moins d'une interventionUnitaire, on ne prévoit pas de continuerà
+             * Si il reste moins d'une interventionUnitaire, on ne prévoit pas de continuer à
              * verser de l'eau.
              */
             if (incendie.estEteint() || this.robot.getVolumeEau() < volume) {

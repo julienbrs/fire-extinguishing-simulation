@@ -4,6 +4,7 @@ import Robot.Robot;
 import Simulation.Simulateur;
 
 public class AffectationIncendiesRobots extends Evenement {
+    
     int periode;
 
     public AffectationIncendiesRobots(long date, Robot robot, Simulateur simulateur, int periode) {

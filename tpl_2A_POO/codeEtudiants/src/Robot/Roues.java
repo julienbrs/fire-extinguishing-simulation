@@ -7,6 +7,7 @@ import Simulation.DonneesSimulation;
 import Exception.*;
 
 public class Roues extends Robot {
+
     static double vitesseDefaut = 80;
     static int volumeEauMax = 5000;
     static int interventionUnitaire = 100;
@@ -18,6 +19,7 @@ public class Roues extends Robot {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.ROUES;
+        
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (Double.isNaN(vitesse))
@@ -106,7 +108,7 @@ public class Roues extends Robot {
      */
     public void remplirReservoir() throws TerrainIncorrectException {
         if (peutRemplir()) {
-            this.setVolumeEau(volumeEauMax);
+            this.volumeEau = volumeEauMax;
         } else {
             throw new TerrainIncorrectException("Il n'y a pas d'eau autour du robot");
         }

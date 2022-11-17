@@ -15,10 +15,8 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
-// For now we don't need anything
-// Will have to check how to display 
-// In the following part of the subject
 public class DonneesSimulation {
+
     private Carte carte;
     private HashMap<Case, Incendie> incendies;
     private LinkedList<Robot> robots;
@@ -45,7 +43,7 @@ public class DonneesSimulation {
     }
 
     /**
-     * Renvoie la {@link Carte} associé à cette simulation.
+     * Renvoie la {@link Carte} associée à cette simulation.
      * 
      * @return Carte
      */
@@ -55,7 +53,7 @@ public class DonneesSimulation {
 
     /**
      * Associe la {@link Carte} carte aux {@link DonneesSimulation}
-     * sur laquelle la methode est appellée.
+     * sur laquelle la méthode est appellée.
      * 
      * @param carte
      */
@@ -66,7 +64,7 @@ public class DonneesSimulation {
     }
 
     /**
-     * Rajoute un incendie à la {@link Case} position, d'une intensité donnée.
+     * Ajoute un incendie à la {@link Case} position de l'intensité donnée.
      * 
      * @param position
      * @param intensite
@@ -103,7 +101,6 @@ public class DonneesSimulation {
      * @return Incendie
      */
     public Incendie getIncendie(Case position) {
-        /* Returns the fire at the position case, else null */
         return this.incendies.get(position);
     }
 
@@ -114,41 +111,23 @@ public class DonneesSimulation {
      * @param position
      * @return Robot
      */
-    /// NE MARCHE PAS NE MARCHE PAS
-    // todo
-    // si il y a plusieurs robot, on ne renvoie que le premier, un peu cringe
     public Robot getRobot(Case position) {
         for (Robot robot : this.robots) {
-            // We suppose all cases are unique, so position would also be
-            // this.carte.getCase(position.getLigne(), position.getColonne())
+            // ON suppose que les cases et donc les poitions sont uniques
             if (robot.getPosition() == position)
                 return robot;
         }
-        // if (this.robots.containsKey(this.carte.getCase(lig, col))) return
-        // this.robots.get(this.carte.getCase(lig, col));
         return null;
     }
 
     /**
-     * Supprime l'{@link Incendie} à la {@link Case} position;
-     * 
-     * @param position
-     */
-    public void removeIncendie(Case position) {
-
-        if (this.incendies.containsKey(position)) {
-            this.incendies.remove(position);
-        }
-    }
-
-    /**
-     * Ajoute un robot du {@link TypeRobot} donnée, à la {@link Case} position,
-     * et avec la {@link #vitesse} vitesse donnée.
+     * Ajoute un robot du {@link TypeRobot} donné, à la {@link Case} position
+     * donnée, avec la {@link #vitesse} donnée.
      * <p>
      * Throws:
      * <p>
      * {@link VitesseIncorrectException} si,
-     * pour un type donnée, la vitesse est incorrecte.
+     * pour un type donné, la vitesse est incorrecte.
      * <p>
      * {@link NoSuchElementException} si le type du robot est incorrect.
      * 

@@ -1,6 +1,7 @@
 package Carte;
 
 public class Case {
+    
     private int ligne, colonne;
     private NatureTerrain nature;
 
