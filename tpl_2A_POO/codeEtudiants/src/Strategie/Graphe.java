@@ -74,6 +74,8 @@ public class Graphe {
     }
 
     /**
+     * Renvoie le {@link Chemin} plus court depuis la {@link Case} source à
+     * {@link Case} destination.
      * 
      * @param source
      * @param destination
@@ -85,6 +87,9 @@ public class Graphe {
     }
 
     /**
+     * Renvoie le chemin vers la {@link Case} plus proche où le {@link Robot} du
+     * graphe peut remplir.
+     * 
      * @return Chemin
      */
     public Chemin cheminRemplir() {
@@ -93,11 +98,13 @@ public class Graphe {
     }
 
     /**
+     * Calcule et renvoie le cout du déplacement entre deux {@link Case}s
+     * 
      * @param source
      * @param destination
      * @return double
      */
-    private double Edges(Case source, Case destination) {
+    private double coutDeplacement(Case source, Case destination) {
 
         double res = this.robot.getVitesse(source.getNature()) +
                 robot.getVitesse(destination.getNature());
@@ -108,6 +115,10 @@ public class Graphe {
     }
 
     /**
+     * Calcule et renvoie le chemin à partir du {@link Robot} du graphe jusqu'à la
+     * {@link Case} destination. Le tableau des noeuds précédents et le
+     * {@link CaseComparator} sont utilisées pour calculer le chemin.
+     * 
      * @param destination
      * @param prev
      * @param comparator
@@ -116,9 +127,13 @@ public class Graphe {
     private Chemin createChemin(Case destination, Case[][] prev, CaseComparator comparator) {
         Chemin chemin = null;
         Case source = this.robot.getPosition();
+
         Case prec = destination;
+
         if (prev[destination.getLigne()][destination.getColonne()] != null || destination == source) {
             chemin = new Chemin(robot);
+
+            /* On reconstruit le chemin avec les noeuds précédents */
             while (prec != null) {
                 chemin.add(prec, comparator.getCout(prec));
                 prec = prev[prec.getLigne()][prec.getColonne()];
@@ -128,6 +143,20 @@ public class Graphe {
     }
 
     /**
+     * La fonction Dijkstra a trois finalité.
+     * <p>
+     * Si destination est specifié et chercheEau à false on renvoie le chemin plus
+     * court de la {@link Case} source à la {@link Case} destination.
+     * <p>
+     * 
+     * Si chercheEau est true elle renvoit la {@link Case} plus proche où le
+     * {@link Robot} du graphe peut remplir.
+     * 
+     * <p>
+     * Si destination est à null, et chercheEau à false, la fonction calcule les
+     * chemins plus courts
+     * vers tous les {@link Case}s atteignables par le {@link Robot} du graphe.
+     * 
      * @param source
      * @param destination
      * @param chercheEau
@@ -143,20 +172,25 @@ public class Graphe {
         CaseComparator comparator = new CaseComparator(nbLignes, nbColonnes);
         PriorityQueue<Case> queue = new PriorityQueue<Case>(nbElements, comparator);
 
-        // initialize prev and ""dist""
+        /* On initialise prev et les couts de chaque case */
         Case caseCourante = null;
         for (int ligne = 0; ligne < nbLignes; ligne++) {
             for (int colonne = 0; colonne < nbColonnes; colonne++) {
                 caseCourante = this.carte.getCase(ligne, colonne);
+
+                /* On rajoute la source à la fin */
                 if (caseCourante == source)
                     continue;
+                /* On commence avec un cout infini */
                 comparator.setCout(caseCourante, Double.POSITIVE_INFINITY);
 
+                /* On prend pas en compte les cases où on peut pas se deplacer */
                 if (!robot.canMove(caseCourante))
                     continue;
 
                 queue.add(caseCourante);
 
+                /* Pas de case précédente au départ */
                 prev[ligne][colonne] = null;
 
             }
@@ -165,22 +199,27 @@ public class Graphe {
         }
 
         while (!queue.isEmpty()) {
-            // The main loop
-            // We get the min (head cause min-priority queue)
+            /* On prend la case avec le cout minimal */
             caseCourante = queue.poll();
 
+            /* On renvoit la prèmiere case qui satisfait les conditions d'appel */
             if ((!chercheEau && caseCourante == destination) || (chercheEau && robot.peutRemplir(caseCourante))) {
                 chemin = this.createChemin(caseCourante, prev, comparator);
                 return chemin;
             }
+
+            /* Mise à jour du coût des voisins */
             for (Iterator<Case> voisins = this.carte.getVoisins(caseCourante); voisins.hasNext();) {
                 Case voisin = voisins.next();
 
                 if (!robot.canMove(voisin))
                     continue;
-                double coutVoisin = comparator.getCout(voisin);
-                double cout = comparator.getCout(caseCourante) + this.Edges(caseCourante, voisin);
 
+                /* Calcul du cout */
+                double coutVoisin = comparator.getCout(voisin);
+                double cout = comparator.getCout(caseCourante) + this.coutDeplacement(caseCourante, voisin);
+
+                /* Si on trouve un meilleur chemin, on mets à jour les variables */
                 if (cout < coutVoisin) {
                     comparator.setCout(voisin, cout);
                     prev[voisin.getLigne()][voisin.getColonne()] = caseCourante;
@@ -190,28 +229,7 @@ public class Graphe {
 
             }
         }
-        // /* Si il n'y a pas de chemin */
-        // if (!chercheFeu)
-        // return null;
-        // // On arrive ici que si on cherche l'incendie plus proche
-        // // Ou il y a pas de
-        // double cout = 0;
-        // double coutMin = Double.POSITIVE_INFINITY;
-        // Iterator<Incendie> incendies = donnees.getIncendies();
-        // Incendie incendie = null;
-        // Incendie plusProcheIncendie = null;
-        // while (incendies.hasNext()) {
-        // incendie = incendies.next();
-        // if (!incendie.estEteint() && robot.peutEteindre(incendie)) {
-        // cout = comparator.getCout(incendie.getPosition());
-        // if (cout < coutMin) {
-        // coutMin = cout;
-        // plusProcheIncendie = incendie;
-        // }
-        // }
-        // }
-        // if (plusProcheIncendie == null)
-        // return null;
+
         this.previousCase = prev;
         this.caseComparator = comparator;
         return null;
