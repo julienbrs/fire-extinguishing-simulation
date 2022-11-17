@@ -7,6 +7,7 @@ import Carte.*;
 import Simulation.DonneesSimulation;
 
 public class Chenilles extends Robot {
+
     static double vitesseDefaut = 60;
     static double vitesseMax = 80;
     static int volumeEauMax = 2000;
@@ -22,6 +23,7 @@ public class Chenilles extends Robot {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.CHENILLES;
+        
         if (vitesse < 0) {
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         }
@@ -46,16 +48,13 @@ public class Chenilles extends Robot {
     public double getVitesse(NatureTerrain nature) {
         switch (nature) {
             case EAU:
-                /* Ne peut pas se déplacer sur l'eau */
+            case ROCHE:
+                /* Ne peut pas se déplacer sur l'eau et la roche */
                 return 0;
             case FORET:
                 /* Vitesse diminuée de 50% en forêt */
                 return this.vitesse * 0.5;
-            case ROCHE:
-                /* Ne peut pas se déplacer sur la roche */
-                return 0;
             case TERRAIN_LIBRE:
-                return this.vitesse;
             case HABITAT:
                 return this.vitesse;
             default:

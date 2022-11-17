@@ -21,6 +21,7 @@ import Events.Evenement;
 class ComparatorEvenements implements Comparator<Evenement> {
 
     /**
+     * 
      * @param o1
      * @param o2
      * @return int
@@ -35,6 +36,7 @@ class ComparatorEvenements implements Comparator<Evenement> {
 }
 
 public class Simulateur implements Simulable {
+
     private Case positionAvion;
     private long dateSimulation;
     private PriorityQueue<Evenement> scenario;
@@ -64,7 +66,7 @@ public class Simulateur implements Simulable {
         this.dateSimulation = dateSimulation;
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.chef = new ChefPompier(this, this.donnees);
-        // todo 100?
+
         if (lancerSimulation)
             this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
@@ -110,17 +112,16 @@ public class Simulateur implements Simulable {
 
     /**
      * Incrémente la date de la simulation.
-     * Si il y a des événements à cette date, ils sont exécutés.
+     * Si il y a des événements à cette date, ils sont exécutés puis supprimés.
      */
     void incrementeDate() {
         dateSimulation++;
         while (scenario.peek() != null && dateSimulation >= scenario.peek().getDate()) {
-            // poll : récupère et supprime la tete de la queue
+            // récupère et supprime la tete de la queue
             scenario.poll().execute();
         }
     }
 
-    // todo
     /**
      * On regarde si la simulation est finie.
      *
@@ -143,7 +144,7 @@ public class Simulateur implements Simulable {
     private Color NatureTerrainToColor(NatureTerrain nature) {
         switch (nature) {
             case EAU:
-                return new Color(44, 163, 221);// (212, 241, 249);
+                return new Color(44, 163, 221);
             case FORET:
                 return new Color(31, 61, 12);
             case HABITAT:
@@ -151,7 +152,7 @@ public class Simulateur implements Simulable {
             case ROCHE:
                 return new Color(90, 77, 65);
             case TERRAIN_LIBRE:
-                return new Color(141, 199, 64);// (144, 238, 144);
+                return new Color(141, 199, 64);
             default:
                 return Color.BLACK;
         }
@@ -204,6 +205,7 @@ public class Simulateur implements Simulable {
                                 (int) (tailleCases * 0.625), null));
                 break;
             default:
+                // Robot mystère
                 gui.addGraphicalElement(
                         new ImageElement(coordX, coordY, "assets/robots/robobo.gif", tailleCases, tailleCases, null));
                 break;
@@ -236,13 +238,12 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
-                // todo expliquer, c'est pour changer les assets aléatoirement
+                /* On crée les assets aléatoirement, qui rend unique chaque carte générée */
                 int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 9 + carte.hashCode();
 
                 /* On dessine la case selon sa nature */
                 switch (nature) {
                     case TERRAIN_LIBRE:
-                        // drawTerrainLibre(caseCourante, tailleCases, gui);
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
@@ -257,16 +258,6 @@ public class Simulateur implements Simulable {
                                         tailleCases, null));
                         break;
                     case EAU:
-
-                        // ca marche po
-                        // if (hashLots % 100 < 15) {
-                        // gui.addGraphicalElement(new ImageElement(
-                        // centerCol + (col - lig) * tailleCases,
-                        // (col + lig) * tailleCases / 2, "assets2/fancy_water.png",
-                        // tailleCases * 2,
-                        // tailleCases, null));
-                        // break;
-                        // }
                         gui.addGraphicalElement(
                                 new ImageElement(centerCol + (col - lig) * tailleCases,
                                         (col + lig) * tailleCases / 2,
@@ -287,10 +278,6 @@ public class Simulateur implements Simulable {
                                         "assets/nature/forest" + Integer.toString(hashLots % 2) + ".png",
                                         tailleCases * 2,
                                         tailleCases, null));
-                        // gui.addGraphicalElement(new ImageElement((col + lig) *tailleCases/2, (col +
-                        // lig) *
-                        // tailleCases,
-                        // "assets/forest.png", tailleCases*2, tailleCases*2, null));
                         break;
                     default:
                         gui.addGraphicalElement(new Rectangle(tailleCases / 2 + (col + lig) * carte.getTailleCases(),
@@ -356,7 +343,7 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * On implémente la méthode {@link #next()} de {@link Simulateur} pour
+     * On redéfinit la méthode {@link #next()} de {@link Simulateur} pour
      * incrémenter la date de la simulation
      */
     @Override
@@ -367,7 +354,7 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * On implémente la méthode {@link #restart()} de {@link Simulateur} pour
+     * On redéfinit la méthode {@link #restart()} de {@link Simulateur} pour
      * remettre la date de la simulation à 0 et réinitialiser toute les données de
      * simulation.
      */

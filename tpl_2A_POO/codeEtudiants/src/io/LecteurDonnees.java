@@ -8,12 +8,11 @@ import Simulation.DonneesSimulation;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
-import java.util.HashMap; // import the HashMap class
+import java.util.HashMap;
 
-// import org.jcp.xml.dsig.internal.dom.DOMReference;
 
 /**
- * Lecteur de cartes au format spectifié dans le sujet.
+ * Lecteur de cartes au format specifié dans le sujet.
  * Les données sur les cases, robots puis incendies sont lues dans le fichier,
  * puis simplement affichées.
  * A noter: pas de vérification sémantique sur les valeurs numériques lues.
@@ -57,13 +56,12 @@ public class LecteurDonnees {
         scanner.close();
 
         return donnees;
-        // System.out.println("\n == Lecture terminee");
     }
 
     private static Scanner scanner;
 
     /**
-     * Constructeur privé; impossible d'instancier la classe depuis l'exterieur
+     * Constructeur privé; impossible d'instancier la classe depuis l'extérieur
      * 
      * @param fichierDonnees Nom du fichier à lire
      * @throws FileNotFoundException
@@ -240,7 +238,7 @@ public class LecteurDonnees {
     }
 
     /**
-     * Verifie qu'il n'y a plus rien a lire sur cette ligne (int ou float).
+     * Vérifie qu'il n'y ai plus rien a lire sur cette ligne (int ou float).
      * Jette {@link DataFormatException} s'il y a trop de données sur une même
      * ligne.
      * 

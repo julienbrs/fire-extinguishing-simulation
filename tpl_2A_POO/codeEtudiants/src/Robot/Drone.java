@@ -5,6 +5,7 @@ import Simulation.DonneesSimulation;
 import Exception.*;
 
 public class Drone extends Robot {
+    
     static double vitesseDefaut = 100;
     static double vitesseMax = 150;
     static int volumeEauMax = 10000;
@@ -18,6 +19,7 @@ public class Drone extends Robot {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.DRONE;
+        
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (vitesse > vitesseMax)
