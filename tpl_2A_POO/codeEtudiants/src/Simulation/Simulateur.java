@@ -298,10 +298,6 @@ public class Simulateur implements Simulable {
                         ratio = 0.5;
                     int tailleFeu = (int) (ratio * tailleCases);
 
-                    System.out.print("ratio est:" + ratio + "\n");
-                    System.out.print("1 - ratio = " + (1 - ratio) + "\n\n\n");
-                    System.out.println("col, lig = " + col + "  ,  " + lig);
-
                     /* On ajuste sa position pour qu'il soit centré */
                     int posY = (col + lig) * tailleCases / 2 - tailleCases / 4
                             + (int) ((0.9 - ratio) / 2 * tailleCases);
