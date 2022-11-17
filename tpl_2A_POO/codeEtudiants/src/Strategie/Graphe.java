@@ -56,11 +56,11 @@ public class Graphe {
      * @return Chemin
      */
     public Chemin cheminDestination(Case destination) {
-        /* Si le graphe est rempli on le cherche */
+        /* Si le graphe n'est rempli on le calcule */
         if (!rempli) {
             return this.cheminDestination(this.robot.getPosition(), destination);
         }
-        /* Sinon on le calcule */
+        /* Sinon on le cherche */
         return this.createChemin(destination, this.previousCase, this.caseComparator);
     }
 
@@ -99,7 +99,6 @@ public class Graphe {
      */
     private double Edges(Case source, Case destination) {
 
-        // todo vitesse in km/h and time in ????
         double res = this.robot.getVitesse(source.getNature()) +
                 robot.getVitesse(destination.getNature());
         res /= 2;
