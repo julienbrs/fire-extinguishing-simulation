@@ -41,8 +41,13 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
     private ChefPompier chef;
+    private boolean lancerSimulation;
 
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
+        this(donnees, dateSimulation, true);
+    }
+
+    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation) {
         Carte carte = donnees.getCarte();
 
         int tailleCases = carte.getTailleCases();
@@ -50,7 +55,8 @@ public class Simulateur implements Simulable {
         int nbLignes = carte.getNbLignes();
 
         this.positionAvion = carte.getCase(nbLignes / 5, 0);
-        GUISimulator gui = new GUISimulator(nbColonnes * 2 * tailleCases, nbLignes * tailleCases, null);
+        GUISimulator gui = new GUISimulator(nbColonnes * 2 * tailleCases, nbLignes * tailleCases,
+                new Color(170, 242, 229));
         gui.setSimulable(this);
 
         this.gui = gui;
@@ -59,9 +65,10 @@ public class Simulateur implements Simulable {
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.chef = new ChefPompier(this, this.donnees);
         // todo 100?
-        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+        if (lancerSimulation)
+            this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
-        // Initialisation des couleurs
+
         this.draw();
     }
 
