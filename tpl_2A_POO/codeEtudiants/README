@@ -1,16 +1,31 @@
-Ensimag 2A POO - TP 2022/23
-============================
+# Ensimag 2A POO - TP 2022/23
 
-- src: contient les classes fournies par les enseignants
-  -> LecteurDonnees.java         : lit tous les elements d'un fichier de description de donnees (cases, incendies et robots) et les affiche.
-                                   A vous de MODIFIER cette classe (ou en ecrire une nouvelle) pour creer les objets correspondants à vos propres classes
-  -> TestLecteurDonnees.java     : lit un fichier de donnees et affiche son contenu
-  -> TestInvader                 : cree un simulateur "mini Invaders" dans une fenetre graphique
+Bonjour,
+
+- assets & assets2 : assets utilisés pour le projet
 
 - cartes: quelques exemples de fichiers de donnees
 
-- bin/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestInvader.java
+- bin/gui.jar: archive Java contenant les classes de l'interface graphique.
 
 - doc: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
 
-- Makefile: quelques explications sur la compilation en ligne, notamment la notion de classpath et l'utilisation de gui.jar
+- Makefile :
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+POUR COMPILER
+
+- make : construit les executables et les librairies des fichiers source
+- make clean : suppression des fichiers .class dans bin
+
+POUR VOIR LES TESTS
+
+- make exeCarte : execute le test TestCarte
+- make exeRobot : execute le test TestRobot
+- make exeDijkstra : execute le test TestDijkstra
+- make exeSimulateurOK : execute le test TestSimulateurOK
+- make exeChemin : execute le test TestChemin
+- make exeSimulation : execute le testSimulation
+- make exeSimulateur : execute le testSimulateur
+
+Bon courage pour la correction et merci pour le temps que vous y passerez :\*

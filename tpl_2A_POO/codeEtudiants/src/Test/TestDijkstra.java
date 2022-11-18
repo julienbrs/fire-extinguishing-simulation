@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
-public class TestDjikstra {
+public class TestDijkstra {
 
     public static void main(String[] args) {
         if (args.length < 1) {

@@ -66,8 +66,8 @@ testSimulateurBonus:
 
 testCarte:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestCarte.java
-testDjikstra:
-	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
+testDijkstra:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDijkstra.java
 testStrategie:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestStrategieInteractif.java
 
@@ -80,8 +80,8 @@ testStrategie:
 exeCarte: testCarte
 	java -classpath bin:bin/gui.jar Test/TestCarte cartes/carteSujet.map
 
-exeDjikstra: testDjikstra
-	java -classpath bin:bin/gui.jar Test/TestDjikstra cartes/mushroomOfHell-20x20.map
+exeDijkstra: testDijkstra
+	java -classpath bin:bin/gui.jar Test/TestDijkstra cartes/mushroomOfHell-20x20.map
 
 exeChemin: testChemin
 	java -classpath bin:bin/gui.jar Test/TestChemin cartes/carteChenilles.map
@@ -96,7 +96,7 @@ exeSimulateurKO: testSimulateurKO
 		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
 
 exeSimulateurOK: testSimulateurOK
-		java -classpath bin:bin/gui.jar Test/TestSimulateurOK cartes/carteSimulation.map
+		java -classpath bin:bin/gui.jar Test/TestSimulateurOK cartes/carteSujet.map
 
 exeSimulateurBonus: testSimulateurBonus
 		java -classpath bin:bin/gui.jar Test/TestSimulateurBonus cartes/carteSimulation.map

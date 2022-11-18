@@ -1,5 +1,5 @@
 # Un exemple de carte 8x8, cases de 10000m de cote
-8 8 10000
+8 8 50
 
 # l0
 TERRAIN_LIBRE
