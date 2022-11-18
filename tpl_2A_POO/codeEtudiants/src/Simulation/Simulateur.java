@@ -37,12 +37,13 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
     private ChefPompier chef;
+    private boolean useGif;
 
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
-        this(donnees, dateSimulation, true);
+        this(donnees, dateSimulation, true, true);
     }
 
-    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation) {
+    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation, boolean useGif) {
         Carte carte = donnees.getCarte();
 
         int tailleCases = carte.getTailleCases();
@@ -59,6 +60,7 @@ public class Simulateur implements Simulable {
         this.dateSimulation = dateSimulation;
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.chef = new ChefPompier(this, this.donnees);
+        this.useGif = useGif;
 
         if (lancerSimulation) {
             this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
@@ -143,32 +145,64 @@ public class Simulateur implements Simulable {
 
         switch (robot.getType()) {
             case DRONE:
-                gui.addGraphicalElement(
-                        new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
-                                "assets/robots/drone_" + robot.getDirectionImage() + ".gif",
-                                (int) (tailleCases * 0.85),
-                                (int) (tailleCases * 0.87), null));
+                if (this.useGif) {
+                    gui.addGraphicalElement(
+                            new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
+                                    "assets/robots/drone_" + robot.getDirectionImage() + ".gif",
+                                    (int) (tailleCases * 0.85),
+                                    (int) (tailleCases * 0.87), null));
+                } else {
+                    gui.addGraphicalElement(
+                            new ImageElement((int) (coordX + tailleCases * 0.1), (int) (coordY - tailleCases * 0.20),
+                                    "assets/robots/drone.png",
+                                    (int) (tailleCases * 0.85),
+                                    (int) (tailleCases * 0.87), null));
+                }
                 break;
             case PATTES:
-                gui.addGraphicalElement(
-                        new ImageElement(coordX, coordY,
-                                "assets/robots/pattes_" + robot.getDirectionImage() + ".gif",
-                                tailleCases,
-                                tailleCases, null));
+                if (this.useGif) {
+                    gui.addGraphicalElement(
+                            new ImageElement(coordX, coordY,
+                                    "assets/robots/pattes_" + robot.getDirectionImage() + ".gif",
+                                    tailleCases,
+                                    tailleCases, null));
+                } else {
+                    gui.addGraphicalElement(
+                            new ImageElement(coordX, coordY,
+                                    "assets/robots/pattes.png",
+                                    tailleCases,
+                                    tailleCases, null));
+                }
                 break;
             case ROUES:
-                gui.addGraphicalElement(
-                        new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
-                                "assets/robots/wheels_" + robot.getDirectionImage() + ".gif",
-                                (int) (tailleCases * 0.6),
-                                (int) (tailleCases * 0.8), null));
+                if (this.useGif) {
+                    gui.addGraphicalElement(
+                            new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
+                                    "assets/robots/wheels_" + robot.getDirectionImage() + ".gif",
+                                    (int) (tailleCases * 0.6),
+                                    (int) (tailleCases * 0.8), null));
+                } else {
+                    gui.addGraphicalElement(
+                            new ImageElement((int) (coordX + tailleCases * 0.2), (int) (coordY - tailleCases * 0.1),
+                                    "assets/robots/wheels.png",
+                                    (int) (tailleCases * 0.6),
+                                    (int) (tailleCases * 0.8), null));
+                }
                 break;
             case CHENILLES:
-                gui.addGraphicalElement(
-                        new ImageElement(coordX, (int) (coordY + tailleCases * 0.15),
-                                "assets/robots/tracks_" + robot.getDirectionImage() + ".gif",
-                                (int) (tailleCases),
-                                (int) (tailleCases * 0.625), null));
+                if (this.useGif) {
+                    gui.addGraphicalElement(
+                            new ImageElement(coordX, (int) (coordY + tailleCases * 0.15),
+                                    "assets/robots/tracks_" + robot.getDirectionImage() + ".gif",
+                                    (int) (tailleCases),
+                                    (int) (tailleCases * 0.625), null));
+                } else {
+                    gui.addGraphicalElement(
+                            new ImageElement(coordX, (int) (coordY + tailleCases * 0.15),
+                                    "assets/robots/tracks.png",
+                                    (int) (tailleCases),
+                                    (int) (tailleCases * 0.625), null));
+                }
                 break;
             default:
                 // Robot mystère
@@ -196,6 +230,7 @@ public class Simulateur implements Simulable {
         int intensiteForTailleMax = 30000;
         int intensiteforTailleMin = 5000;
         NatureTerrain nature = null;
+        String suffixe = this.useGif ? ".gif" : ".png";
 
         /* On parcourt la carte */
         for (int lig = 0; lig < carte.getNbLignes(); lig++) {
