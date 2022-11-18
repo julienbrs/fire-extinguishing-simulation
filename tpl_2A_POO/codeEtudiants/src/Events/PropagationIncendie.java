@@ -1,18 +1,14 @@
 package Events;
 
-import Robot.Robot;
 import Simulation.DonneesSimulation;
 import Simulation.Simulateur;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import Carte.Carte;
 import Carte.Case;
-import Carte.Direction;
 import Carte.Incendie;
+import Carte.NatureTerrain;
 
 public class PropagationIncendie extends Evenement {
 
@@ -40,18 +36,19 @@ public class PropagationIncendie extends Evenement {
 
             while (voisins.hasNext()) {
                 voisin = voisins.next();
-                if (donnees.getIncendie(voisin) == null) {
+                Incendie incendieVoisin = donnees.getIncendie(voisin);
+                /* Si il n'y a pas d'incendie, ou si il y a un incendie éteint, on se propage */
+                if ((incendieVoisin == null && voisin.getNature() != NatureTerrain.EAU)
+                        || (incendieVoisin != null && incendieVoisin.estEteint())) {
                     double intensite = incendie.getIntensite();
 
                     if (intensite >= 4000)
                         incendiesARajouter.put(voisin, intensite / 2);
                 }
-
             }
-
-            for (Case positionIncendie : incendiesARajouter.keySet())
-                donnees.addIncendie(positionIncendie, incendiesARajouter.get(positionIncendie));
         }
+        for (Case positionIncendie : incendiesARajouter.keySet())
+            donnees.addIncendie(positionIncendie, incendiesARajouter.get(positionIncendie).intValue());
         simulateur.ajouteEvenement(new PropagationIncendie(periode, simulateur, periode));
     }
 }

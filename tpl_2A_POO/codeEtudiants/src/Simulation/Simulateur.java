@@ -14,6 +14,7 @@ import gui.Simulable;
 import Events.AffectationIncendiesRobots;
 import Events.Avion;
 import Events.Evenement;
+import Events.PropagationIncendie;
 
 class ComparatorEvenements implements Comparator<Evenement> {
 
@@ -37,13 +38,36 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
     private ChefPompier chef;
+    boolean lancerSimulation;
+    boolean lancerPropagation;
     private boolean useGif;
 
+    /**
+     * Constructeur pour lancer la Simulation sans propagation
+     */
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
-        this(donnees, dateSimulation, true, true);
+        this(donnees, dateSimulation, true, false, true);
     }
 
-    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation, boolean useGif) {
+    /**
+     * Constructeur pour lancer la simulation avec propagation
+     */
+    public Simulateur(DonneesSimulation donnees, long dateSimulation,
+            boolean lancerPropagation) {
+        this(donnees, dateSimulation, true, lancerPropagation, true);
+    }
+
+    /* Constructeur de base */
+    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation,
+            boolean lancerPropagation) {
+        this(donnees, dateSimulation, true, true, true);
+
+    }
+
+    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation,
+            boolean lancerPropagation, boolean useGif) {
+        this.lancerPropagation = lancerPropagation;
+        this.lancerSimulation = lancerSimulation;
         Carte carte = donnees.getCarte();
 
         int tailleCases = carte.getTailleCases();
@@ -62,9 +86,10 @@ public class Simulateur implements Simulable {
         this.chef = new ChefPompier(this, this.donnees);
         this.useGif = useGif;
 
-        if (lancerSimulation) {
+        if (lancerSimulation)
             this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
-        }
+        if (lancerPropagation)
+            this.ajouteEvenement(new PropagationIncendie(60000, this, 60000));
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
         this.draw();
     }
@@ -356,7 +381,10 @@ public class Simulateur implements Simulable {
         this.dateSimulation = 0;
         this.chef = new ChefPompier(this, this.donnees);
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
-        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
+        if (lancerSimulation)
+            this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
+        if (this.lancerPropagation)
+            this.ajouteEvenement(new PropagationIncendie(60000, this, 60000));
 
         Carte carte = this.donnees.getCarte();
         this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);

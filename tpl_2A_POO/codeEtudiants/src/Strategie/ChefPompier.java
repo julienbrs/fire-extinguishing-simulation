@@ -116,21 +116,34 @@ public class ChefPompier {
     }
 
     /**
+     * Recalcule les incendies non affectées pour pouvoir implementer la
+     * propagation.
+     * Il faut parcourir les incendies pour pouvoir prendre en compte ceux rajoutées
+     * par {@link Events.PropagationIncendie}.
+     */
+    private void updateIncendiePropagation() {
+        this.incendiesNonAffectes = new HashSet<Incendie>();
+        Iterator<Incendie> incendies = this.donnees.getIncendies();
+
+        while (incendies.hasNext())
+            this.incendiesNonAffectes.add(incendies.next());
+
+        this.incendiesNonAffectes.removeAll(incendiesAffectes);
+    }
+
+    /**
      * Si tous les robots sont affectés, on ne fait rien. Sinon, on affecte un
      * robot le plus proche {@link Incendie}.
      */
     public void affecteRobots() {
+        updateIncendiePropagation();
         Iterator<Robot> robots = this.donnees.getRobots();
         Robot robot = null;
         Graphe graphe = null;
-        /*
-         * On ne peut pas supprimer un élément dans une structure
-         * pendant le parcours de son itérateur
-         */
-        // Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
 
         Incendie incendiePlusProche = null;
-        // /* Pour tous les robots */
+
+        /* Pour tout robot */
         while (robots.hasNext()) {
             robot = robots.next();
             /* Si le robot n'est pas disponible, on continue à chercher */
