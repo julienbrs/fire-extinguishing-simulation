@@ -21,7 +21,6 @@ public class Deplacement extends Evenement {
         this.chemin = chemin;
         this.iterator = iterator;
         this.casePrecedente = casePrecedente;
-        System.out.println("Destination du " + robot.getType() + chemin.getDestination());
     }
 
     /**
