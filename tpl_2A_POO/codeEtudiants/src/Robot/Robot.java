@@ -28,7 +28,6 @@ public abstract class Robot {
     // pour l'affichage du robot
     protected Direction directionImage;
 
-    // todo à expliquer
     protected Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees, int interventionUnitaire,
             int tempsInterventionUnitaire, int tempsRemplissage) {
         this.position = position;
@@ -129,7 +128,7 @@ public abstract class Robot {
      */
     public void nextStep(Simulateur simulateur) {
         this.disponible = false;
-        Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte(), this);
+        Graphe graphe = new Graphe(this.donnees.getCarte(), this);
         Chemin chemin = null;
 
         /* Si on a pas d'eau, peu importe l'affectation d'incendie */
@@ -349,9 +348,35 @@ public abstract class Robot {
      */
     public abstract double getVitesse(NatureTerrain nature);
 
+    /**
+     * Renvoie vrai si le {@link Robot} peut remplir son réservoir sur la
+     * {@link Case} position, sinon renvoie false.
+     * 
+     * @param position
+     * @return boolean
+     */
     public abstract boolean peutRemplir(Case position);
 
+    /**
+     * Vérifie s'il y a bien un {@link Incendie} sur la case courante. Si oui, on
+     * diminue son intensité avec la méthode {@link Incendie#decreaseIntensite
+     * decreaseIntensite}.
+     * <p>
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau
+     * disponible est négatif.
+     * 
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
 
+    /**
+     * Remplit complètement le réservoir du {@link Robot}
+     * 
+     * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
+     * réservoir si {@link #peutRemplir()} renvoit false.
+     * 
+     * @throws TerrainIncorrectException
+     */
     public abstract void remplirReservoir() throws TerrainIncorrectException;
 }

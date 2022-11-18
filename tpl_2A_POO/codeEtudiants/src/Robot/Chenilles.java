@@ -1,7 +1,6 @@
 package Robot;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import Exception.*;
 import Carte.*;
 import Simulation.DonneesSimulation;
@@ -23,7 +22,7 @@ public class Chenilles extends Robot {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.CHENILLES;
-        
+
         if (vitesse < 0) {
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         }
@@ -40,7 +39,8 @@ public class Chenilles extends Robot {
 
     /**
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
-     * Le paramètre nature doit être non null.
+     * Le paramètre nature doit être non null. Si ça arrive la fonction renvoit
+     * Double.NaN
      * 
      * @param nature
      * @return double
@@ -121,7 +121,7 @@ public class Chenilles extends Robot {
      * Remplit complètement le réservoir du robot {@link Chenilles}.
      * 
      * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
-     * réservoir grâce à la méthode {@link #peutRemplir()}
+     * réservoir si {@link #peutRemplir()} renvoit false.
      * 
      * @throws TerrainIncorrectException
      */

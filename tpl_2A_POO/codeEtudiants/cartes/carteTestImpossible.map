@@ -1,10 +1,11 @@
-# Un exemple de carte 8x8, cases de 10000m de cote
+#Carte qui teste les affectation d'Incendies
+#En particulier une fois qu'ils ont été tous déjà affectés
 8 8 50
 
 # l0
 TERRAIN_LIBRE
 TERRAIN_LIBRE
-TERRAIN_LIBRE
+EAU
 TERRAIN_LIBRE
 TERRAIN_LIBRE
 TERRAIN_LIBRE
@@ -13,7 +14,7 @@ TERRAIN_LIBRE
 # l1
 TERRAIN_LIBRE
 TERRAIN_LIBRE
-TERRAIN_LIBRE
+EAU
 TERRAIN_LIBRE
 ROCHE
 TERRAIN_LIBRE
@@ -74,18 +75,11 @@ TERRAIN_LIBRE
 TERRAIN_LIBRE
 TERRAIN_LIBRE
 
-# Incendies
-6
-7 0 50000 
-7 1 10000
-6 0 10000
-6 1 20000
-5 5 8000
-7 7 5000
+#Incendies
+1
+0 0 10000
 
-	
-# Robots
-3
-3 3 DRONE 150
-6 5 ROUES
-4 7 PATTES
+
+#robots
+1
+6 7 CHENILLES

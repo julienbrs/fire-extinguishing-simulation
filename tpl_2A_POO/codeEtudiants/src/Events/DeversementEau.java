@@ -20,17 +20,18 @@ public class DeversementEau extends Evenement {
 
     /**
      * Le robot verse de l'eau sur l'incendie autant de fois que nécessaire.
-     * Jette {@link VolumeEauIncorrectException} si le robot n'est pas sur une case
-     * {@link Incendie}.
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau est négatif.
      */
     public void execute() {
         try {
             DonneesSimulation donnees = this.simulateur.getDonnees();
             Incendie incendie = donnees.getIncendie(this.robot.getPosition());
+            // Précaution
+            if (incendie == null)
+                return;
             /*
              * Si il reste moins d'une interventionUnitaire, on ne prévoit pas de continuer
-             * à
-             * verser de l'eau.
+             * à verser de l'eau.
              */
             if (incendie.estEteint() || this.robot.getVolumeEau() < volume) {
                 this.robot.checkIncendie();

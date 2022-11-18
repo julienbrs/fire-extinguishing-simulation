@@ -76,7 +76,8 @@ public class DonneesSimulation {
     }
 
     /**
-     * Renvoie le HashMap contenant tous les incendies sur la carte.
+     * Renvoie un {@link Iterator} sur tous les incendies sur la carte. On peut
+     * itérer avec les methodes hasNext() et next() de la classe {@link Iterator}.
      * 
      * @return HashMap<Case, Incendie>
      */
@@ -86,8 +87,7 @@ public class DonneesSimulation {
 
     /**
      * Renvoie un {@link Iterator} sur les {@link Robot} de la carte.
-     * On pourra itérer avec une boucle for, ou avancer avec la
-     * méthode next.
+     * On pourra le parcourir avec la méthode next().
      * 
      * @return Iterator<Robot>
      */
@@ -108,6 +108,8 @@ public class DonneesSimulation {
     /**
      * Renvoie le premier {@link Robot} à la {@link Case} position.
      * Si il n'y a pas de Robot à cette case, la fonction renvoie null.
+     * 
+     * !!Fonction qui n'est plus utilisé sauf pour ancien tests!!
      * 
      * @param position
      * @return Robot

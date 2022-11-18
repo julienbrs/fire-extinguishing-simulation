@@ -3,7 +3,7 @@ package Carte;
 import Simulation.DonneesSimulation;
 
 public class Incendie {
-    
+
     private Case position;
     private double intensite;
     private DonneesSimulation donnees;
@@ -73,7 +73,6 @@ public class Incendie {
      *
      * @return String
      */
-    // Pour debug todo
     @Override
     public String toString() {
         return "(lig: " + position.getLigne() + " col: "

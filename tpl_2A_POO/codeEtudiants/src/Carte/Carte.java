@@ -1,20 +1,10 @@
 package Carte;
 
-import java.util.NoSuchElementException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Map;
 
+import Robot.Robot;
 import Simulation.DonneesSimulation;
-
-import java.lang.IllegalArgumentException;
-import java.lang.NullPointerException;
-
-/* Import Robot pour la méthode */
-import Robot.*;
 
 public class Carte {
 
@@ -189,7 +179,7 @@ public class Carte {
      *
      * @return String
      */
-     
+
     /* Avant d'implementer le GUI, premier affichage pour tester les résulats */
     @Override
     public String toString() {

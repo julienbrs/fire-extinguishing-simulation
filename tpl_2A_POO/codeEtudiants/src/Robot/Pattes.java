@@ -5,7 +5,7 @@ import Exception.*;
 import Simulation.DonneesSimulation;
 
 public class Pattes extends Robot {
-    
+
     static double vitesseDefaut = 30;
     static int volumeEauMax = (int) Double.POSITIVE_INFINITY;
     static int interventionUnitaire = 10;
@@ -18,7 +18,7 @@ public class Pattes extends Robot {
         super(position, 0, vitesseDefaut, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.PATTES;
-        
+
         if (vitesse < 0) {
             throw new VitesseIncorrectException(
                     "La vitesse ne peut pas être négative");
@@ -82,10 +82,7 @@ public class Pattes extends Robot {
 
     /**
      * Le robot {@link Pattes} n'a pas de réservoir à remplir.
-     * Renvoie donc toujours false
-     * 
-     * @param position
-     * @return boolean
+     * Donc la fonction ne fait rien;
      */
     public void remplirReservoir() {
         return;

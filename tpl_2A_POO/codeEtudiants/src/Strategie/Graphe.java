@@ -5,7 +5,6 @@ import Robot.Robot;
 import Simulation.DonneesSimulation;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 /*
@@ -15,7 +14,6 @@ import java.util.PriorityQueue;
 *
 */
 public class Graphe {
-    private DonneesSimulation donnees;
     private Carte carte;
     private Robot robot;
     private Case[][] previousCase;
@@ -23,8 +21,7 @@ public class Graphe {
 
     private boolean rempli;
 
-    public Graphe(DonneesSimulation donnees, Carte carte, Robot robot) {
-        this.donnees = donnees;
+    public Graphe(Carte carte, Robot robot) {
         this.carte = carte;
         this.robot = robot;
         this.previousCase = null;

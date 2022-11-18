@@ -25,10 +25,10 @@ public class Chemin {
     }
 
     /**
-     * Renvoie le dernier élément de la liste (qui sera la première case à
-     * atteindre)
+     * Renvoie le dernier élément de la liste (qui sera la destination du
+     * {@link Chemin}.
      * 
-     * @return Case
+     * @return {@link Case}
      */
     public Case getDestination() {
         return this.chemin.getLast();
@@ -36,7 +36,8 @@ public class Chemin {
 
     /**
      * Ajoute une {@link Case} à la liste des cases, et il faudra atteindre
-     * cette case à la date donnée.
+     * cette case à la date donnée. Cette méthode n'est accessible qu'au classes du
+     * même package.
      * 
      * @param caseToAdd
      * @param date
@@ -47,7 +48,7 @@ public class Chemin {
     }
 
     /**
-     * Renvoie le chemin sous forme d'un itérateur sur les {@link Case}s.
+     * Renvoie le chemin sous forme d'un {@link Iterator} sur les {@link Case}s.
      * 
      * @return Iterator<Case>
      */
@@ -67,7 +68,7 @@ public class Chemin {
 
     /**
      * Convertit le {@link Chemin} en {@link Event}s grâce à la méthode
-     * {@link Carte #getDirection(casePrecedente, caseCourante)}.
+     * {@link Carte getDirection(casePrecedente, caseCourante)}.
      * 
      * @param simulateur
      */
