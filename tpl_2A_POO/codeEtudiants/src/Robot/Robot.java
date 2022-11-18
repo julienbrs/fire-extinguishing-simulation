@@ -339,7 +339,6 @@ public abstract class Robot {
     }
 
     /**
-     * //todo à enlever
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
      * Le parametre nature doit être non null.
      * 

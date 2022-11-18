@@ -55,7 +55,6 @@ public class Carte {
      * @param col
      * @return Case
      */
-    // dont even check for errors smh //todo
     public Case getCase(int lig, int col) {
         return this.carte[lig][col];
     }

@@ -31,8 +31,7 @@ public class Graphe {
 
     /**
      * Renvoie le coût d'une {@link Case}.
-     * Doit être précédé par un appel à remplitChemins todo c'est quel nom de
-     * fonction maintenant
+     * Doit être précédé par un appel de {@link #calculeChemins()}
      * 
      * @param position
      * @return double
