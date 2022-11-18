@@ -14,7 +14,6 @@ import gui.Simulable;
 import Events.AffectationIncendiesRobots;
 import Events.Avion;
 import Events.Evenement;
-import Events.PropagationIncendie;
 
 class ComparatorEvenements implements Comparator<Evenement> {
 
