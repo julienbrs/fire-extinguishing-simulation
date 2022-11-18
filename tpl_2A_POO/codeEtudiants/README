@@ -10,7 +10,6 @@ Bonjour,
 
 - doc: la documentation (API) des classes. Point d'entrée: index.html
 
-- Makefile :
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 POUR COMPILER
@@ -38,4 +37,4 @@ L'utilisation est ./testCarte.sh <n> <PATH_TO_MAP>
 
 n est 1 pour lancer la simulation avec propagation, et 0 si on veut une simulation normale.
 
-Bon courage pour la correction et merci pour le temps que vous y passerez :\*
+Bon courage pour la correction et merci pour le temps que vous y passerez

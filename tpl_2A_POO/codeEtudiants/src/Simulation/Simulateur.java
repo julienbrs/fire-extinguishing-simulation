@@ -345,7 +345,7 @@ public class Simulateur implements Simulable {
         if (this.positionAvion != null) {
             int lig = this.positionAvion.getLigne();
             int col = this.positionAvion.getColonne();
-            gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases + tailleCases / 2,
+            gui.addGraphicalElement(new ImageElement(centerCol + (col - lig) * tailleCases - tailleCases / 2,
                     (col + lig) * tailleCases / 2 - tailleCases / 4, "assets/nature/airplane.png", tailleCases,
                     tailleCases, null));
         }

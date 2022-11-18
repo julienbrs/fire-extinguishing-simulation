@@ -43,6 +43,10 @@ public class TestDijkstra {
             graphe.calculeChemins();
             Chemin chemin = graphe.cheminDestination(carte.getCase(lig, col));
 
+            if (chemin == null) {
+                System.out.print("Il n'existe pas de chemin vers la case! \n");
+                return;
+            }
             Iterator<Case> iteratorChemin = chemin.getChemin();
             while (iteratorChemin.hasNext()) {
                 System.out.println("Press enter for next step");
