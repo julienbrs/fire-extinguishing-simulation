@@ -2,13 +2,13 @@
 
 Bonjour,
 
-- assets & assets2 : assets utilisés pour le projet
+- assets : assets utilisés pour le projet
 
 - cartes: quelques exemples de fichiers de donnees
 
 - bin/gui.jar: archive Java contenant les classes de l'interface graphique.
 
-- doc: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
+- doc: la documentation (API) des classes. Point d'entrée: index.html
 
 - Makefile :
 
@@ -21,11 +21,21 @@ POUR COMPILER
 POUR VOIR LES TESTS
 
 - make exeCarte : execute le test TestCarte
-- make exeRobot : execute le test TestRobot
+- make exeRobots : execute le test TestRobot
 - make exeDijkstra : execute le test TestDijkstra
 - make exeSimulateurOK : execute le test TestSimulateurOK
 - make exeChemin : execute le test TestChemin
 - make exeSimulateur : execute le testSimulation
 - make exeStrategie : execute le testStrategie
+
+- make exeOptimisationB : execute le test d'optimisation (b)
+- make exeSimulateurPropagation : execute le test d'optimisation (c)
+
+POUR TESTER LES CARTES
+
+Nous avons fourni un script shell pour executer la simulation avec ou sans propagation pour n'importe quelle carte.
+L'utilisation est ./testCarte.sh <n> <PATH_TO_MAP>
+
+n est 1 pour lancer la simulation avec propagation, et 0 si on veut une simulation normale.
 
 Bon courage pour la correction et merci pour le temps que vous y passerez :\*
