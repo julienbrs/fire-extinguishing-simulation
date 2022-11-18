@@ -101,7 +101,10 @@ exeRobots: testRobots
 	java -classpath src:bin Test/TestRobots cartes/cartePattes.map
 
 exeStrategie: testStrategie
-	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTestStrategieInteractif.map
+	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTestImpossible.map
+
+exeOptimisationB: testSimulateur
+	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/carteTestOptimisationB.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete
