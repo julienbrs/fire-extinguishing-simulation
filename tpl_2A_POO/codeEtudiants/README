@@ -25,7 +25,7 @@ POUR VOIR LES TESTS
 - make exeDijkstra : execute le test TestDijkstra
 - make exeSimulateurOK : execute le test TestSimulateurOK
 - make exeChemin : execute le test TestChemin
-- make exeSimulation : execute le testSimulation
-- make exeSimulateur : execute le testSimulateur
+- make exeSimulateur : execute le testSimulation
+- make exeStrategie : execute le testStrategie
 
 Bon courage pour la correction et merci pour le temps que vous y passerez :\*
