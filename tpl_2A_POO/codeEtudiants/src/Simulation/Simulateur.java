@@ -14,6 +14,7 @@ import gui.Simulable;
 import Events.AffectationIncendiesRobots;
 import Events.Avion;
 import Events.Evenement;
+import Events.PropagationIncendie;
 
 class ComparatorEvenements implements Comparator<Evenement> {
 
@@ -60,10 +61,10 @@ public class Simulateur implements Simulable {
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.chef = new ChefPompier(this, this.donnees);
 
-        if (lancerSimulation)
+        if (lancerSimulation) {
             this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
+        }
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
-
         this.draw();
     }
 
@@ -321,7 +322,7 @@ public class Simulateur implements Simulable {
         this.dateSimulation = 0;
         this.chef = new ChefPompier(this, this.donnees);
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
-        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
 
         Carte carte = this.donnees.getCarte();
         this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);

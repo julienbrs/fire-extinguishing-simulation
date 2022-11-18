@@ -11,13 +11,10 @@ import java.util.Iterator;
 import java.util.Queue;
 
 public class ChefPompier {
-    Simulateur simulation;
-    DonneesSimulation donnees;
-    HashSet<Incendie> incendiesAffectes;
-    HashSet<Incendie> incendiesNonAffectes;
-
-    Queue<Robot> robotsAffectes;
-    Queue<Robot> robotsNonAffectes;
+    private Simulateur simulation;
+    private DonneesSimulation donnees;
+    private HashSet<Incendie> incendiesAffectes;
+    private HashSet<Incendie> incendiesNonAffectes;
 
     public ChefPompier(Simulateur simulation, DonneesSimulation donnees) {
 
