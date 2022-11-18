@@ -128,8 +128,6 @@ public class TestRobots {
              * robot.moveRobotDirection(Direction.EST);
              * System.out.println("Le robot est maintenant en " + robot.getPosition() +
              * "\n");
-             * //todo : peut etre ici ne pas lever une exception mais juste ne pas bouger le
-             * robot ? comme ce que j'ai fais ligne 61 pour la roche
              * // System.out.
              * println("On rebouge le robot d'une case vers l'est alors qu'il est au bord, ça devrait lever une exception"
              * );
