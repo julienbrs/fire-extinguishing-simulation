@@ -123,8 +123,8 @@ public class Carte {
     }
 
     /**
-     * Renvoie la direction associée au déplacement {@Case} courante vers la
-     * {@Case} voisin.
+     * Renvoie la direction associée au déplacement {@link Case} courante vers la
+     * {@Case} voisin. Renvoie null si les deux {@link Case}s sont les mêmes.
      *
      * @param courante
      * @param voisin
