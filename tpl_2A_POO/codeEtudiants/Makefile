@@ -53,6 +53,8 @@ testChemin:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestChemin.java
 testSimulateur:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulation.java
+testSimulateurPropagation:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulationAvecPropagation.java
 
 testSimulateurKO:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurKO.java
@@ -86,6 +88,9 @@ exeChemin: testChemin
 
 exeSimulateur: testSimulateur
 	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/carteSimulation.map
+
+exeSimulateurPropagation: testSimulateurPropagation
+	java -classpath bin:bin/gui.jar Test/TestSimulationAvecPropagation cartes/carteSimulation.map
 
 exeSimulateurKO: testSimulateurKO
 		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
