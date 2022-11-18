@@ -1,3 +1,5 @@
+package Test;
+
 import Carte.*;
 import Simulation.DonneesSimulation;
 import io.LecteurDonnees;
@@ -10,9 +12,9 @@ public class TestCarte {
         DonneesSimulation donnees;
         Carte carte;
         try {
-            donnees = LecteurDonnees.creeDonneesSimulation("../cartes/carteSujet.map");
+            donnees = LecteurDonnees.creeDonneesSimulation(args[0]);
             carte = donnees.getCarte();
-
+            System.out.println(carte.toString());
             // Voisin NORD
             assert (!carte.voisinExiste(carte.getCase(0, 0), Direction.NORD));
             // Voisin EST
@@ -27,6 +29,5 @@ public class TestCarte {
         } catch (DataFormatException e) {
             System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
         }
-        System.out.println("Test passé!");
     }
 }
