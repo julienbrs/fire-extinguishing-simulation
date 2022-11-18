@@ -62,7 +62,7 @@ public class Chemin {
      * @param case1
      * @return double
      */
-    double getCout(Case case1) {
+    public double getCout(Case case1) {
         return this.couts.get(case1);
     }
 
@@ -75,38 +75,10 @@ public class Chemin {
     public void cheminToEvent(Simulateur simulateur) {
         Iterator<Case> iterator = this.getChemin();
         // On saute la premiere case (source)
-        Case casePrecedente = null;
         Case caseCourante = iterator.next();
-        Evenement evenement = null;
-        long cout = 0;
 
         simulateur.ajouteEvenement(new DebutAction(0, this.robot, simulateur));
-        while (iterator.hasNext()) {
-            casePrecedente = caseCourante;
-            caseCourante = iterator.next();
-            cout = (long) Math.ceil(this.getCout(caseCourante));
-            Direction dir = Carte.getDirection(casePrecedente, caseCourante);
-
-            switch (dir) {
-                case NORD:
-                    evenement = new DeplacementNord(cout, this.robot, simulateur);
-                    break;
-                case EST:
-                    evenement = new DeplacementEst(cout, this.robot, simulateur);
-                    break;
-                case OUEST:
-                    evenement = new DeplacementOuest(cout, this.robot, simulateur);
-                    break;
-                case SUD:
-                    evenement = new DeplacementSud(cout, this.robot, simulateur);
-                    break;
-                default:
-                    // N'arrive jamais
-            }
-            simulateur.ajouteEvenement(evenement);
-        }
-        simulateur.ajouteEvenement(new FinAction(cout + 1, this.robot, simulateur));
-
+        simulateur.ajouteEvenement(new Deplacement(0, this.robot, simulateur, this, iterator, caseCourante));
     }
 
 }
