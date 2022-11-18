@@ -50,7 +50,7 @@ public class PropagationIncendie extends Evenement {
             }
 
             for (Case positionIncendie : incendiesARajouter.keySet())
-                donnees.put(positionIncendie, incendiesARajouter.get(positionIncendie));
+                donnees.addIncendie(positionIncendie, incendiesARajouter.get(positionIncendie));
         }
         simulateur.ajouteEvenement(new PropagationIncendie(periode, simulateur, periode));
     }
