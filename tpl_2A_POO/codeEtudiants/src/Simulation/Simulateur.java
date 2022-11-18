@@ -38,12 +38,30 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
     private ChefPompier chef;
+    boolean lancerSimulation;
+    boolean lancerPropagation;
 
+    /**
+     * Constructeur pour lancer la Simulation sans propagation
+     */
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
-        this(donnees, dateSimulation, true);
+        this(donnees, dateSimulation, true, false);
     }
 
-    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation) {
+    /**
+     * Constructeur pour lancer la simulation avec propagation
+     */
+    public Simulateur(DonneesSimulation donnees, long dateSimulation,
+            boolean lancerPropagation) {
+        this(donnees, dateSimulation, true, lancerPropagation);
+    }
+
+    /* Constructeur de base */
+    public Simulateur(DonneesSimulation donnees, long dateSimulation, boolean lancerSimulation,
+            boolean lancerPropagation) {
+        this.lancerPropagation = lancerPropagation;
+        this.lancerSimulation = lancerSimulation;
+
         Carte carte = donnees.getCarte();
 
         int tailleCases = carte.getTailleCases();
@@ -61,9 +79,10 @@ public class Simulateur implements Simulable {
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
         this.chef = new ChefPompier(this, this.donnees);
 
-        if (lancerSimulation) {
+        if (lancerSimulation)
             this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
-        }
+        if (lancerPropagation)
+            this.ajouteEvenement(new PropagationIncendie(60000, this, 60000));
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
         this.draw();
     }
@@ -322,7 +341,10 @@ public class Simulateur implements Simulable {
         this.dateSimulation = 0;
         this.chef = new ChefPompier(this, this.donnees);
         this.scenario = new PriorityQueue<Evenement>(100, new ComparatorEvenements());
-        this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
+        if (lancerSimulation)
+            this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
+        if (this.lancerPropagation)
+            this.ajouteEvenement(new PropagationIncendie(60000, this, 60000));
 
         Carte carte = this.donnees.getCarte();
         this.positionAvion = carte.getCase(carte.getNbLignes() / 5, 0);

@@ -242,7 +242,7 @@ public abstract class Robot {
     /**
      * Renvoie la position du {@link Robot}.
      * 
-     * @return Case
+     * @return {@link Case}
      */
     public Case getPosition() {
         return this.position;
@@ -251,10 +251,19 @@ public abstract class Robot {
     /**
      * Renvoie le type du {@link Robot}.
      * 
-     * @return TypeRobot
+     * @return {@link TypeRobot}
      */
     public TypeRobot getType() {
         return this.type;
+    }
+
+    /**
+     * Renvoie l'incendie affecté au {@link Robot}.
+     * 
+     * @return {@link Incendie}
+     */
+    public Incendie getIncendie() {
+        return this.incendie;
     }
 
     /**
