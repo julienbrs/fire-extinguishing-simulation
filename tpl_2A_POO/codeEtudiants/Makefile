@@ -86,7 +86,7 @@ exeSimulateurKO: testSimulateurKO
 		java -classpath bin:bin/gui.jar Test/TestSimulateurKO cartes/carteSimulation.map
 
 exeSimulateurOK: testSimulateurOK
-		java -classpath bin:bin/gui.jar Test/TestSimulateurOK cartes/carteSimulation.map
+		java -classpath bin:bin/gui.jar Test/TestSimulateurOK cartes/carteSujet.map
 
 exeSimulateurBonus: testSimulateurBonus
 		java -classpath bin:bin/gui.jar Test/TestSimulateurBonus cartes/carteSimulation.map
