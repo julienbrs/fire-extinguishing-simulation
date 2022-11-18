@@ -61,7 +61,7 @@ public class Simulateur implements Simulable {
         this.chef = new ChefPompier(this, this.donnees);
 
         if (lancerSimulation)
-            this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, null, this, 100));
+            this.ajouteEvenement(new AffectationIncendiesRobots(dateSimulation, this, 100));
         this.ajouteEvenement(new Avion(100, null, this.positionAvion, this, 100));
 
         this.draw();
