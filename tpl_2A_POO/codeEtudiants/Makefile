@@ -62,8 +62,10 @@ testSimulateurBonus:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurBonus.java
 
 
-testDjikstra:
-	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
+testCarte:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestCarte.java
+testDijkstra:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDijkstra.java
 testStrategie:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestStrategieInteractif.java
 
@@ -73,8 +75,11 @@ testStrategie:
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
-exeDjikstra: testDjikstra
-	java -classpath bin:bin/gui.jar Test/TestDjikstra cartes/mushroomOfHell-20x20.map
+exeCarte: testCarte
+	java -classpath bin:bin/gui.jar Test/TestCarte cartes/carteSujet.map
+
+exeDijkstra: testDijkstra
+	java -classpath bin:bin/gui.jar Test/TestDijkstra cartes/mushroomOfHell-20x20.map
 
 exeChemin: testChemin
 	java -classpath bin:bin/gui.jar Test/TestChemin cartes/carteChenilles.map
@@ -101,7 +106,10 @@ exeRobots: testRobots
 	java -classpath src:bin Test/TestRobots cartes/cartePattes.map
 
 exeStrategie: testStrategie
-	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTestStrategieInteractif.map
+	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTestImpossible.map
+
+exeOptimisationB: testSimulateur
+	java -classpath bin:bin/gui.jar Test/TestSimulation cartes/carteTestOptimisationB.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete

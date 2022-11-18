@@ -97,12 +97,15 @@ public abstract class Robot {
 
     /**
      * On regarde si l'incendie est éteint, si oui on le supprime du simulateur et
-     * on le met à null.
+     * on le met à null. Renvoie vrai si il y avait un incendie affecté qui a été
+     * éteint, false sinon.
      */
-    public void checkIncendie() {
+    public boolean checkIncendie() {
         if (this.incendie != null && this.incendie.estEteint()) {
             this.incendie = null;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -139,8 +142,10 @@ public abstract class Robot {
             }
             /* On cherche le chemin vers l'eau la plus proche */
             chemin = graphe.cheminRemplir();
-            chemin.cheminToEvent(simulateur);
-            return;
+            if (chemin != null) {
+                chemin.cheminToEvent(simulateur);
+                return;
+            }
         }
 
         /* Si on se trouve sur l'incendie affecté */
@@ -339,7 +344,6 @@ public abstract class Robot {
     }
 
     /**
-     * //todo à enlever
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
      * Le parametre nature doit être non null.
      * 

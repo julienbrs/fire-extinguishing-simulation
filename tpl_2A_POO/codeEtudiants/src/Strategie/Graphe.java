@@ -31,8 +31,7 @@ public class Graphe {
 
     /**
      * Renvoie le coût d'une {@link Case}.
-     * Doit être précédé par un appel à remplitChemins todo c'est quel nom de
-     * fonction maintenant
+     * Doit être précédé par un appel de {@link #calculeChemins()}
      * 
      * @param position
      * @return double
@@ -112,9 +111,11 @@ public class Graphe {
     }
 
     /**
-     * Calcule et renvoie le chemin à partir du {@link Robot} du graphe jusqu'à la
-     * {@link Case} destination. Le tableau des noeuds précédents et le
-     * {@link CaseComparator} sont utilisées pour calculer le chemin.
+     * Calcule et renvoie le chemin à partir du {@link Robot} du graphe de la
+     * source jusqu'à la {@link Case} destination. Si on est déjà sur la case, le
+     * chemin contiendra la case deux fois, en tant que source et en tant que
+     * destination. Le tableau des noeuds précédents et le {@link CaseComparator}
+     * sont utilisées pour calculer le chemin.
      * 
      * @param destination
      * @param prev
@@ -130,6 +131,11 @@ public class Graphe {
         if (prev[destination.getLigne()][destination.getColonne()] != null || destination == source) {
             chemin = new Chemin(robot);
 
+            /* Si la destination est la source, on rajoute la source */
+            /* Pour pouvoir verifier ce cas */
+            if (destination == source) {
+                chemin.add(source, comparator.getCout(source));
+            }
             /* On reconstruit le chemin avec les noeuds précédents */
             while (prec != null) {
                 chemin.add(prec, comparator.getCout(prec));

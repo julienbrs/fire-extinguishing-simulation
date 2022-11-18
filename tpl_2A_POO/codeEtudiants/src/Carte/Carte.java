@@ -55,7 +55,6 @@ public class Carte {
      * @param col
      * @return Case
      */
-    // dont even check for errors smh //todo
     public Case getCase(int lig, int col) {
         return this.carte[lig][col];
     }
@@ -123,8 +122,8 @@ public class Carte {
     }
 
     /**
-     * Renvoie la direction associée au déplacement {@Case} courante vers la
-     * {@Case} voisin.
+     * Renvoie la direction associée au déplacement {@link Case} courante vers la
+     * {@Case} voisin. Renvoie null si les deux {@link Case}s sont les mêmes.
      *
      * @param courante
      * @param voisin
@@ -184,11 +183,13 @@ public class Carte {
     @Override
     public String toString() {
         String chaine = "";
+        Incendie incendie = null;
         /* on fait d'abord la map vierge */
         for (int lig = 0; lig < nbLignes; lig++) {
             for (int col = 0; col < nbColonnes; col++) {
                 /* On check s'il y a un incendie ici */
-                if (donnees.getIncendie(this.carte[lig][col]) != null) {
+                incendie = donnees.getIncendie(this.carte[lig][col]);
+                if (incendie != null && !incendie.estEteint()) {
                     chaine += "🔥";
                 } else if (donnees.getRobot(this.carte[lig][col]) != null) {
                     chaine += "🤖";
