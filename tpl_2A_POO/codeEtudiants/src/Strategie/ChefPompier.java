@@ -128,13 +128,19 @@ public class ChefPompier {
 
             /* Si on a trouvé un incendie, il est alors le plus proche */
             if (incendiePlusProche != null) {
-                /* On l'ajoute aux incendies affectés */
+                /* On calcule le chemin */
+                Chemin chemin = graphe.cheminDestination(incendiePlusProche.getPosition());
+
+                /* Si il n'existe pas de chemin, on n'affecte pas l'incendie */
+                if (chemin == null)
+                    continue;
+
+                /* Sinon on l'ajoute aux incendies affectés */
                 this.incendiesNonAffectes.remove(incendiePlusProche);
                 this.incendiesAffectes.add(incendiePlusProche);
 
                 /* On affecte l'incendie au robot, et on programme le deplacement */
                 robot.affecteIncendie(incendiePlusProche);
-                Chemin chemin = graphe.cheminDestination(incendiePlusProche.getPosition());
                 chemin.cheminToEvent(simulation);
             }
         }
