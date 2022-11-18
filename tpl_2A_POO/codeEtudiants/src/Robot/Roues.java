@@ -19,7 +19,7 @@ public class Roues extends Robot {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.ROUES;
-        
+
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (Double.isNaN(vitesse))
@@ -102,7 +102,7 @@ public class Roues extends Robot {
      * Remplit complètement le réservoir du robot {@link Roues}.
      * 
      * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
-     * réservoir grâce à la méthode {@link #peutRemplir()}
+     * réservoir après un appel à la méthode {@link #peutRemplir()}
      * 
      * @throws TerrainIncorrectException
      */

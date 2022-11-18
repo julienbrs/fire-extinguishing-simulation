@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
-import java.util.Random;
-
 import Robot.*;
 import Strategie.ChefPompier;
 import Carte.*;
@@ -13,7 +11,6 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import gui.ImageElement;
 import gui.Simulable;
-import gui.Text;
 import Events.AffectationIncendiesRobots;
 import Events.Avion;
 import Events.Evenement;
@@ -21,16 +18,13 @@ import Events.Evenement;
 class ComparatorEvenements implements Comparator<Evenement> {
 
     /**
+     * Compare deux evenements selon leur date d'éxecution
      * 
-     * @param o1
-     * @param o2
+     * @param event1
+     * @param event2
      * @return int
      */
-    public int compare(Evenement o1, Evenement o2) {
-
-        Evenement event1 = (Evenement) o1;
-        Evenement event2 = (Evenement) o2;
-
+    public int compare(Evenement event1, Evenement event2) {
         return Long.compare(event1.getDate(), event2.getDate());
     }
 }
@@ -43,7 +37,6 @@ public class Simulateur implements Simulable {
     private GUISimulator gui;
     private DonneesSimulation donnees;
     private ChefPompier chef;
-    private boolean lancerSimulation;
 
     public Simulateur(DonneesSimulation donnees, long dateSimulation) {
         this(donnees, dateSimulation, true);
@@ -86,7 +79,7 @@ public class Simulateur implements Simulable {
     /**
      * Renvoie le {@link ChefPompier} de la simulation.
      *
-     * @return ChefPompier
+     * @return {@link ChefPompier}
      */
     public ChefPompier getChefPompier() {
         return this.chef;
@@ -104,10 +97,10 @@ public class Simulateur implements Simulable {
     /**
      * Ajoute un {@link Evenement} au scénario.
      *
-     * @param event
+     * @param {@link Evenement}
      */
-    public void ajouteEvenement(Evenement e) {
-        scenario.add(e);
+    public void ajouteEvenement(Evenement event) {
+        scenario.add(event);
     }
 
     /**
@@ -128,34 +121,7 @@ public class Simulateur implements Simulable {
      * @return boolean
      */
     public boolean simulationTerminee() {
-        if (scenario.peek() == null) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Définie la couleur d'une {@link Case} en fonction de sa nature.
-     * Peut servir si les images ne sont pas chargées.
-     *
-     * @param nature
-     * @return Color en RGB
-     */
-    private Color NatureTerrainToColor(NatureTerrain nature) {
-        switch (nature) {
-            case EAU:
-                return new Color(44, 163, 221);
-            case FORET:
-                return new Color(31, 61, 12);
-            case HABITAT:
-                return new Color(149, 131, 105);
-            case ROCHE:
-                return new Color(90, 77, 65);
-            case TERRAIN_LIBRE:
-                return new Color(141, 199, 64);
-            default:
-                return Color.BLACK;
-        }
+        return scenario.peek() == null;
     }
 
     /**
@@ -238,6 +204,8 @@ public class Simulateur implements Simulable {
                 incendie = donnees.getIncendie(caseCourante);
                 nature = caseCourante.getNature();
 
+                int posX = centerCol + (col - lig) * tailleCases;
+                int posY = (col + lig) * tailleCases / 2;
                 /* On crée les assets aléatoirement, qui rend unique chaque carte générée */
                 int hashLots = caseCourante.getColonne() * 3 + caseCourante.getLigne() * 9 + carte.hashCode();
 
@@ -245,45 +213,38 @@ public class Simulateur implements Simulable {
                 switch (nature) {
                     case TERRAIN_LIBRE:
                         gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
+                                new ImageElement(posX, posY,
                                         "assets/nature/grass.png", tailleCases * 2,
                                         tailleCases, null));
                         break;
                     case ROCHE:
                         gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
+                                new ImageElement(posX, posY,
                                         "assets/nature/dirt" + Integer.toString(hashLots % 4) + ".png", tailleCases * 2,
                                         tailleCases, null));
                         break;
                     case EAU:
                         gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
+                                new ImageElement(posX, posY,
                                         "assets/nature/water.png", tailleCases * 2, tailleCases, null));
                         break;
                     case HABITAT:
                         gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
+                                new ImageElement(posX, posY,
                                         "assets/nature/lot" + Integer.toString(hashLots % 7) + ".png", tailleCases * 2,
                                         tailleCases,
                                         null));
                         break;
                     case FORET:
                         gui.addGraphicalElement(
-                                new ImageElement(centerCol + (col - lig) * tailleCases,
-                                        (col + lig) * tailleCases / 2,
+                                new ImageElement(posX, posY,
                                         "assets/nature/forest" + Integer.toString(hashLots % 2) + ".png",
                                         tailleCases * 2,
                                         tailleCases, null));
                         break;
                     default:
-                        gui.addGraphicalElement(new Rectangle(tailleCases / 2 + (col + lig) * carte.getTailleCases(),
-                                tailleCases / 2 + (col + lig) * carte.getTailleCases(),
-                                NatureTerrainToColor(caseCourante.getNature()),
-                                NatureTerrainToColor(caseCourante.getNature()), carte.getTailleCases()));
+                        // Ca n'arrive pas parceque tous les NatureTerrain sont filtrés à la creation de
+                        // la carte
                         break;
                 }
 
@@ -303,9 +264,9 @@ public class Simulateur implements Simulable {
                     System.out.println("col, lig = " + col + "  ,  " + lig);
 
                     /* On ajuste sa position pour qu'il soit centré */
-                    int posY = (col + lig) * tailleCases / 2 - tailleCases / 4
+                    posY = (col + lig) * tailleCases / 2 - tailleCases / 4
                             + (int) ((0.9 - ratio) / 2 * tailleCases);
-                    int posX = centerCol + (col - lig) * tailleCases + tailleCases / 2
+                    posX = centerCol + (col - lig) * tailleCases + tailleCases / 2
                             + (int) ((1 - ratio) / 2 * tailleCases);
 
                     gui.addGraphicalElement(new ImageElement(
