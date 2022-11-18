@@ -66,7 +66,8 @@ public class Deplacement extends Evenement {
                 // cela n'arrive jamais
                 return;
         }
-        simulateur.ajouteEvenement(new Deplacement(cout, robot, simulateur, chemin, iterator, caseCourante));
+        simulateur.ajouteEvenement(new Deplacement(cout + 1, robot, simulateur, chemin, iterator, caseCourante));
         simulateur.ajouteEvenement(evenement);
+
     }
 }
