@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture testRobots testChemin testSimulateur testSimulateurKO testSimulateurOK testSimulateurBonus testDjikstra Simulation Robot Carte Strategie 
+all: Simulation Robot Carte Strategie Test
 
 Exception:
 	javac -d bin -classpath bin -sourcepath src src/Exception/*.java
@@ -101,7 +101,7 @@ exeRobots: testRobots
 	java -classpath src:bin Test/TestRobots cartes/cartePattes.map
 
 exeStrategie: testStrategie
-	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTest.map
+	java -classpath bin:bin/gui.jar Test/TestStrategieInteractif cartes/carteTestStrategieInteractif.map
 
 clean:
 	find  bin/ -not \( -name 'gui.jar' -or -name 'bin' \) -delete
