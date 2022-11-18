@@ -183,11 +183,13 @@ public class Carte {
     @Override
     public String toString() {
         String chaine = "";
+        Incendie incendie = null;
         /* on fait d'abord la map vierge */
         for (int lig = 0; lig < nbLignes; lig++) {
             for (int col = 0; col < nbColonnes; col++) {
                 /* On check s'il y a un incendie ici */
-                if (donnees.getIncendie(this.carte[lig][col]) != null) {
+                incendie = donnees.getIncendie(this.carte[lig][col]);
+                if (incendie != null && !incendie.estEteint()) {
                     chaine += "🔥";
                 } else if (donnees.getRobot(this.carte[lig][col]) != null) {
                     chaine += "🤖";

@@ -62,6 +62,8 @@ testSimulateurBonus:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestSimulateurBonus.java
 
 
+testCarte:
+	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestCarte.java
 testDjikstra:
 	javac -d bin -classpath bin:bin/gui.jar -sourcepath src src/Test/TestDjikstra.java
 testStrategie:
@@ -73,6 +75,9 @@ testStrategie:
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
+exeCarte: testCarte
+	java -classpath bin:bin/gui.jar Test/TestCarte cartes/carteSujet.map
+
 exeDjikstra: testDjikstra
 	java -classpath bin:bin/gui.jar Test/TestDjikstra cartes/mushroomOfHell-20x20.map
 
