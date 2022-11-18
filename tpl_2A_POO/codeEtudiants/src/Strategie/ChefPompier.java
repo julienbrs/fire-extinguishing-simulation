@@ -1,9 +1,7 @@
 package Strategie;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
-import Carte.Case;
 import Carte.Incendie;
 import Robot.Robot;
 import Simulation.DonneesSimulation;
@@ -65,7 +63,7 @@ public class ChefPompier {
 
     /**
      * Si tous les robots sont affectés, on ne fait rien. Sinon, on affecte un
-     * robot à un incendie disponible. //todo parler de la stratégie ?
+     * robot le plus proche {@link Incendie}.
      */
     public void affecteRobots() {
         Iterator<Robot> robots = this.donnees.getRobots();
@@ -91,7 +89,7 @@ public class ChefPompier {
                 continue;
 
             /* On calcule les meilleurs chemins à toutes les cases */
-            graphe = new Graphe(this.donnees, this.donnees.getCarte(), robot);
+            graphe = new Graphe(this.donnees.getCarte(), robot);
             graphe.calculeChemins();
 
             Iterator<Incendie> incendies = this.incendiesNonAffectes.iterator();
@@ -118,7 +116,7 @@ public class ChefPompier {
                         incendiePlusProche = incendie;
                     }
                 } catch (Exception e) {
-                    // Si graphe pas initialisé, ca ne doit pas arriver
+                    /* Si graphe pas initialisé, ca ne doit pas arriver */
                     e.printStackTrace();
                 }
             }

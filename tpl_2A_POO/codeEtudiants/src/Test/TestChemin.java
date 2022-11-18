@@ -39,7 +39,7 @@ public class TestChemin {
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
-            Graphe g = new Graphe(donnees, donnees.getCarte(), robot);
+            Graphe g = new Graphe(donnees.getCarte(), robot);
             Chemin chemin = g.cheminDestination(donnees.getCarte().getCase(1, 0));
             if (chemin != null)
                 chemin.cheminToEvent(simulateur);

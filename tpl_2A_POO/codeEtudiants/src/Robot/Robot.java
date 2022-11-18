@@ -128,7 +128,7 @@ public abstract class Robot {
      */
     public void nextStep(Simulateur simulateur) {
         this.disponible = false;
-        Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte(), this);
+        Graphe graphe = new Graphe(this.donnees.getCarte(), this);
         Chemin chemin = null;
 
         /* Si on a pas d'eau, peu importe l'affectation d'incendie */
