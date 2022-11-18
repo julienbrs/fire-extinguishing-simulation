@@ -62,13 +62,21 @@ public class ChefPompier {
     }
 
     /**
-     * Si tous les robots sont affectés, on ne fait rien. Sinon, on affecte un
-     * robot le plus proche {@link Incendie}.
+     * Méthode privée qui renvoit l'incendie plus proche au {@link Robot} passé en
+     * argument.
+     * Les incendies cherchées sont dans l' {@link Iterator} incendies, et graphe
+     * est le graphe du robot rempli avec {@link Graphe#calculeChemins()}
+     * 
+     * @param graphe
+     * @param robot
+     * @param incendies
+     * @return Incendie
      */
-    public void affecteRobots() {
-        Iterator<Robot> robots = this.donnees.getRobots();
-        Robot robot = null;
-        Graphe graphe = null;
+    private Incendie getIncendiePlusProche(Graphe graphe, Robot robot, Iterator<Incendie> incendies) {
+        Incendie incendiePlusProche = null;
+        Incendie incendie = null;
+        double minCout = Double.POSITIVE_INFINITY;
+        double cout = 0;
 
         /*
          * On ne peut pas supprimer un élément dans une structure
@@ -76,13 +84,57 @@ public class ChefPompier {
          */
         Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
 
-        /* Pour tous les robots */
+        /* Pour tous les incendies */
+        while (incendies.hasNext()) {
+            incendie = incendies.next();
+
+            /* Si l'incendie a été éteint entre temps, on le supprimera */
+            if (incendie.estEteint()) {
+                incendiesASupprimer.add(incendie);
+                continue;
+            }
+
+            /* Si le robot ne peut pas atteindre le chemin, on passe au prochain incendie */
+            if (!robot.peutEteindre(incendie))
+                continue;
+            /* Sinon , on regarde le cout pour l'atteindre */
+            try {
+                cout = graphe.getCout(incendie.getPosition());
+                if (cout < minCout) {
+                    minCout = cout;
+                    incendiePlusProche = incendie;
+                }
+            } catch (Exception e) {
+                /* Si graphe pas initialisé, ca ne doit pas arriver */
+                e.printStackTrace();
+            }
+        }
+
+        /* On supprime les incendies éteints */
+        for (Incendie incendieASupprimer : incendiesASupprimer) {
+            this.incendiesNonAffectes.remove(incendieASupprimer);
+        }
+
+        return incendiePlusProche;
+    }
+
+    /**
+     * Si tous les robots sont affectés, on ne fait rien. Sinon, on affecte un
+     * robot le plus proche {@link Incendie}.
+     */
+    public void affecteRobots() {
+        Iterator<Robot> robots = this.donnees.getRobots();
+        Robot robot = null;
+        Graphe graphe = null;
+        /*
+         * On ne peut pas supprimer un élément dans une structure
+         * pendant le parcours de son itérateur
+         */
+        // Queue<Incendie> incendiesASupprimer = new LinkedList<Incendie>();
+
+        Incendie incendiePlusProche = null;
+        // /* Pour tous les robots */
         while (robots.hasNext()) {
-            double cout = 0;
-
-            double minCout = Double.POSITIVE_INFINITY;
-            Incendie incendiePlusProche = null;
-
             robot = robots.next();
             /* Si le robot n'est pas disponible, on continue à chercher */
             if (!robot.isDisponible())
@@ -92,41 +144,14 @@ public class ChefPompier {
             graphe = new Graphe(this.donnees.getCarte(), robot);
             graphe.calculeChemins();
 
-            Iterator<Incendie> incendies = this.incendiesNonAffectes.iterator();
-            Incendie incendie = null;
+            /* On calcule l'incendie plus proche */
+            incendiePlusProche = getIncendiePlusProche(graphe, robot, incendiesNonAffectes.iterator());
 
-            /* Pour tous les incendies */
-            while (incendies.hasNext()) {
-                incendie = incendies.next();
+            /* Aucun incendie était atteignable, on cherche dans les incendiesAffectes */
+            if (incendiePlusProche == null)
+                incendiePlusProche = getIncendiePlusProche(graphe, robot, incendiesAffectes.iterator());
 
-                /* Si l'incendie a été éteint entre temps, on le supprimera */
-                if (incendie.estEteint()) {
-                    incendiesASupprimer.add(incendie);
-                    continue;
-                }
-
-                /* Si le robot ne peut pas atteindre le chemin, on passe au prochain incendie */
-                if (!robot.peutEteindre(incendie))
-                    continue;
-                /* Sinon , on regarde le cout pour l'atteindre */
-                try {
-                    cout = graphe.getCout(incendie.getPosition());
-                    if (cout < minCout) {
-                        minCout = cout;
-                        incendiePlusProche = incendie;
-                    }
-                } catch (Exception e) {
-                    /* Si graphe pas initialisé, ca ne doit pas arriver */
-                    e.printStackTrace();
-                }
-            }
-
-            /* On supprime les incendies éteints */
-            for (Incendie incendieASupprimer : incendiesASupprimer) {
-                this.incendiesNonAffectes.remove(incendieASupprimer);
-            }
-
-            /* Si on a trouvé un incendie, il est alors le plus proche */
+            /* Si on a trouvé un incendie plus proche */
             if (incendiePlusProche != null) {
                 /* On calcule le chemin */
                 Chemin chemin = graphe.cheminDestination(incendiePlusProche.getPosition());
@@ -146,9 +171,8 @@ public class ChefPompier {
         }
 
         /* Si il n'y a plus d'incendie à affecter, on aidera les autres robots */
-        if (this.incendiesNonAffectes.isEmpty()) {
+        if (this.incendiesNonAffectes.isEmpty())
             this.checkIncendiesAffectes();
-        }
 
     }
 
