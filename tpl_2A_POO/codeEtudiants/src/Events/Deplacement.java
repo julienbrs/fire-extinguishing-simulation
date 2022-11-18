@@ -34,7 +34,6 @@ public class Deplacement extends Evenement {
          * False sinon. Cet appel ne va pas vraiment affecter un incendie
          */
         if (this.robot.checkIncendie() || !iterator.hasNext()) {
-            System.out.println(robot.getType().toString() + "est censé s'arreter");
             this.simulateur.ajouteEvenement(new FinAction(0, robot, simulateur));
             return;
         }
