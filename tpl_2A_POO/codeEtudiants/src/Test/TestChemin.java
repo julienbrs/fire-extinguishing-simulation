@@ -35,7 +35,7 @@ public class TestChemin {
             System.out.println(
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             long time = 0;
-            Simulateur simulateur = new Simulateur(donnees, time, false);
+            Simulateur simulateur = new Simulateur(donnees, time, false, true);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 

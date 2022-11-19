@@ -23,17 +23,8 @@ public class TestSimulation {
 
         try {
             DonneesSimulation donnees = LecteurDonnees.creeDonneesSimulation(args[0]);
-            int tailleCases = donnees.getCarte().getTailleCases();
-            int nbColonnes = donnees.getCarte().getNbColonnes();
-            int nbLignes = donnees.getCarte().getNbLignes();
-
             long time = 0;
             Simulateur simulateur = new Simulateur(donnees, time);
-
-            Iterator<Robot> robots = donnees.getRobots();
-            Robot robot = robots.next();
-            Iterator<Incendie> incendies = donnees.getIncendies();
-            Incendie incendie;
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");

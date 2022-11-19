@@ -32,9 +32,8 @@ public class TestSimulateurOK {
 
             System.out.println(
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
-            GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            Simulateur simulateur = new Simulateur(donnees, time, false);
+            Simulateur simulateur = new Simulateur(donnees, time, false, false, false);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
             robot = robots.next();
