@@ -6,6 +6,7 @@ import Carte.Case;
 import Robot.Robot;
 
 public class Avion extends Evenement {
+    
     Case positionAvion;
     int periode;
 
@@ -15,6 +16,9 @@ public class Avion extends Evenement {
         this.periode = periode;
     }
 
+    /**
+     * Petit avion décoratif qui passe au dessus de la carte.
+     */
     public void execute() {
         try {
             this.positionAvion = this.simulateur.getDonnees().getCarte().getVoisin(this.positionAvion, Direction.EST);

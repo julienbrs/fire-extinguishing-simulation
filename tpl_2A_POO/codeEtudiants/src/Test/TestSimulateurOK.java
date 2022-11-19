@@ -34,20 +34,21 @@ public class TestSimulateurOK {
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
             GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            Simulateur simulateur = new Simulateur(gui, donnees, time);
+            Simulateur simulateur = new Simulateur(donnees, time, false);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
             robot = robots.next();
 
             DeplacementNord nord = new DeplacementNord((long) 1, robot, simulateur);
-            DeversementEau ext1 = new DeversementEau((long) 2, robot, 5000, simulateur);
+            DeversementEau ext1 = new DeversementEau((long) 2, robot, 5000, simulateur, 0);
             DeplacementOuest ouest1 = new DeplacementOuest((long) 3, robot, simulateur);
             DeplacementOuest ouest2 = new DeplacementOuest((long) 4, robot, simulateur);
             RemplissageEau recharge = new RemplissageEau((long) 5, robot, simulateur);
             DeplacementEst est1 = new DeplacementEst((long) 6, robot, simulateur);
             DeplacementEst est2 = new DeplacementEst((long) 7, robot, simulateur);
+
             DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur);
-            
+
             simulateur.ajouteEvenement(nord);
             simulateur.ajouteEvenement(ext1);
             simulateur.ajouteEvenement(ouest1);

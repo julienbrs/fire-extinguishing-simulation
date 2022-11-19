@@ -1,31 +1,12 @@
 package Carte;
 
-import java.util.NoSuchElementException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Map;
 
+import Robot.Robot;
 import Simulation.DonneesSimulation;
 
-import java.lang.IllegalArgumentException;
-import java.lang.NullPointerException;
-
-/* Import Robot pour la méthode */
-import Robot.*;
-
 public class Carte {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
     private int tailleCases;
     private int nbLignes, nbColonnes;
@@ -74,7 +55,6 @@ public class Carte {
      * @param col
      * @return Case
      */
-    // dont even check for errors smh //todo
     public Case getCase(int lig, int col) {
         return this.carte[lig][col];
     }
@@ -107,12 +87,6 @@ public class Carte {
                 throw new NullPointerException("La direction ne devrait pas être null!");
         }
     }
-
-    // todo
-    // ICI ON POURRAIT RENVOIER NULL A LA CASE PLUTOT
-    // QUE THROW UNE EXCEPTION, UN PEU COMME AVEC getIncendie
-    // MAUVAISE IDEE ON VA CHANGER CA PTN
-    // ET getRobot
 
     /**
      * Renvoie le voisin de la {@link Case} src à la {@link Direction} dir.
@@ -148,8 +122,8 @@ public class Carte {
     }
 
     /**
-     * Renvoie la direction associée au déplacement {@Case} courante vers la
-     * {@Case} voisin.
+     * Renvoie la direction associée au déplacement {@link Case} courante vers la
+     * {@Case} voisin. Renvoie null si les deux {@link Case}s sont les mêmes.
      *
      * @param courante
      * @param voisin
@@ -166,16 +140,12 @@ public class Carte {
             return Direction.SUD;
         else if (ligCourante > ligVoisin)
             return Direction.NORD;
-
-        // Ici ligCourante == ligVoisin car voisins
         if (colCourante < colVoisin)
             return Direction.EST;
         else if (colCourante > colVoisin)
             return Direction.OUEST;
 
         return null;
-        // todo
-        // Courante == voisin
     }
 
     /**
@@ -192,9 +162,9 @@ public class Carte {
                 if (this.voisinExiste(src, dir))
                     voisins.add(this.getVoisin(src, dir));
             } catch (IllegalArgumentException e) {
-                // Ca doit pas arriver //todo
+                // Ca n'arrive pas car on vérifie en amont si un voisin existe
             } catch (NullPointerException e) {
-                // Ca doit pas arriver
+                // Ça n'arrive pas car on itère sur les valeurs de Direction
             }
         }
         return voisins.iterator();
@@ -208,12 +178,10 @@ public class Carte {
      *
      * @return String
      */
-    // @Override
-    /* before the graphic interface, we use shell to display donnees */
-    public String toString() {
-        /* on recupere les incendies et les robots */
-        // Iterator<Robot> robots = this.donnees.getRobots();
 
+    /* Avant d'implementer le GUI, premier affichage pour tester les résulats */
+    @Override
+    public String toString() {
         String chaine = "";
         /* on fait d'abord la map vierge */
         for (int lig = 0; lig < nbLignes; lig++) {

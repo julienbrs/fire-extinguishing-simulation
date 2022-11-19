@@ -34,15 +34,15 @@ public class TestChemin {
 
             System.out.println(
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
-            GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            Simulateur simulateur = new Simulateur(gui, donnees, time);
+            Simulateur simulateur = new Simulateur(donnees, time, false);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
-            Graphe g = new Graphe(donnees.getCarte());
-            Chemin chemin = g.cheminRemplir(robot);
-            chemin.cheminToEvent(simulateur);
+            Graphe g = new Graphe(donnees.getCarte(), robot);
+            Chemin chemin = g.cheminDestination(donnees.getCarte().getCase(1, 0));
+            if (chemin != null)
+                chemin.cheminToEvent(simulateur);
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

@@ -5,9 +5,11 @@ import Simulation.DonneesSimulation;
 import Exception.*;
 
 public class Drone extends Robot {
+    
     static double vitesseDefaut = 100;
     static double vitesseMax = 150;
     static int volumeEauMax = 10000;
+
     static int interventionUnitaire = volumeEauMax;
     static int tempsInterventionUnitaire = 30;
     static int tempsRemplissage = 30 * 60;
@@ -15,35 +17,27 @@ public class Drone extends Robot {
     public Drone(Case position, double vitesse, DonneesSimulation donnees)
             throws VitesseIncorrectException {
         super(position, 0, vitesse, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
-        this.volumeEau = this.volumeEauMax;
+        this.volumeEau = volumeEauMax;
         this.type = TypeRobot.DRONE;
+        
         if (vitesse < 0)
             throw new VitesseIncorrectException("La vitesse ne peut pas être négative");
         if (vitesse > vitesseMax)
-            throw new VitesseIncorrectException("La vitesse du drone ne peut exceder les 150 km/h");
+            throw new VitesseIncorrectException(
+                    "La vitesse ne peut pas être supérieure à " + vitesseMax + "km/h pour un robot Drone");
         if (Double.isNaN(vitesse))
+            /* Si la vitesse n'a pas été spécifiée, la mettre par défaut */
             this.vitesse = vitesseDefaut;
     }
 
     /**
-     * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
-     * Le parametre nature doit être non null.
+     * Renvoie la vitesse du {@link Drone} qui est indépendante du terrain.
      * 
      * @param nature
      * @return double
      */
     public double getVitesse(NatureTerrain nature) {
-        switch (nature) {
-            case EAU:
-            case FORET:
-            case ROCHE:
-            case TERRAIN_LIBRE:
-            case HABITAT:
-                return this.vitesse;
-            default:
-                // this should not happen
-                return Double.NaN;
-        }
+        return this.vitesse;
     }
 
     /**
@@ -76,8 +70,7 @@ public class Drone extends Robot {
      * Vérifie si le {@link Robot} peut remplir son réservoir d'eau.
      * <p>
      * Pour le robot {@link Drone}, on vérifie si la case courante du {@link Robot}
-     * est
-     * de type EAU.
+     * est de type EAU.
      * 
      * @param position
      * @return boolean
@@ -91,8 +84,7 @@ public class Drone extends Robot {
      * Remplit complètement le réservoir du robot {@link Drone}.
      * 
      * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
-     * réservoir
-     * grâce à la méthode {@link #peutRemplir()}
+     * réservoir grâce à la méthode {@link #peutRemplir()}
      * 
      * @throws TerrainIncorrectException
      */

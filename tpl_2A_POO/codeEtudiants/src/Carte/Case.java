@@ -1,6 +1,7 @@
 package Carte;
 
 public class Case {
+    
     private int ligne, colonne;
     private NatureTerrain nature;
 
@@ -12,7 +13,7 @@ public class Case {
 
     /**
      * Renvoie la ligne correspondante à la {@link Case}.
-     * <p>
+     * 
      * Index commence à 0.
      * 
      * @return int
@@ -23,7 +24,7 @@ public class Case {
 
     /**
      * Renvoie la colonne correspondante à la {@link Case}.
-     * <p>
+     * 
      * Index commence à 0.
      * 
      * @return int

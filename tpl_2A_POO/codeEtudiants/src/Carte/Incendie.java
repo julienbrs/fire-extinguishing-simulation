@@ -3,9 +3,9 @@ package Carte;
 import Simulation.DonneesSimulation;
 
 public class Incendie {
+
     private Case position;
     private double intensite;
-
     private DonneesSimulation donnees;
 
     public Incendie(Case position, double intensite, DonneesSimulation donnees) {
@@ -44,6 +44,11 @@ public class Incendie {
     }
 
     /**
+     * Renvoie les {@link DonneesSimulation} de l' {@link Incendie}.
+     * 
+     * @return DonneesSimulation
+     */
+    /**
      * Définit l'intensité de l' {@link Incendie}.
      *
      * @param intensite
@@ -60,9 +65,6 @@ public class Incendie {
      */
     public void decreaseIntensite(double vol) {
         this.intensite -= vol;
-        // if (this.intensite <= 0) todo remove
-        // {this.donnees.removeIncendie(this.position);}
-
     }
 
     /**
@@ -71,7 +73,6 @@ public class Incendie {
      *
      * @return String
      */
-    // Pour debug todo
     @Override
     public String toString() {
         return "(lig: " + position.getLigne() + " col: "

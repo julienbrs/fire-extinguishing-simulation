@@ -5,17 +5,20 @@ import Exception.*;
 import Simulation.DonneesSimulation;
 
 public class Pattes extends Robot {
+
     static double vitesseDefaut = 30;
     static int volumeEauMax = (int) Double.POSITIVE_INFINITY;
     static int interventionUnitaire = 10;
     static int tempsInterventionUnitaire = 1;
     static int tempsRemplissage = 0;
 
+    /* Le robot pattes à une vitesse de base fixée */
     public Pattes(Case position, DonneesSimulation donnees)
             throws VitesseIncorrectException {
         super(position, 0, vitesseDefaut, donnees, interventionUnitaire, tempsInterventionUnitaire, tempsRemplissage);
         this.volumeEau = volumeEauMax;
         this.type = TypeRobot.PATTES;
+
         if (vitesse < 0) {
             throw new VitesseIncorrectException(
                     "La vitesse ne peut pas être négative");
@@ -42,7 +45,7 @@ public class Pattes extends Robot {
             case HABITAT:
                 return this.vitesse;
             default:
-                // this should not happen
+                /* Impossible d'arriver ici, l'erreur est catch avant. */
                 return Double.NaN;
         }
     }
@@ -79,10 +82,7 @@ public class Pattes extends Robot {
 
     /**
      * Le robot {@link Pattes} n'a pas de réservoir à remplir.
-     * Renvoie donc toujours false
-     * 
-     * @param position
-     * @return boolean
+     * Donc la fonction ne fait rien;
      */
     public void remplirReservoir() {
         return;

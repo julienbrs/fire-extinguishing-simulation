@@ -33,7 +33,7 @@ public class TestDjikstra {
 
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
-            Graphe graphe = new Graphe(donnees, carte, robot);
+            Graphe graphe = new Graphe(carte, robot);
 
             if (robot == null) {
                 System.out.println("Aucun robot trouvé");

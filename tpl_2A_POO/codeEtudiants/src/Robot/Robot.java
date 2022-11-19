@@ -13,6 +13,7 @@ import Events.RemplissageEau;
 import Exception.*;
 
 public abstract class Robot {
+
     protected Case position;
     protected Incendie incendie;
     protected int volumeEau;
@@ -27,68 +28,48 @@ public abstract class Robot {
     // pour l'affichage du robot
     protected Direction directionImage;
 
-    // todo à expliquer
     protected Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees, int interventionUnitaire,
             int tempsInterventionUnitaire, int tempsRemplissage) {
-        this(position, volumeEau, vitesse, donnees);
-        this.interventionUnitaire = interventionUnitaire;
-        this.tempsInterventionUnitaire = tempsInterventionUnitaire;
-        this.tempsRemplissage = tempsRemplissage;
-        this.directionImage = Direction.SUD;
-    }
-
-    // todo à expliquer
-    public Robot(Case position, int volumeEau, double vitesse, DonneesSimulation donnees) {
         this.position = position;
         this.volumeEau = volumeEau;
         this.vitesse = vitesse;
         this.donnees = donnees;
         this.incendie = null;
         this.disponible = true;
+        this.interventionUnitaire = interventionUnitaire;
+        this.tempsInterventionUnitaire = tempsInterventionUnitaire;
+        this.tempsRemplissage = tempsRemplissage;
+        this.directionImage = Direction.SUD;
     }
 
     /**
-     * Renvoie interventionUnitaireVolume du {@link Robot}, correspondant à un
-     * diviseur du volumeMaxRéservoir du {@link Robot}.
+     * Renvoie la direction actuelle du {@link Robot}.
      * 
-     * @return int
+     * @return {@link Direction}
      */
-    public int getInterventionUnitaireVolume() {
-        return this.interventionUnitaire;
-    }
-
-    /**
-     * 
-     * 
-     * @return int
-     */
-    public int getTempsInterventionUnitaire() {
-        return this.tempsInterventionUnitaire;
-    }
-
-    /**
-     * Renvoie le temps pour remplir le réservoir.
-     * 
-     * @return int
-     */
-    public int getTempsRemplissage() {
-        return this.tempsRemplissage;
-    }
-
-    // todo
     public Direction getDirectionImage() {
         return this.directionImage;
     }
 
+    /**
+     * Change la valeur {@link Direction} du {@link Robot} par
+     * {@link Direction DirectionImage}.
+     */
     public void setDirectionImage(Direction directionImage) {
         this.directionImage = directionImage;
     }
 
+    /**
+     * @param incendie
+     * @return boolean
+     */
     public boolean peutEteindre(Incendie incendie) {
         return this.getVitesse(incendie.getPosition().getNature()) != 0;
     }
 
     /**
+     * On regarde si le robot est disponible, si oui on regarde si il peut
+     * intervenir sur l'incendie, puis on renvoie un boolean.
      * 
      * @param incendie
      * @return boolean
@@ -96,21 +77,16 @@ public abstract class Robot {
     public boolean affecteIncendie(Incendie incendie) {
         /* Si il a déjà un incendie, on renvoie false */
         if (this.incendie == null) {
-            // Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte());
-            // Chemin chemin = graphe.cheminDestination(this.position,
-            // incendie.getPosition(), this);
-
-            // /* Si il existe un chemin, on accepte */
-            // if (chemin != null) {
             this.incendie = incendie;
             return true;
-            // }
         }
-        // Sinon false
         return false;
     }
 
     /**
+     * On ajoute un événement de remplissage de l'eau au simulateur au temps
+     * adéquat, ainsi que les événements de début et de fin d'action.
+     * 
      * @param simulateur
      */
     private void stepRemplir(Simulateur simulateur) {
@@ -119,41 +95,43 @@ public abstract class Robot {
         simulateur.ajouteEvenement(new FinAction(this.tempsRemplissage + 1, this, simulateur));
     }
 
-    public void checkIncendie() {
-        if (this.incendie.estEteint()) {
+    /**
+     * On regarde si l'incendie est éteint, si oui on le supprime du simulateur et
+     * on le met à null. Renvoie vrai si il y avait un incendie affecté qui a été
+     * éteint, false sinon.
+     */
+    public boolean checkIncendie() {
+        if (this.incendie != null && this.incendie.estEteint()) {
             this.incendie = null;
+            return true;
         }
+        return false;
     }
 
     /**
+     * On ajoute un événement de déversement de l'eau au simulateur au temps
+     * adéquat, ainsi que les événements de début et de fin d'action.
+     * 
      * @param simulateur
      */
     private void stepEteindre(Simulateur simulateur) {
-        int dateCumule = 0;
-        int eauVerse = 0;
-        simulateur.ajouteEvenement(new DebutAction(dateCumule, this, simulateur));
-
-        // Pas besoin de check volumeEau >= interventionUnitaire car son multiple
-        // while (eauVerse < volumeEau && this.incendie.getIntensite() - eauVerse > 0) {
-        // eauVerse += this.interventionUnitaire;
-        // dateCumule += this.tempsInterventionUnitaire;
+        simulateur.ajouteEvenement(new DebutAction(0, this, simulateur));
         simulateur.ajouteEvenement(
                 new DeversementEau(this.tempsInterventionUnitaire, this, this.interventionUnitaire, simulateur,
                         this.tempsInterventionUnitaire));
-        // }
-
-        // if (this.incendie.getIntensite() - eauVerse <= 0) {
-        // this.incendie = null;
-        // }
-        // simulateur.ajouteEvenement(new FinAction(dateCumule + 1, this, simulateur));
     }
 
     /**
+     * On passe à l'étape suivante du {@link Robot}, on regarde s'il a encore de
+     * l'eau, si non on trouve le plus proche point d'eau et on se déplace vers lui,
+     * sinon on regarde si on est sur un {@link Incendie}, si oui on l'éteint, sinon
+     * on trouve le plus proche {@link Incendie} et on se déplace vers lui.
+     * 
      * @param simulateur
      */
     public void nextStep(Simulateur simulateur) {
         this.disponible = false;
-        Graphe graphe = new Graphe(this.donnees, this.donnees.getCarte(), this);
+        Graphe graphe = new Graphe(this.donnees.getCarte(), this);
         Chemin chemin = null;
 
         /* Si on a pas d'eau, peu importe l'affectation d'incendie */
@@ -164,15 +142,17 @@ public abstract class Robot {
             }
             /* On cherche le chemin vers l'eau la plus proche */
             chemin = graphe.cheminRemplir();
-            chemin.cheminToEvent(simulateur);
-            return;
+            if (chemin != null) {
+                chemin.cheminToEvent(simulateur);
+                return;
+            }
         }
 
         /* Si on se trouve sur l'incendie affecté */
         if (this.incendie != null && this.position == this.incendie.getPosition()) {
             this.stepEteindre(simulateur);
             return;
-        } else if (this.incendie != null) {
+        } else if (this.incendie != null && !this.incendie.estEteint()) {
             /* Sinon on se rend sur l'incendie en question */
             chemin = graphe.cheminDestination(this.incendie.getPosition());
             if (chemin != null) {
@@ -181,12 +161,15 @@ public abstract class Robot {
             }
         }
 
-        /* Volume eau pas vide, et pas d'incendie affecté */
+        /* Volume eau n'est pas vide, et pas d'incendie affecté */
         this.disponible = true;
         return;
     }
 
     /**
+     * Si l'incendie n'est pas éteint et que le robot se trouve sur l'incendie, on
+     * déverse de l'eau.
+     * 
      * @param vol
      * @throws VolumeEauIncorrectException
      */
@@ -197,6 +180,8 @@ public abstract class Robot {
     }
 
     /**
+     * On définit {@link Robot#disponible} à la valeur du paramètre.
+     * 
      * @param disponible
      */
     public void setDisponible(boolean disponible) {
@@ -204,6 +189,8 @@ public abstract class Robot {
     }
 
     /**
+     * On renvoie {@link Robot#disponible}.
+     * 
      * @return boolean
      */
     public boolean isDisponible() {
@@ -212,7 +199,8 @@ public abstract class Robot {
 
     /**
      * Renvoie un Robot du {@link TypeRobot} donnée, à la {@link Case} position,
-     * et avec la vitesse donnée.
+     * à la {@link #vitesse} donnée et un champ {@link DonneesSimulation
+     * DonneesSimulation}.
      * <p>
      * Throws:
      * <p>
@@ -233,9 +221,7 @@ public abstract class Robot {
             throws NoSuchElementException, VitesseIncorrectException {
         switch (type) {
             case CHENILLES:
-                /* Volume d'eau temporairement à 0, changé dans le constructeur */
-                /* Enlevé vitesse à 0, on suppose qu'on commence avec réservoir plein */
-                // todo à voir
+                // appeller le constructeur du robot chenilles
                 return new Chenilles(position, vitesse, donnees);
             case DRONE:
                 // appeller le constructeur du robot drone
@@ -244,17 +230,17 @@ public abstract class Robot {
                 // appeller le constructeur du robot roues
                 return new Roues(position, vitesse, donnees);
             case PATTES:
-                // appeller le constructeur du robot pattes ( pas un copié-collé)
+                // appeller le constructeur du robot pattes
                 return new Pattes(position, donnees);
             default:
-                // SI TYPE EST NULL CA VA BUG ici
-                // todo
+                // N'arrive jamais car on ne crée des robots que dans LecteurDonnees
+                // où les erreurs sont déjà gérées
                 throw new NoSuchElementException("Le  type robot " + type.toString() + " n'existe pas!");
         }
     }
 
     /**
-     * Renvoie la position du robot.
+     * Renvoie la position du {@link Robot}.
      * 
      * @return Case
      */
@@ -263,6 +249,8 @@ public abstract class Robot {
     }
 
     /**
+     * Renvoie le type du {@link Robot}.
+     * 
      * @return TypeRobot
      */
     public TypeRobot getType() {
@@ -270,6 +258,9 @@ public abstract class Robot {
     }
 
     /**
+     * Renvoie un boolean indiquant si le {@link Robot} peut se déplacer
+     * sur la {@link Case} donnée.
+     * 
      * @param positionCase
      * @return boolean
      */
@@ -278,7 +269,8 @@ public abstract class Robot {
     }
 
     /**
-     * Change la position du Robot.
+     * Change la position du {@link Robot} à la {@link Case} donnée si celle-ci est
+     * accessible.
      * 
      * @param positionCase
      * @throws TerrainIncorrectException
@@ -333,15 +325,6 @@ public abstract class Robot {
     }
 
     /**
-     * Set le volume d'eau du Robot.
-     * 
-     * @param volumeEau
-     */
-    public void setVolumeEau(int volumeEau) {
-        this.volumeEau = volumeEau;
-    }
-
-    /**
      * Renvoie la vitesse du Robot.
      * 
      * @return double
@@ -351,29 +334,15 @@ public abstract class Robot {
     }
 
     /**
-     * Set la vitesse du Robot.
+     * Renvoie un boolean indiquant si le {@link Robot} peut remplir son réservoir
+     * d'eau à sa {@link Case} actuelle.
      * 
-     * @param vitesse
-     */
-    public void setVitesse(double vitesse) {
-        this.vitesse = vitesse;
-    }
-
-    /**
      * @return boolean
      */
     public boolean peutRemplir() {
         return this.peutRemplir(this.position);
     }
 
-    /**
-     * @return double
-     */
-    // ME TAPEZ PAS
-    // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-    // public DonneesSimulation getDonnees(){
-    // return this.donnees;
-    // }
     /**
      * Renvoie la vitesse du {@link Robot} selon le {@link NatureTerrain}.
      * Le parametre nature doit être non null.
@@ -383,9 +352,35 @@ public abstract class Robot {
      */
     public abstract double getVitesse(NatureTerrain nature);
 
+    /**
+     * Renvoie vrai si le {@link Robot} peut remplir son réservoir sur la
+     * {@link Case} position, sinon renvoie false.
+     * 
+     * @param position
+     * @return boolean
+     */
     public abstract boolean peutRemplir(Case position);
 
+    /**
+     * Vérifie s'il y a bien un {@link Incendie} sur la case courante. Si oui, on
+     * diminue son intensité avec la méthode {@link Incendie#decreaseIntensite
+     * decreaseIntensite}.
+     * <p>
+     * Jette {@link VolumeEauIncorrectException} si le volume d'eau
+     * disponible est négatif.
+     * 
+     * @param vol
+     * @throws VolumeEauIncorrectException
+     */
     public abstract void deverserEau(int vol) throws VolumeEauIncorrectException;
 
+    /**
+     * Remplit complètement le réservoir du {@link Robot}
+     * 
+     * Jette {@link TerrainIncorrectException} s'il ne peut pas remplir son
+     * réservoir si {@link #peutRemplir()} renvoit false.
+     * 
+     * @throws TerrainIncorrectException
+     */
     public abstract void remplirReservoir() throws TerrainIncorrectException;
 }

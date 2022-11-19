@@ -19,10 +19,10 @@ import io.LecteurDonnees;
 
 public class TestSimulateurBonus {
     private static void moveRectangle(Simulateur simulateur, Robot robot) {
-        DeplacementNord nord = new DeplacementNord(1, robot, simulateur);
-        DeplacementEst est = new DeplacementEst(2, robot, simulateur);
-        DeplacementSud sud = new DeplacementSud(3, robot, simulateur);
-        DeplacementOuest ouest = new DeplacementOuest(4, robot, simulateur);
+        DeplacementNord nord = new DeplacementNord(10, robot, simulateur);
+        DeplacementEst est = new DeplacementEst(20, robot, simulateur);
+        DeplacementSud sud = new DeplacementSud(30, robot, simulateur);
+        DeplacementOuest ouest = new DeplacementOuest(40, robot, simulateur);
         simulateur.ajouteEvenement(nord);
         simulateur.ajouteEvenement(est);
         simulateur.ajouteEvenement(sud);
@@ -43,9 +43,8 @@ public class TestSimulateurBonus {
 
             System.out.println(
                     Integer.toString(tailleCases * nbColonnes) + " " + Integer.toString(tailleCases * nbLignes));
-            GUISimulator gui = new GUISimulator(tailleCases * nbColonnes, tailleCases * nbLignes, Color.lightGray);
             long time = 0;
-            Simulateur simulateur = new Simulateur(gui, donnees, time);
+            Simulateur simulateur = new Simulateur(donnees, time, false);
             Iterator<Robot> robots = donnees.getRobots();
             Robot robot = robots.next();
 
