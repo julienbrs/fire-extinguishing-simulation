@@ -47,7 +47,7 @@ public class TestSimulateurOK {
             DeplacementEst est1 = new DeplacementEst((long) 6, robot, simulateur);
             DeplacementEst est2 = new DeplacementEst((long) 7, robot, simulateur);
             DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur);
-
+            
             simulateur.ajouteEvenement(nord);
             simulateur.ajouteEvenement(ext1);
             simulateur.ajouteEvenement(ouest1);
