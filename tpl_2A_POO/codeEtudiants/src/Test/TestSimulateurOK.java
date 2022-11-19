@@ -46,7 +46,8 @@ public class TestSimulateurOK {
             RemplissageEau recharge = new RemplissageEau((long) 5, robot, simulateur);
             DeplacementEst est1 = new DeplacementEst((long) 6, robot, simulateur);
             DeplacementEst est2 = new DeplacementEst((long) 7, robot, simulateur);
-            DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur, 0);
+
+            DeversementEau ext2 = new DeversementEau((long) 8, robot, 5000, simulateur);
 
             simulateur.ajouteEvenement(nord);
             simulateur.ajouteEvenement(ext1);
