@@ -1,4 +1,0 @@
-{
-  "java.project.referencedLibraries": ["lib/**/*.jar", "bin/gui.jar"],
-  "codetogether.virtualCursorJoin": "ownVirtualCursor"
-}
