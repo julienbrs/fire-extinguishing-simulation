@@ -1,40 +1,121 @@
-# Ensimag 2A POO - TP 2022/23
+<a name="readme-top"></a>
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/julienbrs)
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-Bonjour,
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/julienbrs/fire-extinguishing-simulation">
+    <img src="assets/logo_tortank.png" alt="Logo" width="120" height="120">
+  </a>
 
-- assets : assets utilisés pour le projet
+<h3 align="center">Fire Extinguishing Simulation</h3>
+  </p>
+</div>
 
-- cartes: quelques exemples de fichiers de donnees
+<!-- TABLE OF CONTENTS -->
+<summary>Table of Contents</summary>
+<ol>
+  <li>
+    <a href="#about-the-project">About The Project</a>
+  </li>
+  <li>
+    <a href="#getting-started">Getting Started</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#installation">Installation</a></li>
+    </ul>
+  </li>
+  <li><a href="#contact">Contact</a></li>
+</ol>
 
-- bin/gui.jar: archive Java contenant les classes de l'interface graphique.
+<br />
 
-- doc: la documentation (API) des classes. Point d'entrée: index.html
+<!-- ABOUT THE PROJECT -->
 
+## About The Project
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-POUR COMPILER
+[![forthebadge made-with-python](https://forthebadge.com/images/badges/made-with-java.svg)](https://www.java.com/fr/)
 
-- make : construit les executables et les librairies des fichiers source
-- make clean : suppression des fichiers .class dans bin
+This project focuses on the development of a Java application to simulate a ́team of firefighting robots operating autonomously in a natural environment.
 
-POUR VOIR LES TESTS
+It has a 3d isometric graphical interface and complex strategies to calculate the shortest path while optimizing the coordination of the robots have been implemented.
 
-- make exeCarte : execute le test TestCarte
-- make exeRobots : execute le test TestRobot
-- make exeDijkstra : execute le test TestDijkstra
-- make exeSimulateurOK : execute le test TestSimulateurOK
-- make exeChemin : execute le test TestChemin
-- make exeSimulateur : execute le testSimulation
-- make exeStrategie : execute le testStrategie
+**For more details and visuals, see the report available in English and French**.
 
-- make exeOptimisationB : execute le test d'optimisation (b)
-- make exeSimulateurPropagation : execute le test d'optimisation (c)
+#### Inside the repo
 
-POUR TESTER LES CARTES
+- assets: assets used for the project
 
-Nous avons fourni un script shell pour executer la simulation avec ou sans propagation pour n'importe quelle carte.
-L'utilisation est ./testCarte.sh <n> <PATH_TO_MAP>
+- cartes: some examples of data files
 
-n est 1 pour lancer la simulation avec propagation, et 0 si on veut une simulation normale.
+- bin/gui.jar: Java archive containing the GUI classes.
 
-Bon courage pour la correction et merci pour le temps que vous y passerez
+- doc: the documentation (API) of the classes. Entry point: index.html
+
+<br />
+
+![Product Name Screen Shot](assets/simulationV2.png)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+<br />
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+### Installation
+
+- Clone the repo
+
+  ```sh
+  git clone https://github.com/julienbrs/fire-extinguishing-simulation.git
+  ```
+
+- `make` builds the executables and libraries of the source files
+
+- `make clean` : suppression des fichiers .class dans bin
+
+### Test
+
+- make exeCarte : run the test TestCarte
+- make exeRobots : run the test TestRobot
+- make exeDijkstra : run the test TestDijkstra
+- make exeSimulateurOK : run the test TestSimulateurOK
+- make exeChemin : run the test TestChemin
+- make exeSimulateur : run the testSimulation
+- make exeStrategie : run the testStrategie
+
+- make exeOptimisationB : run the optimisation test (b)
+- make exeSimulateurPropagation : run the optimisation test (c)
+
+### To Test maps
+
+We have provided a shell script to run the simulation with or without fire propagation **for any map**.
+The usage is `./testCarte.sh <n> <PATH_TO_MAP>`
+
+_n is 1 to run the simulation with fire propagation, and 0 if we want a normal simulation._
+
+<br />
+
+There are 4 test files available.
+
+It is possible to plot the performance graphs of the algorithms thanks to a result file, by calling the trace_graphe() function in the main.py program
+The file must have the format: time_divide, time_naive, nb_points
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+
+## Contact
+
+Bourseau Julien - _Made in 2nd year at Ensimag_ - julien.bourseau@gmail.com
+
+Project Link: [https://github.com/julienbrs/fire-extinguishing-simulation](https://github.com/julienbrs/fire-extinguishing-simulation)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/julien-bourseau-ba2239228
